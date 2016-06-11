@@ -1,0 +1,172 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymerfire/firebase-auth.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-input/paper-input.html">
+
+
+<dom-module id="login-fire">
+<template>
+    <style>
+        :host {
+            display: block;
+        }
+        .signInButton img{
+            padding: 0 8px 0 2px;
+            max-height: 15px;
+        }
+        .signInButton{
+            min-width: 300px;
+            text-align: left;
+            margin-bottom: 15px;
+            text-transform: none;
+            min-height: 40px;
+            
+        }
+        #anonSignIn{
+            background-color: #303030;
+            color: white;
+            
+        }
+        #fbSignIn{
+            background-color: #3B5999;
+            color: white;
+        }
+        #twtrSignIn{
+            background-color: #55ACEE;
+            color: white;
+        }
+        #ghSignIn{
+            background-color: #F5F5F5
+        }
+    </style>
+
+<form on-submit="signInWithEmailAndPassword">
+    <paper-input type="email" label="Email"></paper-input>
+    <paper-input type="password" label="Password"></paper-input>
+    <p><a href="">Reset your password here</a></p>
+    <paper-button type="submit" on-tap="signInWithEmailAndPassword">Sign In</paper-button>
+</form>
+
+    <firebase-auth
+      app-name="{{appName}}"
+      id="google" 
+      provider="google"
+      user="{{googUser}}"
+      signed-in="{{googSignedIn}}"
+    >
+    </firebase-auth>
+    
+    <paper-button id="googSignIn" class="signInButton" data-auth="#google" hidden$="{{!google}}" raised><img src="images/google.svg"> Sign in with Google</paper-button>
+
+    <firebase-auth
+      app-name="{{appName}}"
+      id="facebook" 
+      provider="facebook"
+      user="{{fbUser}}"
+      signed-in="{{fbSignedIn}}"
+    >
+    </firebase-auth>
+    
+    <paper-button id="fbSignIn" class="signInButton" data-auth="#facebook" hidden$="{{!google}}" raised><img src="images/facebook.svg"> Sign in with Facebook</paper-button>
+    
+    <firebase-auth
+      app-name="{{appName}}"
+      id="twitter" 
+      provider="twitter"
+      user="{{twtrUser}}"
+      signed-in="{{twtrSignedIn}}"
+    >
+    </firebase-auth>
+    
+    <paper-button id="twtrSignIn" class="signInButton" data-auth="#twitter" hidden$="{{!twitter}}" raised><img src="images/twitter.svg"> Sign in with Twitter  </paper-button>
+      
+    <!--</template>-->
+
+    <!--<template is="dom-if" if={{github}}>-->
+      <firebase-auth
+        app-name="{{appName}}"
+        id="github" 
+        provider="github"
+        user="{{ghUser}}"
+        signed-in="{{ghSignedIn}}"
+      >
+      </firebase-auth>
+      
+      <paper-button id="ghSignIn" class="signInButton" data-auth="#github" hidden$="{{!github}}" raised><img src="images/github.svg"> Sign in with GitHub</paper-button>
+      
+       <firebase-auth
+      app-name="{{appName}}"
+      id="anonymous" 
+      user="{{anonUser}}"         
+      signed-in="{{anonSignedIn}}"
+    >
+    </firebase-auth>
+    
+    <paper-button id="anonSignIn" class="signInButton" data-auth="#anonymous" hidden$="{{!anonymous}}" raised> <img src="images/annon.svg"> Sign in anonymously</paper-button>
+
+
+    <!--</template>-->
+
+</template>
+
+<script>
+    /**
+    * @demo demo/index.html
+    */
+    Polymer({
+    is: 'login-fire',
+      properties: {
+        appName: {
+          type: String
+        },
+        anonymous: {
+          type: Boolean,
+          value: false,
+        },
+        github: {
+          type: Boolean,
+          value: false,
+        },
+        twitter: {
+          type: Boolean,
+          value: false,
+        },
+        facebook: {
+          type: Boolean,
+          value: false,
+        },
+        google: {
+          type: Boolean,
+          value: false,
+        },
+        emailPassword: {
+          type: Boolean,
+          value: false,
+        },
+        redirect: {
+          type: Boolean,
+          value: false,
+        },
+    },
+      listeners: {
+        'anonSignIn.click': 'signIn',
+        'googSignIn.click': 'signIn',
+        'fbSignIn.click': 'signIn',
+        'twtrSignIn.click': 'signIn',
+        'ghSignIn.click': 'signIn'
+      },
+      signIn: function(e) {
+        var authId = e.target.getAttribute("data-auth");
+        if(authId == "#anonymous"){
+          this.$$(authId).signInAnonymously();
+        }else if(authId == "#emailPassword"){
+          this.$$(authId).signInWithEmailAndPassword(email, password);
+        }else if(this.redirect){
+          this.$$(authId).signInWithRedirect();
+        } else {
+          this.$$(authId).signInWithPopup();
+        }
+      }
+    });
+</script>
+</dom-module>
