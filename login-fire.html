@@ -6,165 +6,219 @@
 
 <dom-module id="login-fire">
 <template>
-    <style>
-        :host {
-            display: block;
-        }
-        .signInButton img{
-            padding: 0 8px 0 2px;
-            max-height: 15px;
-        }
-        .signInButton{
-            min-width: 300px;
-            text-align: left;
-            margin-bottom: 15px;
-            text-transform: none;
-            min-height: 40px;
-            
-        }
-        #anonSignIn{
-            background-color: #303030;
-            color: white;
-            
-        }
-        #fbSignIn{
-            background-color: #3B5999;
-            color: white;
-        }
-        #twtrSignIn{
-            background-color: #55ACEE;
-            color: white;
-        }
-        #ghSignIn{
-            background-color: #F5F5F5
-        }
-    </style>
+  <style>
+    :host {
+      display: block;
+    }
+    .signInButton img{
+      padding: 0 8px 0 2px;
+      max-height: 15px;
+    }
+    .signInButton{
+      min-width: 300px;
+      text-align: left;
+      margin-bottom: 15px;
+      text-transform: none;
+      min-height: 40px;
+    }
+    #anonSignIn{
+      background-color: #303030;
+      color: white;
+    }
+    #fbSignIn{
+      background-color: #3B5999;
+      color: white;
+    }
+    #twtrSignIn{
+      background-color: #55ACEE;
+      color: white;
+    }
+    #ghSignIn{
+      background-color: #F5F5F5
+    }
+  </style>
 
-<form on-submit="signInWithEmailAndPassword">
-    <paper-input type="email" label="Email"></paper-input>
-    <paper-input type="password" label="Password"></paper-input>
-    <p><a href="">Reset your password here</a></p>
-    <paper-button type="submit" on-tap="signInWithEmailAndPassword">Sign In</paper-button>
-</form>
+  <firebase-auth
+    app-name="{{appName}}"
+    id="emailPassword" 
+    user="{{emailUser}}"
+    signed-in="{{emailSignedIn}}"
+    on-error="_handleEmailPWError"
+  >
+  </firebase-auth>
 
-    <firebase-auth
-      app-name="{{appName}}"
-      id="google" 
-      provider="google"
-      user="{{googUser}}"
-      signed-in="{{googSignedIn}}"
-    >
-    </firebase-auth>
-    
-    <paper-button id="googSignIn" class="signInButton" data-auth="#google" hidden$="{{!google}}" raised><img src="images/google.svg"> Sign in with Google</paper-button>
+  <form on-submit="_signInEmailPW" hidden$="{{!emailPassword}}">
+    <paper-input type="email" label="Email" value="{{email::input}}" validator="email-validator" auto-validate></paper-input>
+    <paper-input type="password" label="Password" value="{{pw::input}}"></paper-input>
+    <!-- TODO Reset password -->
+    <p><a href="#">Reset password for entered email</a></p>
+    <paper-button id="emailSignUp" type="submit" on-tap="_signUpEmailPW">Sign Up</paper-button>
+    <paper-button id="emailSignIn" type="submit" on-tap="_signInEmailPW">Sign In</paper-button>
+  </form>
 
-    <firebase-auth
-      app-name="{{appName}}"
-      id="facebook" 
-      provider="facebook"
-      user="{{fbUser}}"
-      signed-in="{{fbSignedIn}}"
-    >
-    </firebase-auth>
-    
-    <paper-button id="fbSignIn" class="signInButton" data-auth="#facebook" hidden$="{{!google}}" raised><img src="images/facebook.svg"> Sign in with Facebook</paper-button>
-    
-    <firebase-auth
-      app-name="{{appName}}"
-      id="twitter" 
-      provider="twitter"
-      user="{{twtrUser}}"
-      signed-in="{{twtrSignedIn}}"
-    >
-    </firebase-auth>
-    
-    <paper-button id="twtrSignIn" class="signInButton" data-auth="#twitter" hidden$="{{!twitter}}" raised><img src="images/twitter.svg"> Sign in with Twitter  </paper-button>
-      
-    <!--</template>-->
+  <firebase-auth
+    app-name="{{appName}}"
+    id="google" 
+    provider="google"
+    user="{{googUser}}"
+    signed-in="{{googSignedIn}}"
+  >
+  </firebase-auth>
+  
+  <paper-button id="googSignIn" class="signInButton" data-auth="#google" hidden$="{{!google}}" raised><img src="images/google.svg"> Sign in with Google</paper-button>
 
-    <!--<template is="dom-if" if={{github}}>-->
-      <firebase-auth
-        app-name="{{appName}}"
-        id="github" 
-        provider="github"
-        user="{{ghUser}}"
-        signed-in="{{ghSignedIn}}"
-      >
-      </firebase-auth>
-      
-      <paper-button id="ghSignIn" class="signInButton" data-auth="#github" hidden$="{{!github}}" raised><img src="images/github.svg"> Sign in with GitHub</paper-button>
-      
-       <firebase-auth
-      app-name="{{appName}}"
-      id="anonymous" 
-      user="{{anonUser}}"         
-      signed-in="{{anonSignedIn}}"
-    >
-    </firebase-auth>
-    
-    <paper-button id="anonSignIn" class="signInButton" data-auth="#anonymous" hidden$="{{!anonymous}}" raised> <img src="images/annon.svg"> Sign in anonymously</paper-button>
+  <firebase-auth
+    app-name="{{appName}}"
+    id="facebook" 
+    provider="facebook"
+    user="{{fbUser}}"
+    signed-in="{{fbSignedIn}}"
+  >
+  </firebase-auth>
+  
+  <paper-button id="fbSignIn" class="signInButton" data-auth="#facebook" hidden$="{{!google}}" raised><img src="images/facebook.svg"> Sign in with Facebook</paper-button>
+  
+  <firebase-auth
+    app-name="{{appName}}"
+    id="twitter" 
+    provider="twitter"
+    user="{{twtrUser}}"
+    signed-in="{{twtrSignedIn}}"
+  >
+  </firebase-auth>
+  
+  <paper-button id="twtrSignIn" class="signInButton" data-auth="#twitter" hidden$="{{!twitter}}" raised><img src="images/twitter.svg"> Sign in with Twitter  </paper-button>
 
+  <firebase-auth
+    app-name="{{appName}}"
+    id="github" 
+    provider="github"
+    user="{{ghUser}}"
+    signed-in="{{ghSignedIn}}"
+  >
+  </firebase-auth>
+  
+  <paper-button id="ghSignIn" class="signInButton" data-auth="#github" hidden$="{{!github}}" raised><img src="images/github.svg"> Sign in with GitHub</paper-button>
+  
+  <firebase-auth
+    app-name="{{appName}}"
+    id="anonymous" 
+    user="{{anonUser}}"         
+    signed-in="{{anonSignedIn}}"
+  >
+  </firebase-auth>
 
-    <!--</template>-->
+  <paper-button id="anonSignIn" class="signInButton" data-auth="#anonymous" hidden$="{{!anonymous}}" raised> <img src="images/annon.svg"> Sign in anonymously</paper-button>
 
 </template>
 
 <script>
     /**
-    * @demo demo/index.html
-    */
+     * An element that allows simple configuration of multiple provider log in for 
+     * firebase.
+     * 
+     * Example:
+     * ```
+     * <firebase-app
+     *   name="demo"
+     *   api-key="API_KEY"
+     *   auth-domain="AUTH_DOMAIN"
+     *   database-url="DATABASE_URL">
+     * <!-- A login-fire element allowing twitter, google and facebook login -->
+     * <login-fire app-name="demo" twitter google facebook></login-fire>
+     * ```
+     * 
+     * 
+     * @demo demo/index.html
+     */
     Polymer({
     is: 'login-fire',
       properties: {
+        /**
+         * `appName` represents the name of the firebase-app that was instantiated
+         */
         appName: {
           type: String
         },
+        /**
+         * `anonymous` represents whether to allow anonymous sign in
+         */
         anonymous: {
           type: Boolean,
           value: false,
         },
+        /**
+         * `github` represents whether to allow github sign in. See the [firebase console](https://console.firebase.google.com) Auth tab for configuration
+         */
         github: {
           type: Boolean,
           value: false,
         },
+        /**
+         * `twitter` represents whether to allow twitter sign in. See the [firebase console](https://console.firebase.google.com) Auth tab for configuration
+         */
         twitter: {
           type: Boolean,
           value: false,
         },
+        /**
+         * `facebook` represents whether to allow facebook sign in. See the [firebase console](https://console.firebase.google.com) Auth tab for configuration
+         */
         facebook: {
           type: Boolean,
           value: false,
         },
+        /**
+         * `google` represents whether to allow google sign in. See the [firebase console](https://console.firebase.google.com) Auth tab for configuration
+         */
         google: {
           type: Boolean,
           value: false,
         },
+        /**
+         * `emailPassword` represents whether to allow sign in with email and password. See the [firebase console](https://console.firebase.google.com) Auth tab for configuration
+         */
         emailPassword: {
           type: Boolean,
           value: false,
         },
+        /**
+         * `redirect` represents whether to use a redirect instead of a popup for signing in with the selected providers
+         */
         redirect: {
           type: Boolean,
           value: false,
         },
     },
       listeners: {
-        'anonSignIn.click': 'signIn',
-        'googSignIn.click': 'signIn',
-        'fbSignIn.click': 'signIn',
-        'twtrSignIn.click': 'signIn',
-        'ghSignIn.click': 'signIn'
+        'anonSignIn.click': '_signIn',
+        'googSignIn.click': '_signIn',
+        'fbSignIn.click': '_signIn',
+        'twtrSignIn.click': '_signIn',
+        'ghSignIn.click': '_signIn'
       },
-      signIn: function(e) {
+      _signIn: function(e) {
         var authId = e.target.getAttribute("data-auth");
         if(authId == "#anonymous"){
           this.$$(authId).signInAnonymously();
-        }else if(authId == "#emailPassword"){
-          this.$$(authId).signInWithEmailAndPassword(email, password);
-        }else if(this.redirect){
+        } else if(this.redirect){
           this.$$(authId).signInWithRedirect();
         } else {
           this.$$(authId).signInWithPopup();
+        }
+      },
+      _signInEmailPW: function(e){
+        this.$$("#emailPassword").signInWithEmailAndPassword(this.email, this.pw);
+      },
+      _signUpEmailPW: function(e){
+        this.$$("#emailPassword").createUserWithEmailAndPassword(this.email, this.pw)
+      },
+      _handleEmailPWError: function(err){
+        // console.log(err);
+        if(err.detail.code == "auth/user-not-found"){
+          this.$$("#emailPassword").createUserWithEmailAndPassword(this.email, this.pw)
+          this.email = null;
+          this.pw = null;
         }
       }
     });
