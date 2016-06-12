@@ -1,6 +1,19 @@
 {
   "name": "login-fire",
+  "version": "0.0.1",
+  "authors": [
+    "Will in China <email.will.in.china@gmail.com>",
+    "Saad Elbeleidy <sbeleidy90@gmail.com>"
+  ],
+  "description": "An element that allows simple configuration of multiple provider login for firebase",
+  "keywords": [
+    "web-component",
+    "polymer",
+    "seed"
+  ],
   "main": "login-fire.html",
+  "license": "MIT",
+  "homepage": "https://convoo.github.io/login-fire/",
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
     "polymerfire": "firebase/polymerfire#^0.9.2",
