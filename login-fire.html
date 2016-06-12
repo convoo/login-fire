@@ -96,16 +96,29 @@
 
   <firebase-auth app-name="{{appName}}" id="emailPassword" user="{{emailUser}}" signed-in="{{emailSignedIn}}" on-error="_handleEmailPWError">
   </firebase-auth>
-  <firebase-auth app-name="{{appName}}" id="google" provider="google" user="{{googUser}}" signed-in="{{googSignedIn}}">
+  <firebase-auth app-name="{{appName}}" id="google" provider="google" user="{{googleUser}}" signed-in="{{googleSignedIn}}">
   </firebase-auth>
-  <firebase-auth app-name="{{appName}}" id="facebook" provider="facebook" user="{{fbUser}}" signed-in="{{fbSignedIn}}">
+  <firebase-auth app-name="{{appName}}" id="facebook" provider="facebook" user="{{facebookUser}}" signed-in="{{facebookSignedIn}}">
   </firebase-auth>
-  <firebase-auth app-name="{{appName}}" id="twitter" provider="twitter" user="{{twtrUser}}" signed-in="{{twtrSignedIn}}">
+  <firebase-auth app-name="{{appName}}" id="twitter" provider="twitter" user="{{twitterUser}}" signed-in="{{twitterSignedIn}}">
   </firebase-auth>
-  <firebase-auth app-name="{{appName}}" id="github" provider="github" user="{{ghUser}}" signed-in="{{ghSignedIn}}">
+  <firebase-auth app-name="{{appName}}" id="github" provider="github" user="{{githubUser}}" signed-in="{{githubSignedIn}}">
   </firebase-auth>
   <firebase-auth app-name="{{appName}}" id="anonymous" user="{{anonUser}}" signed-in="{{anonSignedIn}}">
   </firebase-auth>
+
+  <div hidden$="{{!debug}}">
+    <div> UID = {{user.uid}}</div>
+    <div> Signed In = {{signedIn}}</div>
+    <div> Display Name = {{user.displayName}}</div>
+    <div> Email = {{user.email}}</div>
+    <div> Email Verified = {{user.emailVerified}}</div>
+    <div> Is Anonymous = {{user.isAnonymous}}</div>
+    <div> Photo URL = {{user.photoURL}} <img src$="{{user.photoURL}}" hidden="{{!user.photoURL}}" width="100px" height="100px"> </div>
+    <div> Provider Id = {{user.providerId}}</div> 
+    <paper-button on-tap="signOut">Log Out</paper-button>
+
+  </div>
 
   <form on-submit="_signInEmailPW" hidden$="{{!emailPassword}}">
     <paper-input type="email" label="Email" value="{{email::input}}" validator="email-validator" auto-validate></paper-input>
@@ -125,7 +138,7 @@
   <paper-button id="fbSignIn" class="signInButton" data-auth="#facebook" hidden$="{{!facebook}}" raised><img src="images/facebook.svg"> Sign in with Facebook</paper-button>
   <paper-button id="twtrSignIn" class="signInButton" data-auth="#twitter" hidden$="{{!twitter}}" raised><img src="images/twitter.svg"> Sign in with Twitter  </paper-button>
   <paper-button id="ghSignIn" class="signInButton" data-auth="#github" hidden$="{{!github}}" raised><img src="images/github.svg"> Sign in with GitHub</paper-button>
-  <paper-button id="anonSignIn" class="signInButton" data-auth="#anonymous" hidden$="{{!anonymous}}" raised> <img src="images/annon.svg"> Sign in anonymously</paper-button>
+  <paper-button id="anonSignIn" class="signInButton" data-auth="#anonymous" hidden$="{{!anonymous}}" raised> <img src="images/anon.svg"> Sign in anonymously</paper-button>
 </div>
 
 </template>
@@ -207,6 +220,32 @@
           type: Boolean,
           value: false,
         },
+        /**
+         * `user` represents the user object returned by the firebase-auth element 
+         */
+        user: {
+          type: Object,
+          readOnly: true,
+          notify: true,
+          computed: "_computeUser(emailUser, googleUser, facebookUser, twitterUser, githubUser, anonUser)",
+        },
+        /**
+         * `signedIn` represents the signed in state returned by the firebase-auth element 
+         */
+        signedIn: {
+          type: Boolean,
+          readOnly: true,
+          notify: true,
+          computed: "_computeSignedIn(emailSignedIn, googleSignedIn, facebookSignedIn, twitterSignedIn, githubSignedIn, anonSignedIn)",
+        },
+        /**
+         * `debug` represents if the debug region is shown
+         */
+        debug: {
+          type: Boolean,
+          value: false,
+        },
+        
     },
       listeners: {
         'anonSignIn.click': '_signIn',
@@ -214,6 +253,19 @@
         'fbSignIn.click': '_signIn',
         'twtrSignIn.click': '_signIn',
         'ghSignIn.click': '_signIn'
+      },
+
+      _computeUser: function(emailUser, googleUser, facebookUser, twitterUser, githubUser, anonUser){
+        if(this.emailSignedIn){return emailUser;}
+        else if(this.googleSignedIn){return googleUser;}
+        else if(this.facebookSignedIn){return facebookUser;}
+        else if(this.twitterSignedIn){return twitterUser;}
+        else if(this.githubSignedIn){return githubUser;}
+        else if(this.anonSignedIn){return anonUser;}
+        else {return {};}
+      },
+      _computeSignedIn: function(emailSignedIn, googleSignedIn, facebookSignedIn, twitterSignedIn, githubSignedIn, anonSignedIn){
+        return emailSignedIn || googleSignedIn || facebookSignedIn || twitterSignedIn || githubSignedIn || anonSignedIn;
       },
       _signIn: function(e) {
         var authId = e.target.getAttribute("data-auth");
@@ -238,7 +290,15 @@
           this.email = null;
           this.pw = null;
         }
-      }
+      },
+      signOut: function(){
+        if(this.emailSignedIn){this.$.emailPassword.signOut();}
+        if(this.googleSignedIn){this.$.google.signOut();}
+        if(this.facebookSignedIn){this.$.facebook.signOut();}
+        if(this.twitterSignedIn){this.$.twitter.signOut();}
+        if(this.githubSignedIn){this.$.github.signOut();}
+        if(this.anonSignedIn){this.$.anonymous.signOut();}
+      },
     });
 </script>
 </dom-module>
