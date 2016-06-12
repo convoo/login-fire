@@ -15,15 +15,14 @@
       max-height: 15px;
     }
     .signInButton{
-      min-width: 300px;
+      min-width: 220px;
       text-align: left;
       margin-bottom: 15px;
       text-transform: none;
       min-height: 40px;
     }
-    #anonSignIn{
-      background-color: #303030;
-      color: white;
+    #googSignIn{
+      background-color: white;
     }
     #fbSignIn{
       background-color: #3B5999;
@@ -36,79 +35,91 @@
     #ghSignIn{
       background-color: #F5F5F5
     }
+    #anonSignIn{
+      background-color: #303030;
+      color: white;
+    }
+    #fbSignIn:hover{
+      background-color: #4265b0;
+    }
+    #twtrSignIn:hover{
+      background-color: #5cb9ff;
+    }
+    #ghSignIn:hover{
+      background-color: white;
+    }
+    #anonSignIn:hover{
+      background-color: #414040;
+    }
+    #buttons{
+      width: 100%;
+      text-align: center;
+    }
+    #divider{
+      border-top: 1px solid #e0e0e0;
+      text-align: center;
+      margin: 50px 0 50px 0;
+      height: 1px;
+    }
+    #divider div{
+      background-color: white;
+      position: relative;
+      top: -8px;
+      width: 50px;
+      margin: 0 auto; 
+      height: 20px;
+      font-style: italic;
+      color: grey;
+      font-weight: lighter;
+      font-size: 12px;
+    }
+    #reset{
+      color: grey;
+      text-decoration: none;
+      font-size: 12px;
+      font-style: italic;
+      font-weight: lighter;
+
+    }
+    #reset:hover{
+      color: grey;
+      text-decoration: underline;
+    }
   </style>
 
-  <firebase-auth
-    app-name="{{appName}}"
-    id="emailPassword" 
-    user="{{emailUser}}"
-    signed-in="{{emailSignedIn}}"
-    on-error="_handleEmailPWError"
-  >
+  <firebase-auth app-name="{{appName}}" id="emailPassword" user="{{emailUser}}" signed-in="{{emailSignedIn}}" on-error="_handleEmailPWError">
+  </firebase-auth>
+  <firebase-auth app-name="{{appName}}" id="google" provider="google" user="{{googUser}}" signed-in="{{googSignedIn}}">
+  </firebase-auth>
+  <firebase-auth app-name="{{appName}}" id="facebook" provider="facebook" user="{{fbUser}}" signed-in="{{fbSignedIn}}">
+  </firebase-auth>
+  <firebase-auth app-name="{{appName}}" id="twitter" provider="twitter" user="{{twtrUser}}" signed-in="{{twtrSignedIn}}">
+  </firebase-auth>
+  <firebase-auth app-name="{{appName}}" id="github" provider="github" user="{{ghUser}}" signed-in="{{ghSignedIn}}">
+  </firebase-auth>
+  <firebase-auth app-name="{{appName}}" id="anonymous" user="{{anonUser}}" signed-in="{{anonSignedIn}}">
   </firebase-auth>
 
   <form on-submit="_signInEmailPW" hidden$="{{!emailPassword}}">
     <paper-input type="email" label="Email" value="{{email::input}}" validator="email-validator" auto-validate></paper-input>
     <paper-input type="password" label="Password" value="{{pw::input}}"></paper-input>
     <!-- TODO Reset password -->
-    <p><a href="#">Reset password for entered email</a></p>
+    <p><a href="#" id="reset">Reset password for entered email</a></p>
     <paper-button id="emailSignUp" type="submit" on-tap="_signUpEmailPW">Sign Up</paper-button>
     <paper-button id="emailSignIn" type="submit" on-tap="_signInEmailPW">Sign In</paper-button>
   </form>
 
-  <firebase-auth
-    app-name="{{appName}}"
-    id="google" 
-    provider="google"
-    user="{{googUser}}"
-    signed-in="{{googSignedIn}}"
-  >
-  </firebase-auth>
-  
+<div id="divider">
+  <div>or</div>
+</div>
+
+<div id="buttons">
   <paper-button id="googSignIn" class="signInButton" data-auth="#google" hidden$="{{!google}}" raised><img src="images/google.svg"> Sign in with Google</paper-button>
-
-  <firebase-auth
-    app-name="{{appName}}"
-    id="facebook" 
-    provider="facebook"
-    user="{{fbUser}}"
-    signed-in="{{fbSignedIn}}"
-  >
-  </firebase-auth>
-  
   <paper-button id="fbSignIn" class="signInButton" data-auth="#facebook" hidden$="{{!google}}" raised><img src="images/facebook.svg"> Sign in with Facebook</paper-button>
-  
-  <firebase-auth
-    app-name="{{appName}}"
-    id="twitter" 
-    provider="twitter"
-    user="{{twtrUser}}"
-    signed-in="{{twtrSignedIn}}"
-  >
-  </firebase-auth>
-  
   <paper-button id="twtrSignIn" class="signInButton" data-auth="#twitter" hidden$="{{!twitter}}" raised><img src="images/twitter.svg"> Sign in with Twitter  </paper-button>
-
-  <firebase-auth
-    app-name="{{appName}}"
-    id="github" 
-    provider="github"
-    user="{{ghUser}}"
-    signed-in="{{ghSignedIn}}"
-  >
-  </firebase-auth>
-  
   <paper-button id="ghSignIn" class="signInButton" data-auth="#github" hidden$="{{!github}}" raised><img src="images/github.svg"> Sign in with GitHub</paper-button>
-  
-  <firebase-auth
-    app-name="{{appName}}"
-    id="anonymous" 
-    user="{{anonUser}}"         
-    signed-in="{{anonSignedIn}}"
-  >
-  </firebase-auth>
-
   <paper-button id="anonSignIn" class="signInButton" data-auth="#anonymous" hidden$="{{!anonymous}}" raised> <img src="images/annon.svg"> Sign in anonymously</paper-button>
+</div>
 
 </template>
 
