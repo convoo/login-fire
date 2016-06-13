@@ -14,6 +14,11 @@
       max-width: 801px;
       margin: 0 auto; 
     }
+
+    :host(.reverse) {
+      @apply(--layout-horizontal-reverse);
+    }
+
     firebase-auth{
       display: none;
     }
@@ -124,10 +129,6 @@
       font-weight: lighter;
       font-size: 12px;
     }
-
-
-
-
   </style>
 
   <firebase-auth app-name="{{appName}}" id="emailPassword" user="{{emailUser}}" signed-in="{{emailSignedIn}}" on-error="_handleEmailPWError">
@@ -291,6 +292,14 @@
           type: Boolean,
           value: false,
         },
+        /**
+         * `reverse` represents whether to display the order of social buttons first, default shows email & password first
+         */
+        reverse: {
+          type: Boolean,
+          value: false,
+          observer: '_reverseChanged',
+        },
         _dividerClass: {
           type: String,
           computed: '_computeDividerClass(_recalculateDividerClass)',
@@ -312,6 +321,13 @@
         'ghSignIn.click': '_signIn'
       },
 
+      _reverseChanged: function(newVal, oldVal){
+        if (newVal){
+          this.classList.add("reverse");
+        } else {
+          this.classList.remove("reverse")
+        }
+      },
       _computeDividerClass: function(debug){
         return this.clientWidth > 500 ? "wideDivider" : "narrowDivider";
       },
