@@ -170,11 +170,21 @@
 </div>
 
 <div id="buttons">
-  <paper-button id="googSignIn" class="signInButton" data-auth="#google" hidden$="{{!google}}" raised><img src="images/google.svg"> Sign in with Google</paper-button>
-  <paper-button id="fbSignIn" class="signInButton" data-auth="#facebook" hidden$="{{!facebook}}" raised><img src="images/facebook.svg"> Sign in with Facebook</paper-button>
-  <paper-button id="twtrSignIn" class="signInButton" data-auth="#twitter" hidden$="{{!twitter}}" raised><img src="images/twitter.svg"> Sign in with Twitter  </paper-button>
-  <paper-button id="ghSignIn" class="signInButton" data-auth="#github" hidden$="{{!github}}" raised><img src="images/github.svg"> Sign in with GitHub</paper-button>
-  <paper-button id="anonSignIn" class="signInButton" data-auth="#anonymous" hidden$="{{!anonymous}}" raised> <img src="images/anon.svg"> Sign in anonymously</paper-button>
+  <div hidden$="{{!google}}">
+    <paper-button id="googSignIn" class="signInButton" data-auth="#google" raised><img src="images/google.svg"> Sign in with Google</paper-button>
+  </div>
+  <div hidden$="{{!facebook}}">
+    <paper-button id="fbSignIn" class="signInButton" data-auth="#facebook" raised><img src="images/facebook.svg"> Sign in with Facebook</paper-button>
+  </div>
+  <div hidden$="{{!twitter}}">
+    <paper-button id="twtrSignIn" class="signInButton" data-auth="#twitter" raised><img src="images/twitter.svg"> Sign in with Twitter  </paper-button>
+  </div>
+  <div hidden$="{{!github}}">
+    <paper-button id="ghSignIn" class="signInButton" data-auth="#github" raised><img src="images/github.svg"> Sign in with GitHub</paper-button>
+  </div>
+  <div hidden$="{{!anonymous}}">
+    <paper-button id="anonSignIn" class="signInButton" data-auth="#anonymous" raised> <img src="images/anon.svg"> Sign in anonymously</paper-button>
+  </div>
 </div>
 
 </template>
