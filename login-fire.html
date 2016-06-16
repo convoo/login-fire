@@ -146,14 +146,14 @@
   </firebase-auth>
 
   <div hidden$="{{!debug}}">
-    <div> UID = {{user.uid}}</div>
-    <div> Signed In = {{signedIn}}</div>
-    <div> Display Name = {{user.displayName}}</div>
-    <div> Email = {{user.email}}</div>
-    <div> Email Verified = {{user.emailVerified}}</div>
-    <div> Is Anonymous = {{user.isAnonymous}}</div>
-    <div> Photo URL = {{user.photoURL}} <img src$="{{user.photoURL}}" hidden="{{!user.photoURL}}" width="100px" height="100px"> </div>
-    <div> Provider Id = {{user.providerId}}</div> 
+    <div> user.id = {{user.uid}}</div>
+    <div> signedIn = {{signedIn}}</div>
+    <div> user.displayName = {{user.displayName}}</div>
+    <div> user.email = {{user.email}}</div>
+    <div> user.emailVerified = {{user.emailVerified}}</div>
+    <div> user.isAnonymous = {{user.isAnonymous}}</div>
+    <div> user.photoURL = {{user.photoURL}} <img src$="{{user.photoURL}}" hidden="{{!user.photoURL}}" width="100px" height="100px"> </div>
+    <div> user.providerId = {{user.providerId}}</div> 
     <paper-button on-tap="signOut">Log Out</paper-button>
 
   </div>
