@@ -276,6 +276,7 @@
           readOnly: true,
           notify: true,
           computed: "_computeUser(emailUser, googleUser, facebookUser, twitterUser, githubUser, anonUser)",
+          observer: "_userChanged",
         },
         /**
          * `signedIn` represents the signed in state returned by the firebase-auth element 
@@ -347,6 +348,14 @@
       },
       _computeShowDivider: function(e){
         return this.emailPassword && (this.google || this.facebook || this.twitter || this.github || this.anonymous);
+      },
+      _userChanged: function(u){
+        if(typeof u !== 'undefined' && u != null){
+          if (!(Object.keys(u).length === 0 && u.constructor === Object)){
+            console.log("Fire!");
+            this.fire("signedin", u);
+          }
+        }
       },
       _signIn: function(e) {
         var authId = e.target.getAttribute("data-auth");
