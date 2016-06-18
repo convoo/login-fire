@@ -352,7 +352,6 @@
       _userChanged: function(u){
         if(typeof u !== 'undefined' && u != null){
           if (!(Object.keys(u).length === 0 && u.constructor === Object)){
-            console.log("Fire!");
             this.fire("signedin", u);
           }
         }
