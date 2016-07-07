@@ -84,25 +84,23 @@
     }
 
     .emailPWError {
-      color: #dd2c00;
-      direction: ltr;
+      color: var(--error-color);
+      text-align: center;
       font-size: 16px;
       font-weight: 500;
       line-height: 24px;
       margin: 0;
       padding: 0;
-      text-align: left;
     }
 
     .emailPWMessage {
-      color: #303030;
-      direction: ltr;
+      color: var(--primary-color);
+      text-align: center;
       font-size: 16px;
       font-weight: 500;
       line-height: 24px;
       margin: 0;
       padding: 0;
-      text-align: left;
     }
 
     form{
@@ -183,8 +181,10 @@
   </template>
 
   <template is="dom-if" if={{emailPassword}}>
-    <div class="emailPWError"></div>
-    <div class="emailPWMessage"></div>
+    <div>
+      <div class="emailPWError"></div>
+      <div class="emailPWMessage"></div>
+    </div>
     <form on-submit="_signInEmailPW">
       <paper-input id="emailInput" type="email" label="Email" value="{{email::input}}" validator="email-validator" error-message="Invalid email address" required auto-validate></paper-input>
       <paper-input id="pwInput" type="password" label="Password" value="{{pw::input}}" required></paper-input>
@@ -332,6 +332,14 @@
           value: false,
           observer: '_reverseChanged',
         },
+        /**
+        * `allows to set custom password reset message `
+        */
+        passwordResetMessage: {
+          type: String,
+          value:  "Password reset email has been sent. Please check your inbox."
+        },
+
         _dividerClass: {
           type: String,
           computed: '_computeDividerClass(_recalculateDividerClass)',
@@ -402,7 +410,6 @@
         this.$$("#emailPassword").createUserWithEmailAndPassword(this.email, this.pw);
       },
       _handleEmailPWError: function(err){
-        // console.log(err);
         if(err.detail.code === "auth/user-not-found"){
           this.$$("#emailPassword").createUserWithEmailAndPassword(this.email, this.pw)
           this.email = null;
@@ -414,7 +421,7 @@
       _resetPW: function () {
         var that = this;
         this.$$("#emailPassword").auth.sendPasswordResetEmail(this.email).then(function () {
-          that.$$(".emailPWMessage").textContent = "Check your inbox";
+          that.$$(".emailPWMessage").textContent = that.passwordResetMessage;
         }, function (err) {
           that.$$(".emailPWError").textContent = err.message;
         })
