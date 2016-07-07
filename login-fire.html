@@ -428,7 +428,10 @@
           that.$$(".emailPWError").textContent = err.message;
         })
       },
-       signOut: function(){
+      /**
+       * Signs out the signed in user
+       */
+      signOut: function(){
         if(this.emailSignedIn){this.$.emailPassword.signOut();}
         if(this.googleSignedIn){this.$.google.signOut();}
         if(this.facebookSignedIn){this.$.facebook.signOut();}
