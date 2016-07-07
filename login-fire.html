@@ -160,14 +160,16 @@
     </div>
   </template>
 
-  <form on-submit="_signInEmailPW" hidden$="{{!emailPassword}}">
-    <paper-input type="email" label="Email" value="{{email::input}}" validator="email-validator" auto-validate></paper-input>
-    <paper-input type="password" label="Password" value="{{pw::input}}"></paper-input>
-    <!-- TODO Reset password -->
-    <p><a href="#" id="reset">Reset password for entered email</a></p>
-    <paper-button id="emailSignUp" type="submit" on-tap="_signUpEmailPW">Sign Up</paper-button>
-    <paper-button id="emailSignIn" type="submit" on-tap="_signInEmailPW">Sign In</paper-button>
-  </form>
+  <template is="dom-if" if={{emailPassword}}>
+    <form on-submit="_signInEmailPW">
+      <paper-input id="emailInput" type="email" label="Email" value="{{email::input}}" validator="email-validator" error-message="Invalid email address" required auto-validate></paper-input>
+      <paper-input id="pwInput" type="password" label="Password" value="{{pw::input}}" required></paper-input>
+      <!-- TODO Reset password -->
+      <p><a href="#" id="reset">Reset password for entered email</a></p>
+      <paper-button id="emailSignUp" type="submit" on-tap="_signUpEmailPW">Sign Up</paper-button>
+      <paper-button id="emailSignIn" type="submit" on-tap="_signInEmailPW">Sign In</paper-button>
+    </form>
+  </template>
 
   <template is="dom-if" if={{_showDivider}}>
     <div id="divider" class$="{{_dividerClass}}">
@@ -368,11 +370,15 @@
         this.$$("#emailPassword").signInWithEmailAndPassword(this.email, this.pw);
       },
       _signUpEmailPW: function(e){
-        this.$$("#emailPassword").createUserWithEmailAndPassword(this.email, this.pw)
+        this.$$("#emailPassword").createUserWithEmailAndPassword(this.email, this.pw);
       },
       _handleEmailPWError: function(err){
         // console.log(err);
-        if(err.detail.code == "auth/user-not-found"){
+        if(err.detail.code === "auth/wrong-password"){
+          this.$$("#pwInput").setAttribute('error-message', err.detail.message);
+          this.$$("#pwInput").$$("paper-input-container").setAttribute('invalid', true);
+          this.pw = null;
+        } else if(err.detail.code === "auth/user-not-found"){
           this.$$("#emailPassword").createUserWithEmailAndPassword(this.email, this.pw)
           this.email = null;
           this.pw = null;
