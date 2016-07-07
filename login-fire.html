@@ -378,6 +378,10 @@
           this.$$("#pwInput").setAttribute('error-message', err.detail.message);
           this.$$("#pwInput").$$("paper-input-container").setAttribute('invalid', true);
           this.pw = null;
+        } else if(err.detail.code === "auth/email-already-in-use"){
+          this.$$("#emailInput").setAttribute('error-message', err.detail.message);
+          this.$$("#emailInput").$$("paper-input-container").setAttribute('invalid', true);
+          this.pw = null;
         } else if(err.detail.code === "auth/user-not-found"){
           this.$$("#emailPassword").createUserWithEmailAndPassword(this.email, this.pw)
           this.email = null;
