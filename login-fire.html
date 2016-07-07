@@ -83,6 +83,10 @@
       text-decoration: underline;
     }
 
+    .emailPWError {
+      color: #dd2c00;
+    }
+
     form{
       min-width: 350px;
     }
@@ -161,6 +165,7 @@
   </template>
 
   <template is="dom-if" if={{emailPassword}}>
+    <div class="emailPWError"></div>
     <form on-submit="_signInEmailPW">
       <paper-input id="emailInput" type="email" label="Email" value="{{email::input}}" validator="email-validator" error-message="Invalid email address" required auto-validate></paper-input>
       <paper-input id="pwInput" type="password" label="Password" value="{{pw::input}}" required></paper-input>
@@ -367,25 +372,21 @@
         }
       },
       _signInEmailPW: function(e){
+        this.$$(".emailPWError").textContent = '';
         this.$$("#emailPassword").signInWithEmailAndPassword(this.email, this.pw);
       },
       _signUpEmailPW: function(e){
+        this.$$(".emailPWError").textContent = '';
         this.$$("#emailPassword").createUserWithEmailAndPassword(this.email, this.pw);
       },
       _handleEmailPWError: function(err){
         // console.log(err);
-        if(err.detail.code === "auth/wrong-password"){
-          this.$$("#pwInput").setAttribute('error-message', err.detail.message);
-          this.$$("#pwInput").$$("paper-input-container").setAttribute('invalid', true);
-          this.pw = null;
-        } else if(err.detail.code === "auth/email-already-in-use"){
-          this.$$("#emailInput").setAttribute('error-message', err.detail.message);
-          this.$$("#emailInput").$$("paper-input-container").setAttribute('invalid', true);
-          this.pw = null;
-        } else if(err.detail.code === "auth/user-not-found"){
+        if(err.detail.code === "auth/user-not-found"){
           this.$$("#emailPassword").createUserWithEmailAndPassword(this.email, this.pw)
           this.email = null;
           this.pw = null;
+        } else {
+          this.$$(".emailPWError").textContent = err.detail.message;
         }
       },
       signOut: function(){
