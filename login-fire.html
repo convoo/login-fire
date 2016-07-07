@@ -106,6 +106,7 @@
 
     form{
       min-width: 350px;
+      margin: 0 auto;
     }
 
     .wideDivider{
@@ -201,24 +202,27 @@
     </div>
   </template>
 
-<div id="buttons">
-    <template is="dom-if" if="{{google}}">
-      <paper-button id="googSignIn" class="signInButton" on-tap="_signIn" data-auth="#google" raised><img src="images/google.svg"> Sign in with Google</paper-button>
-    </template>
-    <template is="dom-if" if="{{facebook}}">
-      <paper-button id="fbSignIn" class="signInButton" on-tap="_signIn" data-auth="#facebook" raised><img src="images/facebook.svg"> Sign in with Facebook</paper-button>
-    </template>
-    <template is="dom-if" if="{{twitter}}">
-      <paper-button id="twtrSignIn" class="signInButton" on-tap="_signIn" data-auth="#twitter" raised><img src="images/twitter.svg"> Sign in with Twitter  </paper-button>
-    </template>
-    <template is="dom-if" if="{{github}}">
-      <paper-button id="ghSignIn" class="signInButton" on-tap="_signIn" data-auth="#github" raised><img src="images/github.svg"> Sign in with GitHub</paper-button>
-    </template>
-    <template is="dom-if" if="{{anonymous}}">
-      <paper-button id="anonSignIn" class="signInButton" on-tap="_signIn" data-auth="#anonymous" raised> <img src="images/anon.svg"> Sign in anonymously</paper-button>
-    </template>
-  </div>
-</div>
+  
+  <template is="dom-if" if={{_showButtons}}>
+    <div id="buttons">
+      <template is="dom-if" if="{{google}}">
+        <paper-button id="googSignIn" class="signInButton" on-tap="_signIn" data-auth="#google" raised><img src="images/google.svg"> Sign in with Google</paper-button>
+      </template>
+      <template is="dom-if" if="{{facebook}}">
+        <paper-button id="fbSignIn" class="signInButton" on-tap="_signIn" data-auth="#facebook" raised><img src="images/facebook.svg"> Sign in with Facebook</paper-button>
+      </template>
+      <template is="dom-if" if="{{twitter}}">
+        <paper-button id="twtrSignIn" class="signInButton" on-tap="_signIn" data-auth="#twitter" raised><img src="images/twitter.svg"> Sign in with Twitter  </paper-button>
+      </template>
+      <template is="dom-if" if="{{github}}">
+        <paper-button id="ghSignIn" class="signInButton" on-tap="_signIn" data-auth="#github" raised><img src="images/github.svg"> Sign in with GitHub</paper-button>
+      </template>
+      <template is="dom-if" if="{{anonymous}}">
+        <paper-button id="anonSignIn" class="signInButton" on-tap="_signIn" data-auth="#anonymous" raised> <img src="images/anon.svg"> Sign in anonymously</paper-button>
+      </template>
+    </div>
+  
+  </template>
 
 </template>
 
@@ -353,6 +357,10 @@
           type: Boolean,
           computed: '_computeShowDivider(debug)'
         },
+        _showButtons: {
+          type: Boolean,
+          computed: '_computeShowButtons(debug)'
+        },
     },
 
       _reverseChanged: function(newVal, oldVal){
@@ -380,6 +388,9 @@
       },
       _computeShowDivider: function(e){
         return this.emailPassword && (this.google || this.facebook || this.twitter || this.github || this.anonymous);
+      },
+      _computeShowButtons: function(e){
+        return this.google || this.facebook || this.twitter || this.github || this.anonymous;
       },
       _userChanged: function(u){
         if(typeof u !== 'undefined' && u != null){
