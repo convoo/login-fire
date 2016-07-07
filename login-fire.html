@@ -402,11 +402,11 @@
         this.$$(".emailPWMessage").textContent = '';
       },
       _signInEmailPW: function(e){
-        this._cleanMessages()
+        this._cleanMessages();
         this.$$("#emailPassword").signInWithEmailAndPassword(this.email, this.pw);
       },
       _signUpEmailPW: function(e){
-        this._cleanMessages()
+        this._cleanMessages();
         this.$$("#emailPassword").createUserWithEmailAndPassword(this.email, this.pw);
       },
       _handleEmailPWError: function(err){
@@ -420,6 +420,7 @@
       },
       _resetPW: function () {
         var that = this;
+        this._cleanMessages();
         this.$$("#emailPassword").auth.sendPasswordResetEmail(this.email).then(function () {
           that.$$(".emailPWMessage").textContent = that.passwordResetMessage;
         }, function (err) {
