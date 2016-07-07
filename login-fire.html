@@ -12,7 +12,7 @@
       @apply(--layout-justified);
       @apply(--layout-wrap);
       max-width: 801px;
-      margin: 0 auto; 
+      margin: 0 auto;
     }
 
     :host(.reverse) {
@@ -85,7 +85,23 @@
     }
 
     .emailPWError {
-      color: #dd2c00;
+      color: var(--error-color);
+      text-align: center;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 24px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .emailPWMessage {
+      color: var(--primary-color);
+      text-align: center;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 24px;
+      margin: 0;
+      padding: 0;
     }
 
     form{
@@ -128,7 +144,7 @@
       position: relative;
       top: -8px;
       width: 50px;
-      margin: 0 auto; 
+      margin: 0 auto;
       height: 20px;
       font-style: italic;
       color: grey;
@@ -150,7 +166,7 @@
   <firebase-auth app-name="{{appName}}" id="anonymous" user="{{anonUser}}" signed-in="{{anonSignedIn}}">
   </firebase-auth>
 
-  
+
   <template is="dom-if" if={{debug}}>
     <div class="debug">
       <div> user.id = {{user.uid}}</div>
@@ -160,18 +176,20 @@
       <div> user.emailVerified = {{user.emailVerified}}</div>
       <div> user.isAnonymous = {{user.isAnonymous}}</div>
       <div> user.photoURL = {{user.photoURL}} <img src$="{{user.photoURL}}" hidden="{{!user.photoURL}}" width="100px" height="100px"> </div>
-      <div> user.providerId = {{user.providerId}}</div> 
+      <div> user.providerId = {{user.providerId}}</div>
       <paper-button on-tap="signOut">Log Out</paper-button>
     </div>
   </template>
 
   <template is="dom-if" if={{emailPassword}}>
-    <div class="emailPWError"></div>
+    <div>
+      <div class="emailPWError"></div>
+      <div class="emailPWMessage"></div>
+    </div>
     <form on-submit="_signInEmailPW">
       <paper-input id="emailInput" type="email" label="Email" value="{{email::input}}" validator="email-validator" error-message="Invalid email address" required auto-validate></paper-input>
       <paper-input id="pwInput" type="password" label="Password" value="{{pw::input}}" required></paper-input>
-      <!-- TODO Reset password -->
-      <p><a href="#" id="reset">Reset password for entered email</a></p>
+      <p><a href="#" id="reset" on-click="_resetPW">Reset password for entered email</a></p>
       <paper-button id="emailSignUp" type="submit" on-tap="_signUpEmailPW">Sign Up</paper-button>
       <paper-button id="emailSignIn" type="submit" on-tap="_signInEmailPW">Sign In</paper-button>
     </form>
@@ -206,9 +224,9 @@
 
 <script>
     /**
-     * An element that allows simple configuration of multiple provider login for 
+     * An element that allows simple configuration of multiple provider login for
      * firebase.
-     * 
+     *
      * Example:
      * ```
      * <firebase-app
@@ -219,8 +237,8 @@
      * <!-- A login-fire element allowing twitter, google and facebook login -->
      * <login-fire app-name="demo" twitter google facebook></login-fire>
      * ```
-     * 
-     * 
+     *
+     *
      * @demo demo/index.html
      */
     Polymer({
@@ -282,7 +300,7 @@
           value: false,
         },
         /**
-         * `user` represents the user object returned by the firebase-auth element 
+         * `user` represents the user object returned by the firebase-auth element
          */
         user: {
           type: Object,
@@ -292,7 +310,7 @@
           observer: "_userChanged",
         },
         /**
-         * `signedIn` represents the signed in state returned by the firebase-auth element 
+         * `signedIn` represents the signed in state returned by the firebase-auth element
          */
         signedIn: {
           type: Boolean,
@@ -315,6 +333,14 @@
           value: false,
           observer: '_reverseChanged',
         },
+        /**
+        * `allows to set custom password reset message `
+        */
+        passwordResetMessage: {
+          type: String,
+          value:  "Password reset email has been sent. Please check your inbox."
+        },
+
         _dividerClass: {
           type: String,
           computed: '_computeDividerClass(_recalculateDividerClass)',
@@ -372,16 +398,19 @@
           this.$$(authId).signInWithPopup();
         }
       },
-      _signInEmailPW: function(e){
+      _cleanMessages: function(){
         this.$$(".emailPWError").textContent = '';
+        this.$$(".emailPWMessage").textContent = '';
+      },
+      _signInEmailPW: function(e){
+        this._cleanMessages();
         this.$$("#emailPassword").signInWithEmailAndPassword(this.email, this.pw);
       },
       _signUpEmailPW: function(e){
-        this.$$(".emailPWError").textContent = '';
+        this._cleanMessages();
         this.$$("#emailPassword").createUserWithEmailAndPassword(this.email, this.pw);
       },
       _handleEmailPWError: function(err){
-        // console.log(err);
         if(err.detail.code === "auth/user-not-found"){
           this.$$("#emailPassword").createUserWithEmailAndPassword(this.email, this.pw)
           this.email = null;
@@ -390,7 +419,16 @@
           this.$$(".emailPWError").textContent = err.detail.message;
         }
       },
-      signOut: function(){
+      _resetPW: function () {
+        var that = this;
+        this._cleanMessages();
+        this.$$("#emailPassword").auth.sendPasswordResetEmail(this.email).then(function () {
+          that.$$(".emailPWMessage").textContent = that.passwordResetMessage;
+        }, function (err) {
+          that.$$(".emailPWError").textContent = err.message;
+        })
+      },
+       signOut: function(){
         if(this.emailSignedIn){this.$.emailPassword.signOut();}
         if(this.googleSignedIn){this.$.google.signOut();}
         if(this.facebookSignedIn){this.$.facebook.signOut();}
