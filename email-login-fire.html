@@ -1,0 +1,202 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymerfire/firebase-auth.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-input/paper-input.html">
+
+
+<dom-module id="email-login-fire">
+<template>
+  <style>
+    :host {
+      display: block;
+      margin: 0 auto;
+    }
+
+
+    firebase-auth{
+      display: none;
+    }
+
+    #reset{
+      color: grey;
+      text-decoration: none;
+      font-size: 12px;
+      font-style: italic;
+      font-weight: lighter;
+
+    }
+    #reset:hover{
+      color: grey;
+      text-decoration: underline;
+    }
+
+    .emailPWError {
+      color: var(--error-color);
+      text-align: center;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 24px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .emailPWMessage {
+      color: var(--primary-color);
+      text-align: center;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 24px;
+      margin: 0;
+      padding: 0;
+    }
+
+    form{
+      min-width: 350px;
+      margin: 0 auto;
+    }
+
+  </style>
+
+  <firebase-auth app-name="{{appName}}" id="emailPassword" user="{{user}}" signed-in="{{signedIn}}" on-error="_handleEmailPWError">
+  </firebase-auth>
+
+  <template is="dom-if" if={{debug}}>
+    <div class="debug">
+      <div> user.id = {{user.uid}}</div>
+      <div> signedIn = {{signedIn}}</div>
+      <div> user.displayName = {{user.displayName}}</div>
+      <div> user.email = {{user.email}}</div>
+      <div> user.emailVerified = {{user.emailVerified}}</div>
+      <div> user.isAnonymous = {{user.isAnonymous}}</div>
+      <div> user.photoURL = {{user.photoURL}} <img src$="{{user.photoURL}}" hidden="{{!user.photoURL}}" width="100px" height="100px"> </div>
+      <div> user.providerId = {{user.providerId}}</div>
+      <paper-button on-tap="signOut">Log Out</paper-button>
+    </div>
+  </template>
+
+  <div>
+    <div class="emailPWError"></div>
+    <div class="emailPWMessage"></div>
+  </div>
+  <form on-submit="_signInEmailPW">
+    <paper-input id="emailInput" type="email" label="Email" value="{{email::input}}" validator="email-validator" error-message="Invalid email address" required auto-validate></paper-input>
+    <paper-input id="pwInput" type="password" label="Password" value="{{pw::input}}" required></paper-input>
+    <p><a href="#" id="reset" on-click="_resetPW">Reset password for entered email</a></p>
+    <paper-button id="emailSignUp" type="submit" on-tap="_signUpEmailPW">Sign Up</paper-button>
+    <paper-button id="emailSignIn" type="submit" on-tap="_signInEmailPW">Sign In</paper-button>
+  </form>
+
+</template>
+
+<script>
+    /**
+     * An element that allows simple configuration of email and password authentication for
+     * firebase.
+     *
+     * Example:
+     * ```
+     * <firebase-app
+     *   name="demo"
+     *   api-key="API_KEY"
+     *   auth-domain="AUTH_DOMAIN"
+     *   database-url="DATABASE_URL">
+     * <!-- A email-login-fire element allowing email and password authentication -->
+     * <email-login-fire app-name="demo"></email-login-fire>
+     * ```
+     *
+     *
+     * @demo demo/email.html
+     */
+    Polymer({
+    is: 'email-login-fire',
+      properties: {
+        /**
+         * `appName` represents the name of the firebase-app that was instantiated
+         */
+        appName: {
+          type: String
+        },
+        /**
+         * `user` represents the user object returned by the firebase-auth element
+         */
+        user: {
+          type: Object,
+          notify: true,
+          reflectToAttribute: true
+        },
+        /**
+         * `signedIn` represents the signed in state returned by the firebase-auth element
+         */
+        signedIn: {
+          type: Boolean,
+          notify: true,
+          reflectToAttribute: true
+        },
+        /**
+         * `debug` represents if the debug region is shown
+         */
+        debug: {
+          type: Boolean,
+          value: false,
+        },
+        /**
+        * `allows to set custom password reset message `
+        */
+        passwordResetMessage: {
+          type: String,
+          value:  "Password reset email has been sent. Please check your inbox."
+        },
+        /**
+         * If true, will sign up a user who attempts to sign in with an account that doesn't already exist
+         */
+        autoSignUp: {
+          type: Boolean,
+          value: false
+        }
+    },
+      _userChanged: function(u){
+        if(typeof u !== 'undefined' && u != null){
+          if (!(Object.keys(u).length === 0 && u.constructor === Object)){
+            this.fire("signedin", u);
+          }
+        }
+      },
+      _cleanMessages: function(){
+        this.$$(".emailPWError").textContent = '';
+        this.$$(".emailPWMessage").textContent = '';
+      },
+      _signInEmailPW: function(e){
+        this._cleanMessages();
+        this.$$("#emailPassword").signInWithEmailAndPassword(this.email, this.pw);
+      },
+      _signUpEmailPW: function(e){
+        this._cleanMessages();
+        this.$$("#emailPassword").createUserWithEmailAndPassword(this.email, this.pw);
+      },
+      _handleEmailPWError: function(err){
+        if(err.detail.code === "auth/user-not-found" && this.autoSignUp){
+          this.$$("#emailPassword").createUserWithEmailAndPassword(this.email, this.pw)
+          this.email = null;
+          this.pw = null;
+        } else {
+          this.$$(".emailPWError").textContent = err.detail.message;
+        }
+      },
+      _resetPW: function () {
+        var that = this;
+        this._cleanMessages();
+        this.$$("#emailPassword").auth.sendPasswordResetEmail(this.email).then(function () {
+          that.$$(".emailPWMessage").textContent = that.passwordResetMessage;
+        }, function (err) {
+          that.$$(".emailPWError").textContent = err.message;
+        })
+      },
+      /**
+       * Signs out the signed in user
+       */
+      signOut: function(){
+        if(this.signedIn){this.$.emailPassword.signOut();}
+      }
+    });
+</script>
+</dom-module>

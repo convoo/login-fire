@@ -1,0 +1,250 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymerfire/firebase-auth.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
+<dom-module id="social-login-fire">
+<template>
+  <style>
+    :host {
+      display: block;
+      margin: 0 auto;
+    }
+
+    firebase-auth{
+      display: none;
+    }
+    .signInButton img{
+      padding: 0 8px 0 2px;
+      max-height: 15px;
+    }
+    .signInButton{
+      min-width: 220px;
+      text-align: left;
+      margin-bottom: 15px;
+      text-transform: none;
+      min-height: 40px;
+    }
+    #googSignIn{
+      background-color: white;
+    }
+    #fbSignIn{
+      background-color: #3B5999;
+      color: white;
+    }
+    #twtrSignIn{
+      background-color: #55ACEE;
+      color: white;
+    }
+    #ghSignIn{
+      background-color: #F5F5F5
+    }
+    #anonSignIn{
+      background-color: #303030;
+      color: white;
+    }
+    #fbSignIn:hover{
+      background-color: #4265b0;
+    }
+    #twtrSignIn:hover{
+      background-color: #5cb9ff;
+    }
+    #ghSignIn:hover{
+      background-color: white;
+    }
+    #anonSignIn:hover{
+      background-color: #414040;
+    }
+    #buttons{
+      width: 100%;
+      text-align: center;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+  </style>
+
+  <firebase-auth app-name="{{appName}}" id="google" provider="google" user="{{googleUser}}" signed-in="{{googleSignedIn}}">
+  </firebase-auth>
+  <firebase-auth app-name="{{appName}}" id="facebook" provider="facebook" user="{{facebookUser}}" signed-in="{{facebookSignedIn}}">
+  </firebase-auth>
+  <firebase-auth app-name="{{appName}}" id="twitter" provider="twitter" user="{{twitterUser}}" signed-in="{{twitterSignedIn}}">
+  </firebase-auth>
+  <firebase-auth app-name="{{appName}}" id="github" provider="github" user="{{githubUser}}" signed-in="{{githubSignedIn}}">
+  </firebase-auth>
+  <firebase-auth app-name="{{appName}}" id="anonymous" user="{{anonUser}}" signed-in="{{anonSignedIn}}">
+  </firebase-auth>
+
+
+  <template is="dom-if" if={{debug}}>
+    <div class="debug">
+      <div> user.id = {{user.uid}}</div>
+      <div> signedIn = {{signedIn}}</div>
+      <div> user.displayName = {{user.displayName}}</div>
+      <div> user.email = {{user.email}}</div>
+      <div> user.emailVerified = {{user.emailVerified}}</div>
+      <div> user.isAnonymous = {{user.isAnonymous}}</div>
+      <div> user.photoURL = {{user.photoURL}} <img src$="{{user.photoURL}}" hidden="{{!user.photoURL}}" width="100px" height="100px"> </div>
+      <div> user.providerId = {{user.providerId}}</div>
+      <paper-button on-tap="signOut">Log Out</paper-button>
+    </div>
+  </template>
+
+  <div id="buttons">
+    <template is="dom-if" if="{{google}}">
+      <paper-button id="googSignIn" class="signInButton" on-tap="_signIn" data-auth="#google" raised><img src="images/google.svg"> Sign in with Google</paper-button>
+    </template>
+    <template is="dom-if" if="{{facebook}}">
+      <paper-button id="fbSignIn" class="signInButton" on-tap="_signIn" data-auth="#facebook" raised><img src="images/facebook.svg"> Sign in with Facebook</paper-button>
+    </template>
+    <template is="dom-if" if="{{twitter}}">
+      <paper-button id="twtrSignIn" class="signInButton" on-tap="_signIn" data-auth="#twitter" raised><img src="images/twitter.svg"> Sign in with Twitter  </paper-button>
+    </template>
+    <template is="dom-if" if="{{github}}">
+      <paper-button id="ghSignIn" class="signInButton" on-tap="_signIn" data-auth="#github" raised><img src="images/github.svg"> Sign in with GitHub</paper-button>
+    </template>
+    <template is="dom-if" if="{{anonymous}}">
+      <paper-button id="anonSignIn" class="signInButton" on-tap="_signIn" data-auth="#anonymous" raised> <img src="images/anon.svg"> Sign in anonymously</paper-button>
+    </template>
+  </div>
+
+
+</template>
+
+<script>
+    /**
+     * An element that allows simple configuration of multiple provider login for
+     * firebase.
+     *
+     * Example:
+     * ```
+     * <firebase-app
+     *   name="demo"
+     *   api-key="API_KEY"
+     *   auth-domain="AUTH_DOMAIN"
+     *   database-url="DATABASE_URL">
+     * <!-- A social-login-fire element allowing twitter, google and facebook login -->
+     * <social-login-fire app-name="demo" twitter google facebook></social-login-fire>
+     * ```
+     *
+     *
+     * @demo demo/social.html
+     */
+    Polymer({
+    is: 'social-login-fire',
+      properties: {
+        /**
+         * `appName` represents the name of the firebase-app that was instantiated
+         */
+        appName: {
+          type: String
+        },
+        /**
+         * `anonymous` represents whether to allow anonymous sign in
+         */
+        anonymous: {
+          type: Boolean,
+          value: false,
+        },
+        /**
+         * `github` represents whether to allow github sign in. See the [firebase console](https://console.firebase.google.com) Auth tab for configuration
+         */
+        github: {
+          type: Boolean,
+          value: false,
+        },
+        /**
+         * `twitter` represents whether to allow twitter sign in. See the [firebase console](https://console.firebase.google.com) Auth tab for configuration
+         */
+        twitter: {
+          type: Boolean,
+          value: false,
+        },
+        /**
+         * `facebook` represents whether to allow facebook sign in. See the [firebase console](https://console.firebase.google.com) Auth tab for configuration
+         */
+        facebook: {
+          type: Boolean,
+          value: false,
+        },
+        /**
+         * `google` represents whether to allow google sign in. See the [firebase console](https://console.firebase.google.com) Auth tab for configuration
+         */
+        google: {
+          type: Boolean,
+          value: false,
+        },
+        /**
+         * `redirect` represents whether to use a redirect instead of a popup for signing in with the selected providers
+         */
+        redirect: {
+          type: Boolean,
+          value: false,
+        },
+        /**
+         * `user` represents the user object returned by the firebase-auth element
+         */
+        user: {
+          type: Object,
+          readOnly: true,
+          notify: true,
+          computed: "_computeUser(googleUser, facebookUser, twitterUser, githubUser, anonUser)",
+          observer: "_userChanged",
+        },
+        /**
+         * `signedIn` represents the signed in state returned by the firebase-auth element
+         */
+        signedIn: {
+          type: Boolean,
+          readOnly: true,
+          notify: true,
+          computed: "_computeSignedIn(googleSignedIn, facebookSignedIn, twitterSignedIn, githubSignedIn, anonSignedIn)",
+        },
+        /**
+         * `debug` represents if the debug region is shown
+         */
+        debug: {
+          type: Boolean,
+          value: false,
+        }
+    },
+
+      _computeUser: function(googleUser, facebookUser, twitterUser, githubUser, anonUser){
+        if(this.googleSignedIn){return googleUser;}
+        else if(this.facebookSignedIn){return facebookUser;}
+        else if(this.twitterSignedIn){return twitterUser;}
+        else if(this.githubSignedIn){return githubUser;}
+        else if(this.anonSignedIn){return anonUser;}
+        else {return {};}
+      },
+      _computeSignedIn: function(googleSignedIn, facebookSignedIn, twitterSignedIn, githubSignedIn, anonSignedIn){
+        return googleSignedIn || facebookSignedIn || twitterSignedIn || githubSignedIn || anonSignedIn;
+      },
+      _userChanged: function(u){
+        if(typeof u !== 'undefined' && u != null){
+          if (!(Object.keys(u).length === 0 && u.constructor === Object)){
+            this.fire("signedin", u);
+          }
+        }
+      },
+      _signIn: function(e) {
+        var authId = e.target.getAttribute("data-auth");
+        if(authId == "#anonymous"){
+          this.$$(authId).signInAnonymously();
+        } else if(this.redirect){
+          this.$$(authId).signInWithRedirect();
+        } else {
+          this.$$(authId).signInWithPopup();
+        }
+      },
+      /**
+       * Signs out the signed in user
+       */
+      signOut: function(){
+        if(this.googleSignedIn){this.$.google.signOut();}
+        if(this.facebookSignedIn){this.$.facebook.signOut();}
+        if(this.twitterSignedIn){this.$.twitter.signOut();}
+        if(this.githubSignedIn){this.$.github.signOut();}
+        if(this.anonSignedIn){this.$.anonymous.signOut();}
+      }
+    });
+</script>
+</dom-module>
