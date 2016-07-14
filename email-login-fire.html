@@ -185,11 +185,15 @@
       _resetPW: function () {
         var that = this;
         this._cleanMessages();
-        this.$$("#emailPassword").auth.sendPasswordResetEmail(this.email).then(function () {
-          that.$$(".emailPWMessage").textContent = that.passwordResetMessage;
-        }, function (err) {
-          that.$$(".emailPWError").textContent = err.message;
-        })
+        if(this.email){
+          this.$$("#emailPassword").auth.sendPasswordResetEmail(this.email).then(function () {
+            that.$$(".emailPWMessage").textContent = that.passwordResetMessage;
+          }, function (err) {
+            that.$$(".emailPWError").textContent = err.message;
+          });
+        } else {
+          this.$$(".emailPWError").textContent = "Please enter a valid email address.";
+        }
       },
       /**
        * Signs out the signed in user
