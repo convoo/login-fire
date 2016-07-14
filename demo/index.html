@@ -105,6 +105,14 @@
 
         <paper-button raised onclick="dialog.open()">login-fire in modal</paper-button>
 
+        <style>
+        paper-dialog {
+          min-width: 310px;
+          width: 80%;
+          height: 400px;
+          overflow: auto;
+        }
+        </style>
         <template>
           <paper-dialog id="dialog" with-backdrop center>
             <paper-dialog-scrollable>
