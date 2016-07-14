@@ -96,19 +96,19 @@
 
 
     <template is="dom-if" if="{{google}}">
-      <paper-button id="googSignIn" class="signInButton" on-tap="_signIn" data-auth="#google" raised><img src="images/google.svg"> Sign in with Google</paper-button>
+      <paper-button id="googSignIn" class="signInButton" on-tap="_signIn" data-auth="#google" raised><img src="images/google.svg">{{_getButtonText()}}Google</paper-button>
     </template>
     <template is="dom-if" if="{{facebook}}">
-      <paper-button id="fbSignIn" class="signInButton" on-tap="_signIn" data-auth="#facebook" raised><img src="images/facebook.svg"> Sign in with Facebook</paper-button>
+      <paper-button id="fbSignIn" class="signInButton" on-tap="_signIn" data-auth="#facebook" raised><img src="images/facebook.svg">{{_getButtonText()}}Facebook</paper-button>
     </template>
     <template is="dom-if" if="{{twitter}}">
-      <paper-button id="twtrSignIn" class="signInButton" on-tap="_signIn" data-auth="#twitter" raised><img src="images/twitter.svg"> Sign in with Twitter  </paper-button>
+      <paper-button id="twtrSignIn" class="signInButton" on-tap="_signIn" data-auth="#twitter" raised><img src="images/twitter.svg">{{_getButtonText()}}Twitter  </paper-button>
     </template>
     <template is="dom-if" if="{{github}}">
-      <paper-button id="ghSignIn" class="signInButton" on-tap="_signIn" data-auth="#github" raised><img src="images/github.svg"> Sign in with GitHub</paper-button>
+      <paper-button id="ghSignIn" class="signInButton" on-tap="_signIn" data-auth="#github" raised><img src="images/github.svg">{{_getButtonText()}}GitHub</paper-button>
     </template>
     <template is="dom-if" if="{{anonymous}}">
-      <paper-button id="anonSignIn" class="signInButton" on-tap="_signIn" data-auth="#anonymous" raised> <img src="images/anon.svg"> Sign in anonymously</paper-button>
+      <paper-button id="anonSignIn" class="signInButton" on-tap="_signIn" data-auth="#anonymous" raised> <img src="images/anon.svg"> {{_getButtonText("anon")}}anonymously</paper-button>
     </template>
 
 
@@ -194,6 +194,13 @@
           observer: '_horizontalChanged',
         },
         /**
+         * `mini` represents whether to display the social buttons with "Sign in with" or not
+         */
+        mini: {
+          type: Boolean,
+          value: false
+        },
+        /**
          * `user` represents the user object returned by the firebase-auth element
          */
         user: {
@@ -220,6 +227,14 @@
           type: Boolean,
           value: false,
         }
+    },
+
+    _getButtonText: function(a){
+      if(this.mini){
+        return "";
+      } else {
+        return a == "anon" ? "Sign in " : "Sign in with ";
+      }
     },
 
     _horizontalChanged: function(newVal, oldVal){
