@@ -21,6 +21,15 @@
       @apply(--layout-wrap-reverse);
     }
 
+    :host(.vertical) {
+      @apply(--layout-vertical);
+      @apply(--layout-center);
+    }
+
+    :host(.vertical-reversed) {
+      @apply(--layout-vertical-reverse);
+    }
+
     .verticalDivider{
       border-right: 1px solid #e0e0e0;
       margin: 0 auto;
@@ -46,10 +55,10 @@
     .horizontalDivider{
       border-top: 1px solid #e0e0e0;
       text-align: center;
-      margin: 50px 0 50px 0;
+      margin: 50px 35px 50px 35px;
       height: 1px;
       max-width: 400px;
-      min-width: 400px;
+      min-width: 300px;
     }
 
     .horizontalDivider div{
@@ -92,20 +101,24 @@
       auto-sign-up="{{autoSignUp}}"></email-login-fire>
   </template>
 
-
+  <iron-media-query query="(max-width: 650px)" query-matches="{{isNarrow}}"></iron-media-query>
 
   <template is="dom-if" if={{_showDivider}}>
-    <iron-media-query query="(max-width: 650px)" query-matches="{{isNarrow}}"></iron-media-query>
-    <div id="divider" class="horizontalDivider" hidden$="{{!isNarrow}}">
-      <div>or</div>
-    </div>
-    <div id="divider" class="verticalDivider" hidden$="{{isNarrow}}">
-      <div>or</div>
-    </div>
+    
+    <template is="dom-if" if={{_showHorizontalDivider}}>
+      <div id="divider" class="horizontalDivider">
+        <div>or</div>
+      </div>
+    </template>
+
+    
+    <template is="dom-if" if={{!_showHorizontalDivider}}>
+      <div id="divider" class="verticalDivider">
+        <div>or</div>
+      </div>
+    </template>
+    
   </template>
-
-
-
   
   <template is="dom-if" if={{_showButtons}}>
     <social-login-fire
@@ -269,7 +282,8 @@
          */
         horizontal: {
           type: Boolean,
-          value: false
+          value: false,
+          observer: '_horizontalChanged'
         },
         _showDivider: {
           type: Boolean,
@@ -279,6 +293,10 @@
           type: Boolean,
           computed: '_computeShowButtons(debug)'
         },
+        _showHorizontalDivider: {
+          type: Boolean,
+          computed: '_computeShowHorizontalDivider(isNarrow, horizontal)'
+        }
     },
 
       _reverseChanged: function(newVal, oldVal){
@@ -287,6 +305,10 @@
         } else {
           this.classList.remove("reverse")
         }
+      },
+
+      _computeShowHorizontalDivider: function(isNarrow, horizontal){
+        return isNarrow || horizontal;
       },
 
       _computeUser: function(emailUser, socialUser){
@@ -308,6 +330,15 @@
           if (!(Object.keys(u).length === 0 && u.constructor === Object)){
             this.fire("signedin", u);
           }
+        }
+      },
+      _horizontalChanged: function(newVal,oldVal){
+        if(newVal){
+          this.classList.add("vertical");
+          if(this.reverse){this.classList.add("vertical-reversed");}
+        } else {
+          this.classList.remove("vertical");
+          this.classList.remove("vertical-reversed");
         }
       },
       /**
