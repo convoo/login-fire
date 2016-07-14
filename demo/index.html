@@ -18,8 +18,8 @@
   </head>
   <body>
 
-  <div class="vertical-section-container centered">
-      <h3>Narrow login-fire Demo with all options</h3>
+  <div>
+      <h3>login-fire Demo with all options</h3>
       <demo-snippet>
         <template >
           <firebase-app
@@ -33,8 +33,8 @@
       </demo-snippet>
     </div>
 
-    <div class="vertical-section-container centered">
-      <h3>Debug narrow login-fire Demo with all options</h3>
+    <div>
+      <h3>Debug login-fire Demo with all options</h3>
       <demo-snippet>
         <template >
           <firebase-app
@@ -49,24 +49,8 @@
       </demo-snippet>
     </div>
 
-    <div class="horizontal-section-container centered">
-      <h3>Wide login-fire Demo with all options</h3>
-      <demo-snippet>
-        <template >
-          <firebase-app
-            name="wideDemo"
-            api-key="AIzaSyACU-9dEBSmlEq8iwfuDCPCWU81UNDytuQ"
-            auth-domain="convoofire.firebaseapp.com"
-            database-url="https://convoofire.firebaseio.com"
-          >
-          </firebase-app>
-          <login-fire email-password anonymous twitter github google facebook app-name="wideDemo"></login-fire>
-        </template>
-      </demo-snippet>
-    </div>
-
-    <div class="horizontal-section-container centered">
-      <h3>Mini horizontal wide login-fire Demo with all options</h3>
+    <div>
+      <h3>Mini horizontal login-fire Demo with all options</h3>
       <demo-snippet>
         <template >
           <firebase-app
@@ -82,8 +66,8 @@
     </div>
 
 
-    <div class="vertical-section-container centered">
-      <h3>Reversed narrow login-fire Demo with all options</h3>
+    <div>
+      <h3>Reversed login-fire Demo with all options</h3>
       <demo-snippet>
         <template >
           <firebase-app
@@ -98,24 +82,8 @@
       </demo-snippet>
     </div>
 
-    <div class="horizontal-section-container centered">
-      <h3>Reverse wide login-fire Demo with all options</h3>
-      <demo-snippet>
-        <template >
-          <firebase-app
-            name="reverseWideDemo"
-            api-key="AIzaSyACU-9dEBSmlEq8iwfuDCPCWU81UNDytuQ"
-            auth-domain="convoofire.firebaseapp.com"
-            database-url="https://convoofire.firebaseio.com"
-          >
-          </firebase-app>
-          <login-fire reverse email-password anonymous twitter github google facebook app-name="reverseWideDemo"></login-fire>
-        </template>
-      </demo-snippet>
-    </div>
-
-     <div class="horizontal-section-container centered">
-      <h3>Reverse mini horizontal wide login-fire Demo with all options</h3>
+     <div>
+      <h3>Reverse mini horizontal login-fire Demo with all options</h3>
       <demo-snippet>
         <template >
           <firebase-app
@@ -131,12 +99,20 @@
       </demo-snippet>
     </div>
 
-    <div class="vertical-section-container centered">
+    <div>
       <h3>login-fire in modal demo </h3>
       <demo-snippet>
 
         <paper-button raised onclick="dialog.open()">login-fire in modal</paper-button>
 
+        <style>
+        paper-dialog {
+          min-width: 310px;
+          width: 80%;
+          height: 400px;
+          overflow: auto;
+        }
+        </style>
         <template>
           <paper-dialog id="dialog" with-backdrop center>
             <paper-dialog-scrollable>
