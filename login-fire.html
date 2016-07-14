@@ -1,7 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../polymerfire/firebase-auth.html">
-<link rel="import" href="../paper-button/paper-button.html">
-<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="email-login-fire.html">
+<link rel="import" href="social-login-fire.html">
 
 
 <dom-module id="login-fire">
@@ -18,95 +18,6 @@
     :host(.reverse) {
       @apply(--layout-horizontal-reverse);
       @apply(--layout-wrap-reverse);
-    }
-
-    firebase-auth{
-      display: none;
-    }
-    .signInButton img{
-      padding: 0 8px 0 2px;
-      max-height: 15px;
-    }
-    .signInButton{
-      min-width: 220px;
-      text-align: left;
-      margin-bottom: 15px;
-      text-transform: none;
-      min-height: 40px;
-    }
-    #googSignIn{
-      background-color: white;
-    }
-    #fbSignIn{
-      background-color: #3B5999;
-      color: white;
-    }
-    #twtrSignIn{
-      background-color: #55ACEE;
-      color: white;
-    }
-    #ghSignIn{
-      background-color: #F5F5F5
-    }
-    #anonSignIn{
-      background-color: #303030;
-      color: white;
-    }
-    #fbSignIn:hover{
-      background-color: #4265b0;
-    }
-    #twtrSignIn:hover{
-      background-color: #5cb9ff;
-    }
-    #ghSignIn:hover{
-      background-color: white;
-    }
-    #anonSignIn:hover{
-      background-color: #414040;
-    }
-    #buttons{
-      width: 100%;
-      text-align: center;
-      max-width: 400px;
-      margin: 0 auto;
-    }
-
-    #reset{
-      color: grey;
-      text-decoration: none;
-      font-size: 12px;
-      font-style: italic;
-      font-weight: lighter;
-
-    }
-    #reset:hover{
-      color: grey;
-      text-decoration: underline;
-    }
-
-    .emailPWError {
-      color: var(--error-color);
-      text-align: center;
-      font-size: 16px;
-      font-weight: 500;
-      line-height: 24px;
-      margin: 0;
-      padding: 0;
-    }
-
-    .emailPWMessage {
-      color: var(--primary-color);
-      text-align: center;
-      font-size: 16px;
-      font-weight: 500;
-      line-height: 24px;
-      margin: 0;
-      padding: 0;
-    }
-
-    form{
-      min-width: 350px;
-      margin: 0 auto;
     }
 
     .wideDivider{
@@ -154,19 +65,6 @@
     }
   </style>
 
-  <firebase-auth app-name="{{appName}}" id="emailPassword" user="{{emailUser}}" signed-in="{{emailSignedIn}}" on-error="_handleEmailPWError">
-  </firebase-auth>
-  <firebase-auth app-name="{{appName}}" id="google" provider="google" user="{{googleUser}}" signed-in="{{googleSignedIn}}">
-  </firebase-auth>
-  <firebase-auth app-name="{{appName}}" id="facebook" provider="facebook" user="{{facebookUser}}" signed-in="{{facebookSignedIn}}">
-  </firebase-auth>
-  <firebase-auth app-name="{{appName}}" id="twitter" provider="twitter" user="{{twitterUser}}" signed-in="{{twitterSignedIn}}">
-  </firebase-auth>
-  <firebase-auth app-name="{{appName}}" id="github" provider="github" user="{{githubUser}}" signed-in="{{githubSignedIn}}">
-  </firebase-auth>
-  <firebase-auth app-name="{{appName}}" id="anonymous" user="{{anonUser}}" signed-in="{{anonSignedIn}}">
-  </firebase-auth>
-
 
   <template is="dom-if" if={{debug}}>
     <div class="debug">
@@ -183,17 +81,13 @@
   </template>
 
   <template is="dom-if" if={{emailPassword}}>
-    <div>
-      <div class="emailPWError"></div>
-      <div class="emailPWMessage"></div>
-    </div>
-    <form on-submit="_signInEmailPW">
-      <paper-input id="emailInput" type="email" label="Email" value="{{email::input}}" validator="email-validator" error-message="Invalid email address" required auto-validate></paper-input>
-      <paper-input id="pwInput" type="password" label="Password" value="{{pw::input}}" required></paper-input>
-      <p><a href="#" id="reset" on-click="_resetPW">Reset password for entered email</a></p>
-      <paper-button id="emailSignUp" type="submit" on-tap="_signUpEmailPW">Sign Up</paper-button>
-      <paper-button id="emailSignIn" type="submit" on-tap="_signInEmailPW">Sign In</paper-button>
-    </form>
+    <email-login-fire
+      id="emailLogin"
+      app-name="{{appName}}"
+      user="{{emailUser}}"
+      signed-in="{{emailSignedIn}}"
+      password-reset-message="{{passwordResetMessage}}"
+      auto-sign-up="{{autoSignUp}}"></email-login-fire>
   </template>
 
   <template is="dom-if" if={{_showDivider}}>
@@ -204,31 +98,24 @@
 
   
   <template is="dom-if" if={{_showButtons}}>
-    <div id="buttons">
-      <template is="dom-if" if="{{google}}">
-        <paper-button id="googSignIn" class="signInButton" on-tap="_signIn" data-auth="#google" raised><img src="images/google.svg"> Sign in with Google</paper-button>
-      </template>
-      <template is="dom-if" if="{{facebook}}">
-        <paper-button id="fbSignIn" class="signInButton" on-tap="_signIn" data-auth="#facebook" raised><img src="images/facebook.svg"> Sign in with Facebook</paper-button>
-      </template>
-      <template is="dom-if" if="{{twitter}}">
-        <paper-button id="twtrSignIn" class="signInButton" on-tap="_signIn" data-auth="#twitter" raised><img src="images/twitter.svg"> Sign in with Twitter  </paper-button>
-      </template>
-      <template is="dom-if" if="{{github}}">
-        <paper-button id="ghSignIn" class="signInButton" on-tap="_signIn" data-auth="#github" raised><img src="images/github.svg"> Sign in with GitHub</paper-button>
-      </template>
-      <template is="dom-if" if="{{anonymous}}">
-        <paper-button id="anonSignIn" class="signInButton" on-tap="_signIn" data-auth="#anonymous" raised> <img src="images/anon.svg"> Sign in anonymously</paper-button>
-      </template>
-    </div>
-  
+    <social-login-fire
+      id="socialLogin"
+      app-name="{{appName}}"
+      user="{{socialUser}}"
+      signed-in="{{socialSignedIn}}"
+      redirect="{{redirect}}"
+      anonymous="{{anonymous}}"
+      google="{{google}}"
+      facebook="{{facebook}}"
+      twitter="{{twitter}}"
+      github="{{github}}"></social-login-fire>
   </template>
 
 </template>
 
 <script>
     /**
-     * An element that allows simple configuration of multiple provider login for
+     * An element that allows simple configuration of email and social provider login with
      * firebase.
      *
      * Example:
@@ -237,9 +124,9 @@
      *   name="demo"
      *   api-key="API_KEY"
      *   auth-domain="AUTH_DOMAIN"
-     *   database-url="DATABASE_URL">
+     *   database-url="DATABASE_URL"></firebase-app>
      * <!-- A login-fire element allowing twitter, google and facebook login -->
-     * <login-fire app-name="demo" twitter google facebook></login-fire>
+     * <login-fire app-name="demo" email-password twitter google facebook></login-fire>
      * ```
      *
      *
@@ -310,7 +197,7 @@
           type: Object,
           readOnly: true,
           notify: true,
-          computed: "_computeUser(emailUser, googleUser, facebookUser, twitterUser, githubUser, anonUser)",
+          computed: "_computeUser(emailUser, socialUser)",
           observer: "_userChanged",
         },
         /**
@@ -320,7 +207,7 @@
           type: Boolean,
           readOnly: true,
           notify: true,
-          computed: "_computeSignedIn(emailSignedIn, googleSignedIn, facebookSignedIn, twitterSignedIn, githubSignedIn, anonSignedIn)",
+          computed: "_computeSignedIn(emailSignedIn, socialSignedIn)",
         },
         /**
          * `debug` represents if the debug region is shown
@@ -343,6 +230,13 @@
         passwordResetMessage: {
           type: String,
           value:  "Password reset email has been sent. Please check your inbox."
+        },
+        /**
+         * If true, will sign up a user who attempts to sign in with an account that doesn't already exist
+         */
+        autoSignUp: {
+          type: Boolean,
+          value: false
         },
 
         _dividerClass: {
@@ -374,17 +268,13 @@
         return this.clientWidth > 500 ? "wideDivider" : "narrowDivider";
       },
 
-      _computeUser: function(emailUser, googleUser, facebookUser, twitterUser, githubUser, anonUser){
+      _computeUser: function(emailUser, socialUser){
         if(this.emailSignedIn){return emailUser;}
-        else if(this.googleSignedIn){return googleUser;}
-        else if(this.facebookSignedIn){return facebookUser;}
-        else if(this.twitterSignedIn){return twitterUser;}
-        else if(this.githubSignedIn){return githubUser;}
-        else if(this.anonSignedIn){return anonUser;}
+        else if(this.socialSignedIn){return socialUser;}
         else {return {};}
       },
-      _computeSignedIn: function(emailSignedIn, googleSignedIn, facebookSignedIn, twitterSignedIn, githubSignedIn, anonSignedIn){
-        return emailSignedIn || googleSignedIn || facebookSignedIn || twitterSignedIn || githubSignedIn || anonSignedIn;
+      _computeSignedIn: function(emailSignedIn, socialSignedIn){
+        return emailSignedIn || socialSignedIn;
       },
       _computeShowDivider: function(e){
         return this.emailPassword && (this.google || this.facebook || this.twitter || this.github || this.anonymous);
@@ -399,56 +289,12 @@
           }
         }
       },
-      _signIn: function(e) {
-        var authId = e.target.getAttribute("data-auth");
-        if(authId == "#anonymous"){
-          this.$$(authId).signInAnonymously();
-        } else if(this.redirect){
-          this.$$(authId).signInWithRedirect();
-        } else {
-          this.$$(authId).signInWithPopup();
-        }
-      },
-      _cleanMessages: function(){
-        this.$$(".emailPWError").textContent = '';
-        this.$$(".emailPWMessage").textContent = '';
-      },
-      _signInEmailPW: function(e){
-        this._cleanMessages();
-        this.$$("#emailPassword").signInWithEmailAndPassword(this.email, this.pw);
-      },
-      _signUpEmailPW: function(e){
-        this._cleanMessages();
-        this.$$("#emailPassword").createUserWithEmailAndPassword(this.email, this.pw);
-      },
-      _handleEmailPWError: function(err){
-        if(err.detail.code === "auth/user-not-found"){
-          this.$$("#emailPassword").createUserWithEmailAndPassword(this.email, this.pw)
-          this.email = null;
-          this.pw = null;
-        } else {
-          this.$$(".emailPWError").textContent = err.detail.message;
-        }
-      },
-      _resetPW: function () {
-        var that = this;
-        this._cleanMessages();
-        this.$$("#emailPassword").auth.sendPasswordResetEmail(this.email).then(function () {
-          that.$$(".emailPWMessage").textContent = that.passwordResetMessage;
-        }, function (err) {
-          that.$$(".emailPWError").textContent = err.message;
-        })
-      },
       /**
        * Signs out the signed in user
        */
       signOut: function(){
-        if(this.emailSignedIn){this.$.emailPassword.signOut();}
-        if(this.googleSignedIn){this.$.google.signOut();}
-        if(this.facebookSignedIn){this.$.facebook.signOut();}
-        if(this.twitterSignedIn){this.$.twitter.signOut();}
-        if(this.githubSignedIn){this.$.github.signOut();}
-        if(this.anonSignedIn){this.$.anonymous.signOut();}
+        this.$$("#emailLogin").signOut();
+        this.$$("#socialLogin").signOut();
       },
       attached: function(){
         this._recalculateDividerClass++;
