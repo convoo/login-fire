@@ -36,6 +36,9 @@
       text-transform: none;
       min-height: 40px;
     }
+    .signInButton.mini {
+      min-width: 150px;
+    }
     #googSignIn{
       background-color: white;
     }
@@ -96,19 +99,19 @@
 
 
     <template is="dom-if" if="{{google}}">
-      <paper-button id="googSignIn" class="signInButton" on-tap="_signIn" data-auth="#google" raised><img src="images/google.svg"> Sign in with Google</paper-button>
+      <paper-button id="googSignIn" class$="signInButton {{_getMiniClass()}}" on-tap="_signIn" data-auth="#google" raised><img src="images/google.svg">{{_getButtonText()}}Google</paper-button>
     </template>
     <template is="dom-if" if="{{facebook}}">
-      <paper-button id="fbSignIn" class="signInButton" on-tap="_signIn" data-auth="#facebook" raised><img src="images/facebook.svg"> Sign in with Facebook</paper-button>
+      <paper-button id="fbSignIn" class$="signInButton {{_getMiniClass()}}" on-tap="_signIn" data-auth="#facebook" raised><img src="images/facebook.svg">{{_getButtonText()}}Facebook</paper-button>
     </template>
     <template is="dom-if" if="{{twitter}}">
-      <paper-button id="twtrSignIn" class="signInButton" on-tap="_signIn" data-auth="#twitter" raised><img src="images/twitter.svg"> Sign in with Twitter  </paper-button>
+      <paper-button id="twtrSignIn" class$="signInButton {{_getMiniClass()}}" on-tap="_signIn" data-auth="#twitter" raised><img src="images/twitter.svg">{{_getButtonText()}}Twitter  </paper-button>
     </template>
     <template is="dom-if" if="{{github}}">
-      <paper-button id="ghSignIn" class="signInButton" on-tap="_signIn" data-auth="#github" raised><img src="images/github.svg"> Sign in with GitHub</paper-button>
+      <paper-button id="ghSignIn" class$="signInButton {{_getMiniClass()}}" on-tap="_signIn" data-auth="#github" raised><img src="images/github.svg">{{_getButtonText()}}GitHub</paper-button>
     </template>
     <template is="dom-if" if="{{anonymous}}">
-      <paper-button id="anonSignIn" class="signInButton" on-tap="_signIn" data-auth="#anonymous" raised> <img src="images/anon.svg"> Sign in anonymously</paper-button>
+      <paper-button id="anonSignIn" class$="signInButton {{_getMiniClass()}}" on-tap="_signIn" data-auth="#anonymous" raised> <img src="images/anon.svg"> {{_getButtonText("anon")}}</paper-button>
     </template>
 
 
@@ -119,6 +122,12 @@
     /**
      * An element that allows simple configuration of multiple social provider login with
      * firebase.
+     * 
+     * For email authentication only, use email-login-fire.
+     * 
+     * For social provider authentication only, use social-login-fire.
+     * 
+     * For both email and social provider authentication, use login-fire.
      *
      * Example:
      * ```
@@ -194,6 +203,13 @@
           observer: '_horizontalChanged',
         },
         /**
+         * `mini` represents whether to display the social buttons with "Sign in with" or not
+         */
+        mini: {
+          type: Boolean,
+          value: false
+        },
+        /**
          * `user` represents the user object returned by the firebase-auth element
          */
         user: {
@@ -220,6 +236,18 @@
           type: Boolean,
           value: false,
         }
+    },
+
+    _getMiniClass: function(){
+      return this.mini ? "mini" : "";
+    },
+
+    _getButtonText: function(a){
+      if(this.mini){
+        return a == "anon" ? "Anonymously" : "";
+      } else {
+        return a == "anon" ? "Sign in anonymously" : "Sign in with ";
+      }
     },
 
     _horizontalChanged: function(newVal, oldVal){

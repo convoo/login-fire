@@ -18,7 +18,7 @@
   </head>
   <body>
 
-  <div class="vertical-section-container centered">
+    <div class="vertical-section-container centered">
       <h3>Narrow social-login-fire Demo</h3>
       <demo-snippet>
         <template >
@@ -77,6 +77,39 @@
           >
           </firebase-app>
           <social-login-fire horizontal google facebook twitter github anonymous app-name="horizontalDemo"></social-login-fire>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="horizontal-section-container centered">
+      <h3>Mini horizontal social-login-fire Demo</h3>
+      <demo-snippet>
+        <template >
+          <firebase-app
+            name="miniHorizontalDemo"
+            api-key="AIzaSyACU-9dEBSmlEq8iwfuDCPCWU81UNDytuQ"
+            auth-domain="convoofire.firebaseapp.com"
+            database-url="https://convoofire.firebaseio.com"
+          >
+          </firebase-app>
+          <h2 style="text-align: center;">Sign In</h2>
+          <social-login-fire mini horizontal google facebook twitter github anonymous app-name="miniHorizontalDemo"></social-login-fire>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Narrow mini social-login-fire Demo</h3>
+      <demo-snippet>
+        <template >
+          <firebase-app
+            name="miniNarrowDemo"
+            api-key="AIzaSyACU-9dEBSmlEq8iwfuDCPCWU81UNDytuQ"
+            auth-domain="convoofire.firebaseapp.com"
+            database-url="https://convoofire.firebaseio.com">
+          </firebase-app>
+          <h2 style="text-align: center;">Sign In</h2>
+          <social-login-fire mini google facebook twitter github anonymous app-name="miniNarrowDemo"></social-login-fire>
         </template>
       </demo-snippet>
     </div>

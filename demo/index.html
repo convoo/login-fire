@@ -65,66 +65,18 @@
       </demo-snippet>
     </div>
 
-    <div class="vertical-section-container centered">
-      <h3>Narrow login-fire Demo with 2 options</h3>
-      <demo-snippet>
-        <template >
-          <firebase-app
-            name="narrowDemo2"
-            api-key="AIzaSyACU-9dEBSmlEq8iwfuDCPCWU81UNDytuQ"
-            auth-domain="convoofire.firebaseapp.com"
-            database-url="https://convoofire.firebaseio.com"
-          >
-          </firebase-app>
-          <login-fire twitter facebook app-name="narrowDemo2"></login-fire>
-        </template>
-      </demo-snippet>
-    </div>
-
     <div class="horizontal-section-container centered">
-      <h3>Wide login-fire Demo with 2 options & emailPassword option</h3>
+      <h3>Mini horizontal wide login-fire Demo with all options</h3>
       <demo-snippet>
         <template >
           <firebase-app
-            name="wideDemo2"
+            name="miniHorizontalWideDemo"
             api-key="AIzaSyACU-9dEBSmlEq8iwfuDCPCWU81UNDytuQ"
             auth-domain="convoofire.firebaseapp.com"
             database-url="https://convoofire.firebaseio.com"
           >
           </firebase-app>
-          <login-fire twitter facebook email-password app-name="wideDemo2"></login-fire>
-        </template>
-      </demo-snippet>
-    </div>
-
-    <div class="vertical-section-container centered">
-      <h3>Narrow login-fire Demo with emailPassword option only</h3>
-      <demo-snippet>
-        <template >
-          <firebase-app
-            name="narrowDemo3"
-            api-key="AIzaSyACU-9dEBSmlEq8iwfuDCPCWU81UNDytuQ"
-            auth-domain="convoofire.firebaseapp.com"
-            database-url="https://convoofire.firebaseio.com"
-          >
-          </firebase-app>
-          <login-fire email-password app-name="narrowDemo3"></login-fire>
-        </template>
-      </demo-snippet>
-    </div>
-
-    <div class="horizontal-section-container centered">
-      <h3>Wide login-fire Demo with emailPassword option only</h3>
-      <demo-snippet>
-        <template >
-          <firebase-app
-            name="wideDemo3"
-            api-key="AIzaSyACU-9dEBSmlEq8iwfuDCPCWU81UNDytuQ"
-            auth-domain="convoofire.firebaseapp.com"
-            database-url="https://convoofire.firebaseio.com"
-          >
-          </firebase-app>
-          <login-fire email-password app-name="wideDemo3"></login-fire>
+          <login-fire mini horizontal email-password anonymous twitter github google facebook app-name="miniHorizontalWideDemo"></login-fire>
         </template>
       </demo-snippet>
     </div>
@@ -158,6 +110,23 @@
           >
           </firebase-app>
           <login-fire reverse email-password anonymous twitter github google facebook app-name="reverseWideDemo"></login-fire>
+        </template>
+      </demo-snippet>
+    </div>
+
+     <div class="horizontal-section-container centered">
+      <h3>Reverse mini horizontal wide login-fire Demo with all options</h3>
+      <demo-snippet>
+        <template >
+          <firebase-app
+            name="reverseMiniHorizontalWideDemo"
+            api-key="AIzaSyACU-9dEBSmlEq8iwfuDCPCWU81UNDytuQ"
+            auth-domain="convoofire.firebaseapp.com"
+            database-url="https://convoofire.firebaseio.com"
+          >
+          </firebase-app>
+          <h2 style="text-align: center;">Sign In</h2>
+          <login-fire reverse mini horizontal email-password anonymous twitter github google facebook app-name="reverseMiniHorizontalWideDemo"></login-fire>
         </template>
       </demo-snippet>
     </div>
