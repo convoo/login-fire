@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-media-query/iron-media-query.html">
 <link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="email-login-fire.html">
 <link rel="import" href="social-login-fire.html">
@@ -9,8 +10,8 @@
   <style>
     :host {
       @apply(--layout-horizontal);
-      @apply(--layout-justified);
       @apply(--layout-wrap);
+      @apply(--layout-around-justified);
       max-width: 801px;
       margin: 0 auto;
     }
@@ -20,15 +21,15 @@
       @apply(--layout-wrap-reverse);
     }
 
-    .wideDivider{
+    .verticalDivider{
       border-right: 1px solid #e0e0e0;
       margin: 0 auto;
       height: 100%;
       min-height: 300px;
-      width: 1px;
+      
     }
 
-    .wideDivider div{
+    .verticalDivider div{
       position: relative;
       top: 100px;
       background-color: white;
@@ -37,21 +38,21 @@
       font-weight: lighter;
       height: 16px;
       width: 11px;
-      left: -4px;
+      left: 5px;
       font-size: 12px;
       padding: 10px 0 10px 0;
     }
 
-    .narrowDivider{
+    .horizontalDivider{
       border-top: 1px solid #e0e0e0;
       text-align: center;
       margin: 50px 0 50px 0;
       height: 1px;
       max-width: 400px;
-      min-width: 350px;
+      min-width: 400px;
     }
 
-    .narrowDivider div{
+    .horizontalDivider div{
       background-color: white;
       position: relative;
       top: -8px;
@@ -83,6 +84,7 @@
   <template is="dom-if" if={{emailPassword}}>
     <email-login-fire
       id="emailLogin"
+      class="flex"
       app-name="{{appName}}"
       user="{{emailUser}}"
       signed-in="{{emailSignedIn}}"
@@ -90,16 +92,25 @@
       auto-sign-up="{{autoSignUp}}"></email-login-fire>
   </template>
 
+
+
   <template is="dom-if" if={{_showDivider}}>
-    <div id="divider" class$="{{_dividerClass}}">
+    <iron-media-query query="(max-width: 650px)" query-matches="{{isNarrow}}"></iron-media-query>
+    <div id="divider" class="horizontalDivider" hidden$="{{!isNarrow}}">
+      <div>or</div>
+    </div>
+    <div id="divider" class="verticalDivider" hidden$="{{isNarrow}}">
       <div>or</div>
     </div>
   </template>
+
+
 
   
   <template is="dom-if" if={{_showButtons}}>
     <social-login-fire
       id="socialLogin"
+      class="flex"
       app-name="{{appName}}"
       user="{{socialUser}}"
       signed-in="{{socialSignedIn}}"
@@ -260,15 +271,6 @@
           type: Boolean,
           value: false
         },
-
-        _dividerClass: {
-          type: String,
-          computed: '_computeDividerClass(_recalculateDividerClass)',
-        },
-        _recalculateDividerClass: {
-          type: Number,
-          value: 0
-        },
         _showDivider: {
           type: Boolean,
           computed: '_computeShowDivider(debug)'
@@ -284,13 +286,6 @@
           this.classList.add("reverse");
         } else {
           this.classList.remove("reverse")
-        }
-      },
-      _computeDividerClass: function(debug){
-        if(this.horizontal){
-          return "narrowDivider";
-        } else {
-          return this.clientWidth > 500 ? "wideDivider" : "narrowDivider";
         }
       },
 

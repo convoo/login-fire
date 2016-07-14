@@ -7,11 +7,10 @@
 <template>
   <style>
     :host {
-      display: block;
+      @apply(--layout-vertical);
+      @apply(--layout-center);
       margin: 0 auto;
-      width: 100%;
       text-align: center;
-      max-width: 400px;
       margin: 0 auto;
     }
 
@@ -30,14 +29,14 @@
       max-height: 15px;
     }
     .signInButton{
-      min-width: 220px;
+      width: 220px;
       text-align: left;
       margin-bottom: 15px;
       text-transform: none;
       min-height: 40px;
     }
     .signInButton.mini {
-      min-width: 150px;
+      width: 150px;
     }
     #googSignIn{
       background-color: white;
