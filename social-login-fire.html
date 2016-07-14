@@ -36,6 +36,9 @@
       text-transform: none;
       min-height: 40px;
     }
+    .signInButton.mini {
+      min-width: 150px;
+    }
     #googSignIn{
       background-color: white;
     }
@@ -96,19 +99,19 @@
 
 
     <template is="dom-if" if="{{google}}">
-      <paper-button id="googSignIn" class="signInButton" on-tap="_signIn" data-auth="#google" raised><img src="images/google.svg">{{_getButtonText()}}Google</paper-button>
+      <paper-button id="googSignIn" class$="signInButton {{_getMiniClass()}}" on-tap="_signIn" data-auth="#google" raised><img src="images/google.svg">{{_getButtonText()}}Google</paper-button>
     </template>
     <template is="dom-if" if="{{facebook}}">
-      <paper-button id="fbSignIn" class="signInButton" on-tap="_signIn" data-auth="#facebook" raised><img src="images/facebook.svg">{{_getButtonText()}}Facebook</paper-button>
+      <paper-button id="fbSignIn" class$="signInButton {{_getMiniClass()}}" on-tap="_signIn" data-auth="#facebook" raised><img src="images/facebook.svg">{{_getButtonText()}}Facebook</paper-button>
     </template>
     <template is="dom-if" if="{{twitter}}">
-      <paper-button id="twtrSignIn" class="signInButton" on-tap="_signIn" data-auth="#twitter" raised><img src="images/twitter.svg">{{_getButtonText()}}Twitter  </paper-button>
+      <paper-button id="twtrSignIn" class$="signInButton {{_getMiniClass()}}" on-tap="_signIn" data-auth="#twitter" raised><img src="images/twitter.svg">{{_getButtonText()}}Twitter  </paper-button>
     </template>
     <template is="dom-if" if="{{github}}">
-      <paper-button id="ghSignIn" class="signInButton" on-tap="_signIn" data-auth="#github" raised><img src="images/github.svg">{{_getButtonText()}}GitHub</paper-button>
+      <paper-button id="ghSignIn" class$="signInButton {{_getMiniClass()}}" on-tap="_signIn" data-auth="#github" raised><img src="images/github.svg">{{_getButtonText()}}GitHub</paper-button>
     </template>
     <template is="dom-if" if="{{anonymous}}">
-      <paper-button id="anonSignIn" class="signInButton" on-tap="_signIn" data-auth="#anonymous" raised> <img src="images/anon.svg"> {{_getButtonText("anon")}}anonymously</paper-button>
+      <paper-button id="anonSignIn" class$="signInButton {{_getMiniClass()}}" on-tap="_signIn" data-auth="#anonymous" raised> <img src="images/anon.svg"> {{_getButtonText("anon")}}</paper-button>
     </template>
 
 
@@ -229,11 +232,15 @@
         }
     },
 
+    _getMiniClass: function(){
+      return this.mini ? "mini" : "";
+    },
+
     _getButtonText: function(a){
       if(this.mini){
-        return "";
+        return a == "anon" ? "Anonymously" : "";
       } else {
-        return a == "anon" ? "Sign in " : "Sign in with ";
+        return a == "anon" ? "Sign in anonymously" : "Sign in with ";
       }
     },
 
