@@ -5,6 +5,67 @@
 [![Stories In Progress](https://badge.waffle.io/convoo/login-fire.svg?label=In%20Progress&title=In%20Progress)](http://waffle.io/convoo/login-fire)
 
 
+<!--
+```
+<custom-element-demo>
+  <template>
+    <link rel="import" href="login-fire.html"
+    <next-code-block></next-code-block>
+  </template>
+</custom-element-demo>
+```
+-->
+```
+<firebase-app
+  name="login"
+  api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+  auth-domain="convoo-login-demo.firebaseapp.com"
+  database-url="https://convoo-login-demo.firebaseio.com">
+</firebase-app>
+<login-fire email-password anonymous twitter github google facebook app-name="login"></login-fire>
+```
+
+<!--
+```
+<custom-element-demo>
+  <template>
+    <link rel="import" href="social-login-fire.html"
+    <next-code-block></next-code-block>
+  </template>
+</custom-element-demo>
+```
+-->
+```
+<firebase-app
+  name="social"
+  api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+  auth-domain="convoo-login-demo.firebaseapp.com"
+  database-url="https://convoo-login-demo.firebaseio.com">
+</firebase-app>
+<social-login-fire google facebook twitter github anonymous app-name="social"></social-login-fire>
+```
+
+<!--
+```
+<custom-element-demo>
+  <template>
+    <link rel="import" href="email-login-fire.html"
+    <next-code-block></next-code-block>
+  </template>
+</custom-element-demo>
+```
+-->
+```
+<firebase-app
+  name="email"
+  api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+  auth-domain="convoo-login-demo.firebaseapp.com"
+  database-url="https://convoo-login-demo.firebaseio.com">
+</firebase-app>
+<email-login-fire app-name="email"></email-login-fire>
+```
+
+
 ## Install the Polymer-CLI
 
 First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
