@@ -1,5 +1,6 @@
 # \<login-fire\>
 
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/convoo/login-fire)
 [![Join the chat at https://gitter.im/convoo/login-fire](https://badges.gitter.im/convoo/login-fire.svg)](https://gitter.im/convoo/login-fire?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Stories In Progress](https://badge.waffle.io/convoo/login-fire.svg?label=In%20Progress&title=In%20Progress)](http://waffle.io/convoo/login-fire)
 
