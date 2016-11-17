@@ -9,7 +9,8 @@
 ```
 <custom-element-demo>
   <template>
-    <link rel="import" href="login-fire.html"
+    <link rel="import" href="../polymerfire/firebase-app.html">
+    <link rel="import" href="login-fire.html">
     <next-code-block></next-code-block>
   </template>
 </custom-element-demo>
@@ -29,7 +30,8 @@
 ```
 <custom-element-demo>
   <template>
-    <link rel="import" href="social-login-fire.html"
+    <link rel="import" href="../polymerfire/firebase-app.html">
+    <link rel="import" href="social-login-fire.html">
     <next-code-block></next-code-block>
   </template>
 </custom-element-demo>
@@ -49,7 +51,8 @@
 ```
 <custom-element-demo>
   <template>
-    <link rel="import" href="email-login-fire.html"
+    <link rel="import" href="../polymerfire/firebase-app.html">
+    <link rel="import" href="email-login-fire.html">
     <next-code-block></next-code-block>
   </template>
 </custom-element-demo>
