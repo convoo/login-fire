@@ -113,6 +113,34 @@ Add email authentication to your app with firebase.
 <email-login-fire app-name="email" user="{{user}}" signed-in="{{signedIn}}"></email-login-fire>
 ```
 
+## Signing Out
+
+To sign out, access the login-fire element and call its signOut function.
+Example:
+
+```html
+<a on-tap="_signOut">Sign Out</a>
+```
+
+```javascript
+_signOut: function(e){
+  this.$$('login-fire').signOut();
+  // or
+  // this.$$('social-login-fire').signOut();
+  // or
+  // this.$$('email-login-fire').signOut();
+}
+```
+
+## Debugging
+
+To make it easier to debug, we've added the `debug` attribute. Simply add "debug" to the element to see more details about its variables' values.
+Example:
+
+```html
+<email-login-fire debug app-name="email" user="{{user}}" signed-in="{{signedIn}}"></email-login-fire>
+```
+
 
 Note: login-fire is not associated with [firebase](https://firebase.google.com/). [polymerfire](https://github.com/firebase/polymerfire) components are used with login-fire.
 
