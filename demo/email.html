@@ -72,6 +72,11 @@
         <paper-button raised onclick="dialog.open()">login-fire in modal</paper-button>
 
         <template>
+          <style>
+            paper-dialog {
+              padding: 40px 80px;
+            }
+          </style>
           <paper-dialog id="dialog" with-backdrop center>
             <paper-dialog-scrollable>
               <firebase-app name="modalDemo"
