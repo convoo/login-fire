@@ -1,7 +1,7 @@
 # Login-Fire
 
 <p align="center">
-  <img alt="webcomponents.org" src="LoginFire200.png">
+  <img alt="login-fire" src="LoginFire400.png" width="200">
 </p>
 
 <p align="center">
@@ -10,7 +10,7 @@ Simple way to add authentication to your app using firebase.
 
 <p align="center">
   <a href="https://beta.webcomponents.org/element/convoo/login-fire"><img src="https://img.shields.io/badge/webcomponents.org-published-blue.svg"></a>
-  <a href="https://gitter.im/convoo/login-fire"><img src="https://img.shields.io/gitter/room/webcomponents/community.svg?maxAge=2592000&style=flat-square"></a>
+  <a href="https://gitter.im/convoo/login-fire"><img src="https://img.shields.io/badge/gitter-join%20chat-brightgreen.svg"></a>
   <a href="http://waffle.io/convoo/login-fire"><img src="https://badge.waffle.io/convoo/login-fire.svg?label=In%20Progress&title=In%20Progress"></a>
 </p>
 
@@ -18,7 +18,9 @@ Simple way to add authentication to your app using firebase.
 
 ## Install
 
-`bower install login-fire --save`
+```
+bower install login-fire --save
+```
 
 
 ## \<login-fire\>
@@ -27,7 +29,9 @@ Add email and password authentication as well as social provider authentication 
 If you want to only add social authentication or only email authentication please use \<social-login-fire\> or \<email-login-fire\> instead
 until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed.
 
-`<link rel="import" href="/bower_components/login-fire/login-fire.html">`
+```html
+<link rel="import" href="/bower_components/login-fire/login-fire.html">
+```
 
 <!--
 ```
@@ -54,7 +58,9 @@ until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed.
 
 Add social provider authentication to your app with firebase.
 
-`<link rel="import" href="/bower_components/login-fire/login-fire.html">`
+```
+<link rel="import" href="/bower_components/login-fire/social-login-fire.html">
+```
 
 <!--
 ```
@@ -82,7 +88,9 @@ Add social provider authentication to your app with firebase.
 
 Add email authentication to your app with firebase.
 
-`<link rel="import" href="/bower_components/login-fire/login-fire.html">`
+```html
+<link rel="import" href="/bower_components/login-fire/email-login-fire.html">
+```
 
 <!--
 ```
