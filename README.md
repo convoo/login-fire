@@ -1,12 +1,24 @@
-# login-fire
+# Login-Fire
 
-[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/convoo/login-fire)
-[![Join the chat at https://gitter.im/convoo/login-fire](https://badges.gitter.im/convoo/login-fire.svg)](https://gitter.im/convoo/login-fire?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Stories In Progress](https://badge.waffle.io/convoo/login-fire.svg?label=In%20Progress&title=In%20Progress)](http://waffle.io/convoo/login-fire)
+<p align="center">
+  <img alt="webcomponents.org" src="LoginFire200.png">
+</p>
 
+<p align="center">
 Simple way to add authentication to your app using firebase.
+</p>
 
-Note: login-fire is not associated with [firebase](https://firebase.google.com/). [polymerfire](https://github.com/firebase/polymerfire) components are used with login-fire.
+<p align="center">
+  <a href="https://beta.webcomponents.org/element/convoo/login-fire"><img src="https://img.shields.io/badge/webcomponents.org-published-blue.svg"></a>
+  <a href="https://gitter.im/convoo/login-fire"><img src="https://img.shields.io/gitter/room/webcomponents/community.svg?maxAge=2592000&style=flat-square"></a>
+  <a href="http://waffle.io/convoo/login-fire"><img src="https://badge.waffle.io/convoo/login-fire.svg?label=In%20Progress&title=In%20Progress"></a>
+</p>
+
+---
+
+## Install
+
+`bower install login-fire --save`
 
 
 ## \<login-fire\>
@@ -14,6 +26,8 @@ Note: login-fire is not associated with [firebase](https://firebase.google.com/)
 Add email and password authentication as well as social provider authentication to your app. 
 If you want to only add social authentication or only email authentication please use \<social-login-fire\> or \<email-login-fire\> instead
 until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed.
+
+`<link rel="import" href="/bower_components/login-fire/login-fire.html">`
 
 <!--
 ```
@@ -33,12 +47,14 @@ until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed.
   auth-domain="convoo-login-demo.firebaseapp.com"
   database-url="https://convoo-login-demo.firebaseio.com">
 </firebase-app>
-<login-fire email-password anonymous twitter github google facebook app-name="login"></login-fire>
+<login-fire email-password anonymous twitter github google facebook app-name="login" user="{{user}}" signed-in="{{signedIn}}"></login-fire>
 ```
 
 ## \<social-login-fire\>
 
 Add social provider authentication to your app with firebase.
+
+`<link rel="import" href="/bower_components/login-fire/login-fire.html">`
 
 <!--
 ```
@@ -58,13 +74,15 @@ Add social provider authentication to your app with firebase.
   auth-domain="convoo-login-demo.firebaseapp.com"
   database-url="https://convoo-login-demo.firebaseio.com">
 </firebase-app>
-<social-login-fire google facebook twitter github anonymous app-name="social"></social-login-fire>
+<social-login-fire google facebook twitter github anonymous app-name="social" user="{{user}}" signed-in="{{signedIn}}"></social-login-fire>
 ```
 
 
 ## \<email-login-fire\>
 
 Add email authentication to your app with firebase.
+
+`<link rel="import" href="/bower_components/login-fire/login-fire.html">`
 
 <!--
 ```
@@ -84,22 +102,25 @@ Add email authentication to your app with firebase.
   auth-domain="convoo-login-demo.firebaseapp.com"
   database-url="https://convoo-login-demo.firebaseio.com">
 </firebase-app>
-<email-login-fire app-name="email"></email-login-fire>
+<email-login-fire app-name="email" user="{{user}}" signed-in="{{signedIn}}"></email-login-fire>
 ```
 
-# Contributing
 
-## Install the Polymer-CLI
+Note: login-fire is not associated with [firebase](https://firebase.google.com/). [polymerfire](https://github.com/firebase/polymerfire) components are used with login-fire.
+
+## Contributing
+
+### Install the Polymer-CLI
 
 First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
 
-## Viewing Your Application
+### Viewing Your Application
 
 ```
 $ polymer serve
 ```
 
-## Building Your Application
+### Building Your Application
 
 ```
 $ polymer build
@@ -116,7 +137,7 @@ from:
 $ polymer serve build/bundled
 ```
 
-## Running Tests
+### Running Tests
 
 ```
 $ polymer test
