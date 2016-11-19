@@ -44,7 +44,7 @@ until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed.
 </custom-element-demo>
 ```
 -->
-```
+```html
 <firebase-app
   name="login"
   api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
@@ -58,7 +58,7 @@ until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed.
 
 Add social provider authentication to your app with firebase.
 
-```
+```html
 <link rel="import" href="/bower_components/login-fire/social-login-fire.html">
 ```
 
@@ -73,7 +73,7 @@ Add social provider authentication to your app with firebase.
 </custom-element-demo>
 ```
 -->
-```
+```html
 <firebase-app
   name="social"
   api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
@@ -103,7 +103,7 @@ Add email authentication to your app with firebase.
 </custom-element-demo>
 ```
 -->
-```
+```html
 <firebase-app
   name="email"
   api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
