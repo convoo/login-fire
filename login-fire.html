@@ -35,7 +35,7 @@
       margin: 0 auto;
       height: 100%;
       min-height: 300px;
-      
+
     }
 
     .verticalDivider div{
@@ -80,6 +80,7 @@
     <div class="debug">
       <div> user.id = {{user.uid}}</div>
       <div> signedIn = {{signedIn}}</div>
+      <div> statusKnown = {{statusKnown}}</div>
       <div> user.displayName = {{user.displayName}}</div>
       <div> user.email = {{user.email}}</div>
       <div> user.emailVerified = {{user.emailVerified}}</div>
@@ -98,28 +99,30 @@
       user="{{emailUser}}"
       signed-in="{{emailSignedIn}}"
       password-reset-message="{{passwordResetMessage}}"
-      auto-sign-up="{{autoSignUp}}"></email-login-fire>
+      auto-sign-up="{{autoSignUp}}"
+      status-known="{{emailStatusKnown}}"
+    ></email-login-fire>
   </template>
 
   <iron-media-query query="(max-width: 650px)" query-matches="{{isNarrow}}"></iron-media-query>
 
   <template is="dom-if" if={{_showDivider}}>
-    
+
     <template is="dom-if" if={{_showHorizontalDivider}}>
       <div id="divider" class="horizontalDivider">
         <div>or</div>
       </div>
     </template>
 
-    
+
     <template is="dom-if" if={{!_showHorizontalDivider}}>
       <div id="divider" class="verticalDivider">
         <div>or</div>
       </div>
     </template>
-    
+
   </template>
-  
+
   <template is="dom-if" if={{_showButtons}}>
     <social-login-fire
       id="socialLogin"
@@ -134,7 +137,9 @@
       twitter="{{twitter}}"
       github="{{github}}"
       mini="{{mini}}"
-      horizontal="{{horizontal}}"></social-login-fire>
+      horizontal="{{horizontal}}"
+      status-known="{{socialStatusKnown}}"
+    ></social-login-fire>
   </template>
 
 </template>
@@ -143,11 +148,11 @@
     /**
      * An element that allows simple configuration of email and social provider login with
      * firebase.
-     * 
+     *
      * For email authentication only, use email-login-fire.
-     * 
+     *
      * For social provider authentication only, use social-login-fire.
-     * 
+     *
      * For both email and social provider authentication, use login-fire.
      *
      * Example:
@@ -242,6 +247,15 @@
           computed: "_computeSignedIn(emailSignedIn, socialSignedIn)",
         },
         /**
+        * `statusKnown` represents the status known state returned by the firebase-auth element
+        */
+        statusKnown: {
+          type: Boolean,
+          readOnly: true,
+          notify: true,
+          computed: "_computeStatusKnown(emailStatusKnown, socialStatusKnown)",
+        },
+        /**
          * `debug` represents if the debug region is shown
          */
         debug: {
@@ -318,6 +332,9 @@
       },
       _computeSignedIn: function(emailSignedIn, socialSignedIn){
         return emailSignedIn || socialSignedIn;
+      },
+      _computeStatusKnown: function(emailStatusKnown, socialStatusKnown){
+        return emailStatusKnown || socialStatusKnown;
       },
       _computeShowDivider: function(e){
         return this.emailPassword && (this.google || this.facebook || this.twitter || this.github || this.anonymous);
