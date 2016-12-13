@@ -57,13 +57,14 @@
 
   </style>
 
-  <firebase-auth app-name="{{appName}}" id="emailPassword" user="{{user}}" signed-in="{{signedIn}}" on-error="_handleEmailPWError">
+  <firebase-auth app-name="{{appName}}" id="emailPassword" user="{{user}}" signed-in="{{signedIn}}" on-error="_handleEmailPWError" status-known="{{statusKnown}}">
   </firebase-auth>
 
   <template is="dom-if" if={{debug}}>
     <div class="debug">
       <div> user.id = {{user.uid}}</div>
       <div> signedIn = {{signedIn}}</div>
+      <div> statusKnown = {{statusKnown}}</div>
       <div> user.displayName = {{user.displayName}}</div>
       <div> user.email = {{user.email}}</div>
       <div> user.emailVerified = {{user.emailVerified}}</div>
@@ -92,11 +93,11 @@
     /**
      * An element that allows simple configuration of email and password authentication with
      * firebase.
-     * 
+     *
      * For email authentication only, use email-login-fire.
-     * 
+     *
      * For social provider authentication only, use social-login-fire.
-     * 
+     *
      * For both email and social provider authentication, use login-fire.
      *
      * Example:
@@ -158,7 +159,14 @@
         autoSignUp: {
           type: Boolean,
           value: false
-        }
+        },
+        /**
+        * `statusKnown` represents the status known state returned by the firebase-auth element
+        */
+        statusKnown: {
+          type: Boolean,
+          notify: true
+        },
     },
       _userChanged: function(u){
         if(typeof u !== 'undefined' && u != null){
