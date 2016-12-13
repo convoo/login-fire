@@ -70,15 +70,15 @@
     }
 </style>
 
-<firebase-auth app-name="{{appName}}" id="google" provider="google" user="{{googleUser}}" signed-in="{{googleSignedIn}}">
+<firebase-auth app-name="{{appName}}" id="google" provider="google" user="{{googleUser}}" signed-in="{{googleSignedIn}}" status-known={{googleStatusKnown}}>
 </firebase-auth>
-<firebase-auth app-name="{{appName}}" id="facebook" provider="facebook" user="{{facebookUser}}" signed-in="{{facebookSignedIn}}">
+<firebase-auth app-name="{{appName}}" id="facebook" provider="facebook" user="{{facebookUser}}" signed-in="{{facebookSignedIn}}" status-known={{facebookStatusKnown}}>
 </firebase-auth>
-<firebase-auth app-name="{{appName}}" id="twitter" provider="twitter" user="{{twitterUser}}" signed-in="{{twitterSignedIn}}">
+<firebase-auth app-name="{{appName}}" id="twitter" provider="twitter" user="{{twitterUser}}" signed-in="{{twitterSignedIn}}" status-known={{twitterStatusKnown}}>
 </firebase-auth>
-<firebase-auth app-name="{{appName}}" id="github" provider="github" user="{{githubUser}}" signed-in="{{githubSignedIn}}">
+<firebase-auth app-name="{{appName}}" id="github" provider="github" user="{{githubUser}}" signed-in="{{githubSignedIn}}" status-known={{githubStatusKnown}}>
 </firebase-auth>
-<firebase-auth app-name="{{appName}}" id="anonymous" user="{{anonUser}}" signed-in="{{anonSignedIn}}">
+<firebase-auth app-name="{{appName}}" id="anonymous" user="{{anonUser}}" signed-in="{{anonSignedIn}}" status-known={{anonStatusKnown}}>
 </firebase-auth>
 
 
@@ -86,6 +86,7 @@
     <div class="debug">
     <div> user.id = {{user.uid}}</div>
     <div> signedIn = {{signedIn}}</div>
+    <div> statusKnown = {{statusKnown}}</div>
     <div> user.displayName = {{user.displayName}}</div>
     <div> user.email = {{user.email}}</div>
     <div> user.emailVerified = {{user.emailVerified}}</div>
@@ -277,7 +278,14 @@
         notify: true,
         computed: "_computeSignedIn(googleSignedIn, facebookSignedIn, twitterSignedIn, githubSignedIn, anonSignedIn)",
         },
-
+        /**
+        * `statusKnown` represents the status known state returned by the firebase-auth element
+        */
+        statusKnown: {
+          type: Boolean,
+          notify: true,
+          computed: "_computeStatusKnown(googleStatusKnown, facebookStatusKnown, twitterStatusKnown, githubStatusKnown, anonStatusKnown)",
+        },
         /**
         * `debug` represents if the debug region is shown
         */
@@ -316,6 +324,9 @@
     },
     _computeSignedIn: function(googleSignedIn, facebookSignedIn, twitterSignedIn, githubSignedIn, anonSignedIn){
         return googleSignedIn || facebookSignedIn || twitterSignedIn || githubSignedIn || anonSignedIn;
+    },
+    _computeStatusKnown: function(googleStatusKnown, facebookStatusKnown, twitterStatusKnown, githubStatusKnown, anonStatusKnown){
+      return googleStatusKnown || facebookStatusKnown || twitterStatusKnown || githubStatusKnown || anonStatusKnown;
     },
     _userChanged: function(u){
         if(typeof u !== 'undefined' && u != null){
