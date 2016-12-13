@@ -39,7 +39,11 @@ until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed.
   <template>
     <link rel="import" href="../polymerfire/firebase-app.html">
     <link rel="import" href="login-fire.html">
-    <next-code-block></next-code-block>
+    <div>
+      <template is="dom-bind">
+        <next-code-block></next-code-block>
+      </template>
+    </div>
   </template>
 </custom-element-demo>
 ```
@@ -68,7 +72,11 @@ Add social provider authentication to your app with firebase.
   <template>
     <link rel="import" href="../polymerfire/firebase-app.html">
     <link rel="import" href="social-login-fire.html">
-    <next-code-block></next-code-block>
+    <div>
+      <template is="dom-bind">
+        <next-code-block></next-code-block>
+      </template>
+    </div>
   </template>
 </custom-element-demo>
 ```
@@ -98,7 +106,11 @@ Add email authentication to your app with firebase.
   <template>
     <link rel="import" href="../polymerfire/firebase-app.html">
     <link rel="import" href="email-login-fire.html">
-    <next-code-block></next-code-block>
+    <div>
+      <template is="dom-bind">
+        <next-code-block></next-code-block>
+      </template>
+    </div>
   </template>
 </custom-element-demo>
 ```
