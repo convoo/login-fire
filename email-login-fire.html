@@ -79,8 +79,8 @@
     <div class="emailPWMessage"></div>
   </div>
   <form on-submit="_signInEmailPW">
-    <paper-input id="emailInput" type="email" label="Email" value="{{email::input}}" validator="email-validator" error-message="Invalid email address" required auto-validate></paper-input>
-    <paper-input id="pwInput" type="password" label="Password" value="{{pw::input}}" required></paper-input>
+    <paper-input id="emailInput" type="email" label="Email" value="{{email}}" validator="email-validator" error-message="Invalid email address" required auto-validate></paper-input>
+    <paper-input id="pwInput" type="password" label="Password" value="{{pw}}" required></paper-input>
     <p><a href="#" id="reset" on-click="_resetPW">Reset password for entered email</a></p>
     <paper-button id="emailSignUp" type="submit" on-tap="_signUpEmailPW">Sign Up</paper-button>
     <paper-button id="emailSignIn" type="submit" on-tap="_signInEmailPW">Sign In</paper-button>
@@ -92,11 +92,11 @@
     /**
      * An element that allows simple configuration of email and password authentication with
      * firebase.
-     * 
+     *
      * For email authentication only, use email-login-fire.
-     * 
+     *
      * For social provider authentication only, use social-login-fire.
-     * 
+     *
      * For both email and social provider authentication, use login-fire.
      *
      * Example:
