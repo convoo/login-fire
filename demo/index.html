@@ -10,6 +10,7 @@
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
 
     <link rel="import" href="../login-fire.html">
+    <link rel="import" href="../logout-fire.html">
     <link rel="import" href="../../polymerfire/firebase-app.html">
     <link rel="import" href="../../paper-dialog/paper-dialog.html">
 
@@ -21,7 +22,7 @@
   <div>
       <h3>login-fire Demo with all options</h3>
       <demo-snippet>
-        <template >
+        <template>
           <firebase-app
             name="narrowDemo"
             api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
@@ -29,6 +30,7 @@
             database-url="https://convoo-login-demo.firebaseio.com">
           </firebase-app>
           <login-fire email-password anonymous twitter github google facebook app-name="narrowDemo"></login-fire>
+          <logout-fire app-name="narrowDemo">Sign Out</logout-fire>
         </template>
       </demo-snippet>
     </div>
@@ -45,6 +47,7 @@
           >
           </firebase-app>
           <login-fire email-password anonymous twitter github google facebook app-name="debugDemo" debug></login-fire>
+          <logout-fire app-name="debugDemo">Sign Out</logout-fire>
         </template>
       </demo-snippet>
     </div>
@@ -61,6 +64,7 @@
           >
           </firebase-app>
           <login-fire mini horizontal email-password anonymous twitter github google facebook app-name="miniHorizontalWideDemo"></login-fire>
+          <logout-fire app-name="miniHorizontalWideDemo">Sign Out</logout-fire>
         </template>
       </demo-snippet>
     </div>
@@ -78,6 +82,7 @@
           >
           </firebase-app>
           <login-fire reverse email-password anonymous twitter github google facebook app-name="reverseNarrowDemo"></login-fire>
+          <logout-fire app-name="reverseNarrowDemo">Sign Out</logout-fire>
         </template>
       </demo-snippet>
     </div>
@@ -95,6 +100,7 @@
           </firebase-app>
           <h2 style="text-align: center;">Sign In</h2>
           <login-fire reverse mini horizontal email-password anonymous twitter github google facebook app-name="reverseMiniHorizontalWideDemo"></login-fire>
+          <logout-fire app-name="reverseMiniHorizontalWideDemo">Sign Out</logout-fire>
         </template>
       </demo-snippet>
     </div>
@@ -122,6 +128,7 @@
                 database-url="https://convoo-login-demo.firebaseio.com">
               </firebase-app>
               <login-fire reverse email-password anonymous twitter github google facebook app-name="modalDemo"></login-fire>
+              <logout-fire app-name="modalDemo">Sign Out</logout-fire>
             </paper-dialog-scrollable>
           </paper-dialog>
         </template>
