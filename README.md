@@ -125,6 +125,40 @@ Add email authentication to your app with firebase.
 <email-login-fire app-name="email" user="{{user}}" signed-in="{{signedIn}}"></email-login-fire>
 ```
 
+## \<login-fire-button\>
+
+It's a button with a social provider authentication to your app with Firebase. This button allows your users to sign-in and sign-out.
+
+```html
+<link rel="import" href="/bower_components/login-fire/login-fire-button.html">
+```
+<!--
+```
+<custom-element-demo>
+  <template>
+    <link rel="import" href="../polymerfire/firebase-app.html">
+    <link rel="import" href="login-fire-button.html">
+    <div>
+      <template is="dom-bind">
+        <next-code-block></next-code-block>
+      </template>
+    </div>
+  </template>
+</custom-element-demo>
+```
+-->
+```html
+<firebase-app
+  name="button"
+  api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+  auth-domain="convoo-login-demo.firebaseapp.com"
+  database-url="https://convoo-login-demo.firebaseio.com">
+</firebase-app>
+<login-fire-button app-name="button" provider="google" user="{{user}}"></login-fire-button>
+<login-fire-button app-name="button" provider="facebook" user="{{user}}"></login-fire-button>
+<login-fire-button app-name="button" user="{{user}}"></login-fire-button>
+```
+
 ## Signing Out
 
 To sign out, access the login-fire element and call its signOut function.
