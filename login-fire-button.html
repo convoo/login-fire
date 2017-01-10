@@ -1,0 +1,142 @@
+<!--
+@license
+Copyright (c) 2016 Convoo All Rights Reserved.
+Use of this source code is governed by a MIT license that can be found in the
+LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./login-fire-common-behavior.html">
+<link rel="import" href="../polymerfire/firebase-auth.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="./shared-styles.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="./icons.html">
+
+<!--
+`login-fire-button` is a button to authenticate a user with the [firebase-auth](https://elements.polymer-project.org/elements/polymerfire?active=firebase-auth)
+element.
+
+It can be used with the same providers as the [Firebase Auth API](https://firebase.google.com/docs/auth/).
+The provider logo is displayed. It may be flat or raised. A raised button
+is styled with a shadow. It can be mini or not. A mini button displays only
+the provider logo and the text "Sign-in" / "Sign-out".
+
+Example:
+```
+<login-fire-button app-name="myApp" provider="google"></login-fire-button>
+<login-fire-button app-name="myApp" provider="facebook" flat></login-fire-button>
+<login-fire-button app-name="myApp" provider="twitter" flat mini></login-fire-button>
+```
+
+@demo demo/login-fire-button.html
+-->
+<dom-module id="login-fire-button">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: inline-block;
+      }
+      .btn {
+        width: 220px;
+        text-align: center;
+        text-transform: none;
+        min-height: 40px;
+      }
+      .btn__icon {
+        padding-right: 8px;
+        max-height: 15px;
+      }
+    </style>
+
+    <paper-button class$="btn btn--[[provider]] [[_miniClass]]" raised$="[[!flat]]">
+      <iron-icon class="btn__icon" icon="login-fire-icons:[[provider]]" hidden$="[[_user]]"></iron-icon>
+      <span>[[_text]]</span>
+    </paper-button>
+
+    <firebase-auth id="auth" app-name="[[appName]]" provider="[[provider]]" user="{{_user}}">
+    </firebase-auth>
+  </template>
+
+  <script>
+  Polymer({
+    is: 'login-fire-button',
+    behaviors: [Convoo.LoginFireCommonBehavior],
+
+    properties: {
+      /**
+       * Mini format, yes or not.
+       *
+       * @type {Boolean}
+       */
+      mini: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Flat button, yes or not.
+       *
+       * @type {Boolean}
+       */
+      flat: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * CSS class added when the button has mini format.
+       *
+       * @type {String}
+       */
+      _miniClass: {
+        type: String,
+        computed: '_computeMiniClass(mini)'
+      },
+
+      /**
+       * Button text.
+       *
+       * @type {String}
+       */
+      _text: {
+        type: String,
+        computed: '_computeButtonText(_user)'
+      }
+    },
+
+    /**
+     * Computes the CSS class to add according to the mini format of the
+     * element.
+     *
+     * @param  {Boolean} isMini
+     * @return {String}         a CSS class name to add when `isMini` is true,
+     * else returns an empty string.
+     */
+    _computeMiniClass: function(isMini) {
+      return isMini ? 'btn--mini' : '';
+    },
+
+    /**
+     * Computes the text to be displayed inside the button.
+     *
+     * @param  {Object} user logged-in
+     * @return {String}      the text to be displayed inside the button.
+     */
+    _computeButtonText: function(user) {
+      // User logged in.
+      if (typeof user !== 'undefined' && user != null) {
+        return 'Sign-out';
+      }
+
+      // User not logged in.
+      if (this.mini) {
+        return 'Sign-in';
+      } else {
+        var provider = this.config.provider;
+        return provider.id !== 'anonymous' ?
+          'Sign-in with ' + provider.name : 'Sign-in ' + provider.name;
+      }
+    }
+  });
+  </script>
+</dom-module>

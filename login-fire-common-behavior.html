@@ -1,0 +1,260 @@
+<!--
+@license
+Copyright (c) 2016 Convoo All Rights Reserved.
+Use of this source code is governed by a MIT license that can be found in the
+LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<script>
+(function() {
+  'use strict';
+
+  window.Convoo = window.Convoo || {};
+
+  /**
+   * OAuth providers available on Firebase Auth.
+   */
+  Convoo._firebaseProviders = {
+    anonymous: {
+      id: 'anonymous',
+      name: 'Anonymously'
+    },
+    facebook: {
+      id: 'facebook',
+      name: 'Facebook'
+    },
+    github: {
+      id: 'github',
+      name: 'GitHub'
+    },
+    google: {
+      id: 'google',
+      name: 'Google'
+    },
+    twitter: {
+      id: 'twitter',
+      name: 'Twitter'
+    }
+  };
+
+  /**
+   * Behaviour that allows an element using Firebase Auth to sign-in and
+   * sign-out with the selected provider.
+   *
+   * @polymerBehavior Convoo.LoginFireCommonBehavior
+   */
+  Convoo.LoginFireCommonBehavior = {
+    properties: {
+      /**
+       * Your application name. This is required if you want use several
+       * Firebase configuration on the same page. All elements that implement
+       * this behavior and having the same application name share their
+       * properties.
+       *
+       * @type {String}
+       */
+      appName: {
+        type: String
+      },
+
+      /**
+       * Element configuration (app name, provider, etc...).
+       *
+       * @type {Object}
+       */
+      config: {
+        type: Object,
+        readOnly: true,
+        computed: '_computeConfig(appName, provider, redirect)'
+      },
+
+      /**
+       * Sets the element in debug mode. In the debug mode, the Firebase
+       * configuration used by the element and relevant steps like a user
+       * change are print out into the browser DevTool.
+       *
+       * @type {Boolean}
+       */
+      debug: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * ID of the OAuth provider to be used by the element. The list of
+       * available providers is defined by the private property `_providers`.
+       * The default value is "anonymous" and tells to not use any provider for
+       * authentication.
+       *
+       * @type {String}
+       */
+      provider: {
+        type: String,
+        value: 'anonymous'
+      },
+
+      /**
+       * Defines if the authentication must use redirection. If `false`, the
+       * authentication will use pop-up.
+       *
+       * @type {Boolean}
+       */
+      redirect: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Signed-in user. It is accessible from all elements that use Firebase
+       * Auth with the same application name.
+       *
+       * @type {Object}
+       */
+      user: {
+        type: Object,
+        readOnly: true,
+        notify: true
+      },
+
+      /**
+       * Providers available and usable with Firebase Auth.
+       *
+       * Current accepted providers are:
+       *
+       * ```
+       * 'anonymous' (for signin anonymously)
+       * 'facebook'
+       * 'github'
+       * 'google'
+       * 'twitter'
+       * ```
+       */
+      _providers: {
+        type: Array,
+        readOnly: true,
+        value: Convoo._firebaseProviders
+      },
+
+      /**
+       * Signed-in user (private). It is accessible from all elements that use
+       * Firebase Auth with the same application name through the property
+       * `user`.
+       *
+       * @type {Object}
+       */
+      _user: {
+        type: Object,
+        observer: '_userChanged'
+      }
+    },
+
+    listeners: {
+      'tap': '_signInOrOut'
+    },
+
+    ready: function() {
+      if (this.debug) {
+        console.info('### Debug Mode Enabled ###');
+        console.log('Initial configuration:', this.config);
+      }
+    },
+
+    /**
+     * Starts the sign-in process.
+     */
+    signIn: function() {
+      if (this.debug) {
+        console.log('User signed in with', this._providers[this.provider].name);
+      }
+
+      if (this.provider === 'anonymous') {
+        this.$.auth.signInAnonymously().then(this._fireEvent.bind(this));
+      } else if (this.redirect) {
+        this.$.auth.signInWithRedirect().then(this._fireEvent.bind(this));
+      } else {
+        this.$.auth.signInWithPopup().then(this._fireEvent.bind(this));
+      }
+    },
+
+    /**
+     * Starts the sign-out process.
+     */
+    signOut: function() {
+      if (this.debug) {
+        console.log('User signed out');
+      }
+      this.$.auth.signOut().then(this._fireEvent.bind(this));
+    },
+
+    /**
+     * Computes the element configuration.
+     *
+     * @param  {String}  appName  the application name
+     * @param  {String}  provider id
+     * @param  {Boolean} redirect
+     * @return {Object}           the element configuration.
+     */
+    _computeConfig: function(appName, provider, redirect) {
+      return {
+        appName: appName,
+        provider: this._providers[provider],
+        redirect: redirect,
+        debug: this.debug
+      };
+    },
+
+    /**
+     * Fires an event for signaling the user is signed-in or signed-out.
+     *
+     * @param  {Object} response from Firebase Auth
+     */
+    _fireEvent: function(response) {
+      if (response) {
+        var user = response.user || response;
+        this.fire('login-fire-signedin', user);
+      } else {
+        this.fire('login-fire-signedout');
+      }
+    },
+
+    /**
+     * Starts signe in or sign out a user. If there is currently a user logged
+     * in the `signOut` method is called. If there is no user logged in, the
+     * `signIn` method is called.
+     */
+    _signInOrOut: function() {
+      if (typeof this.user === 'undefined' || this.user == null) {
+        this.signIn();
+      } else {
+        this.signOut();
+      }
+    },
+
+    /**
+     * Updates the readOnly value of user.
+     *
+     * @param  {Object} newVal is the signed-in user
+     * @param  {Object} oldVal is the previous signed-in user
+     */
+    _userChanged: function(newVal, oldVal) {
+      if (this.debug && typeof oldVal !== 'undefined') {
+        console.log('User changed for', newVal);
+      }
+      this._setUser(newVal);
+    }
+
+    /**
+     * Fired when a `user` just signed-in.
+     *
+     * @event login-fire-signedin
+     * @param {Object} user signed-in.
+     */
+
+    /**
+     * Fired when the `user` signed-out.
+     *
+     * @event login-fire-signedout
+     */
+  };
+}());
+</script>
