@@ -100,7 +100,7 @@ Example:
        */
       _text: {
         type: String,
-        computed: '_computeButtonText(_user)'
+        computed: '_computeButtonText(_user, config.provider)'
       }
     },
 
@@ -119,23 +119,24 @@ Example:
     /**
      * Computes the text to be displayed inside the button.
      *
-     * @param  {Object} user logged-in
-     * @return {String}      the text to be displayed inside the button.
+     * @param  {Object} user     logged-in
+     * @param  {Object} provider used for the authentication
+     * @return {String}          the text to be displayed inside the button.
      */
-    _computeButtonText: function(user) {
+    _computeButtonText: function(user, provider) {
       // User logged in.
       if (typeof user !== 'undefined' && user != null) {
         return 'Sign-out';
       }
 
-      // User not logged in.
+      // User not logged in and mini format.
       if (this.mini) {
         return 'Sign-in';
-      } else {
-        var provider = this.config.provider;
-        return provider.id !== 'anonymous' ?
-          'Sign-in with ' + provider.name : 'Sign-in ' + provider.name;
       }
+
+      // User not logged in.
+      return provider.id !== 'anonymous' ?
+        'Sign-in with ' + provider.name : 'Sign-in ' + provider.name;
     }
   });
   </script>
