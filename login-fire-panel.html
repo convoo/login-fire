@@ -2,7 +2,7 @@
 <link rel="import" href="../iron-media-query/iron-media-query.html">
 <link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="email-login-fire.html">
-<link rel="import" href="social-login-fire.html">
+<link rel="import" href="login-fire-social.html">
 
 
 <dom-module id="login-fire-panel">
@@ -124,7 +124,7 @@
   </template>
 
   <template is="dom-if" if={{_showButtons}}>
-    <social-login-fire
+    <login-fire-social
       id="socialLogin"
       class="flex"
       app-name="{{appName}}"
@@ -139,7 +139,7 @@
       mini="{{mini}}"
       horizontal="{{horizontal}}"
       status-known="{{socialStatusKnown}}"
-    ></social-login-fire>
+    ></login-fire-social>
   </template>
 
 </template>
@@ -151,7 +151,7 @@
      *
      * For email authentication only, use email-login-fire.
      *
-     * For social provider authentication only, use social-login-fire.
+     * For social provider authentication only, use login-fire-social.
      *
      * For both email and social provider authentication, use login-fire-panel.
      *

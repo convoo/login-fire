@@ -26,7 +26,7 @@ bower install login-fire --save
 ## \<login-fire-panel\>
 
 Add email and password authentication as well as social provider authentication to your app.
-If you want to only add social authentication or only email authentication please use \<social-login-fire\> or \<email-login-fire\> instead
+If you want to only add social authentication or only email authentication please use \<login-fire-social\> or \<email-login-fire\> instead
 until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed.
 
 ```html
@@ -58,12 +58,12 @@ until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed.
 <login-fire-panel email-password anonymous twitter github google facebook app-name="login" user="{{user}}" signed-in="{{signedIn}}"></login-fire-panel>
 ```
 
-## \<social-login-fire\>
+## \<login-fire-social\>
 
 Add social provider authentication to your app with firebase.
 
 ```html
-<link rel="import" href="/bower_components/login-fire/social-login-fire.html">
+<link rel="import" href="/bower_components/login-fire/login-fire-social.html">
 ```
 
 <!--
@@ -71,7 +71,7 @@ Add social provider authentication to your app with firebase.
 <custom-element-demo>
   <template>
     <link rel="import" href="../polymerfire/firebase-app.html">
-    <link rel="import" href="social-login-fire.html">
+    <link rel="import" href="login-fire-social.html">
     <div>
       <template is="dom-bind">
         <next-code-block></next-code-block>
@@ -88,7 +88,7 @@ Add social provider authentication to your app with firebase.
   auth-domain="convoo-login-demo.firebaseapp.com"
   database-url="https://convoo-login-demo.firebaseio.com">
 </firebase-app>
-<social-login-fire google facebook twitter github anonymous app-name="social" user="{{user}}" signed-in="{{signedIn}}"></social-login-fire>
+<login-fire-social google facebook twitter github anonymous app-name="social" user="{{user}}" signed-in="{{signedIn}}"></login-fire-social>
 ```
 
 
@@ -172,7 +172,7 @@ Example:
 _signOut: function(e){
   this.$$('login-fire').signOut();
   // or
-  // this.$$('social-login-fire').signOut();
+  // this.$$('login-fire-social').signOut();
   // or
   // this.$$('email-login-fire').signOut();
 }
