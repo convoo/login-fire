@@ -174,10 +174,6 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       }
     },
 
-    listeners: {
-      'tap': '_signInOrOut'
-    },
-
     ready: function() {
       if (this.debug) {
         console.info('### Debug Mode Enabled ###');
@@ -248,7 +244,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      * in the `signOut` method is called. If there is no user logged in, the
      * `signIn` method is called.
      */
-    _signInOrOut: function() {
+    signInOrOut: function() {
       if (typeof this.user === 'undefined' || this.user == null) {
         this.signIn();
       } else {
