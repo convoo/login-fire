@@ -26,7 +26,7 @@ bower install login-fire --save
 ## \<login-fire-panel\>
 
 Add email and password authentication as well as social provider authentication to your app.
-If you want to only add social authentication or only email authentication please use \<login-fire-social\> or \<email-login-fire\> instead
+If you want to only add social authentication or only email authentication please use \<login-fire-social\> or \<login-fire-form\> instead
 until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed.
 
 ```html
@@ -92,12 +92,12 @@ Add social provider authentication to your app with firebase.
 ```
 
 
-## \<email-login-fire\>
+## \<login-fire-form\>
 
 Add email authentication to your app with firebase.
 
 ```html
-<link rel="import" href="/bower_components/login-fire/email-login-fire.html">
+<link rel="import" href="/bower_components/login-fire/login-fire-form.html">
 ```
 
 <!--
@@ -105,7 +105,7 @@ Add email authentication to your app with firebase.
 <custom-element-demo>
   <template>
     <link rel="import" href="../polymerfire/firebase-app.html">
-    <link rel="import" href="email-login-fire.html">
+    <link rel="import" href="login-fire-form.html">
     <div>
       <template is="dom-bind">
         <next-code-block></next-code-block>
@@ -122,7 +122,7 @@ Add email authentication to your app with firebase.
   auth-domain="convoo-login-demo.firebaseapp.com"
   database-url="https://convoo-login-demo.firebaseio.com">
 </firebase-app>
-<email-login-fire app-name="email" user="{{user}}" signed-in="{{signedIn}}"></email-login-fire>
+<login-fire-form app-name="email" user="{{user}}" signed-in="{{signedIn}}"></login-fire-form>
 ```
 
 ## \<login-fire-button\>
@@ -176,7 +176,7 @@ _signOut: function(e){
   // or
   // this.$$('login-fire-social').signOut();
   // or
-  // this.$$('email-login-fire').signOut();
+  // this.$$('login-fire-form').signOut();
 }
 ```
 
@@ -186,7 +186,7 @@ To make it easier to debug, we've added the `debug` attribute. Simply add "debug
 Example:
 
 ```html
-<email-login-fire debug app-name="email" user="{{user}}" signed-in="{{signedIn}}"></email-login-fire>
+<login-fire-form debug app-name="email" user="{{user}}" signed-in="{{signedIn}}"></login-fire-form>
 ```
 
 

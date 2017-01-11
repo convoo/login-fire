@@ -1,0 +1,219 @@
+<!--
+@license
+Copyright (c) 2016 Convoo All Rights Reserved.
+Use of this source code is governed by a MIT license that can be found in the
+LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymerfire/firebase-auth.html">
+<link rel="import" href="./login-fire-common-behavior.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-input/paper-input.html">
+
+<!--
+An element that allows simple configuration of email and password authentication with Firebase.
+
+Example:
+```
+<firebase-app
+  name="myApp"
+  api-key="API_KEY"
+  auth-domain="AUTH_DOMAIN"
+  database-url="DATABASE_URL">
+</firebase-app>
+<login-fire-form app-name="myApp"></login-fire-form>
+```
+
+@demo demo/login-fire-form.html
+-->
+<dom-module id="login-fire-form">
+  <template>
+    <style>
+    :host {
+      display: block;
+      margin: 0 auto;
+    }
+    .link--reset-pw {
+      color: grey;
+      text-decoration: none;
+      font-size: 12px;
+      font-style: italic;
+      font-weight: lighter;
+    }
+    .link--reset-pw:hover{
+      color: grey;
+      text-decoration: underline;
+    }
+    .msg {
+      text-align: center;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 24px;
+      margin: 0;
+      padding: 0;
+    }
+    .msg--error {
+      color: var(--error-color);
+    }
+    .msg--info {
+      color: var(--primary-color);
+    }
+    form {
+      min-width: 200px;
+      margin: 0 auto;
+    }
+    </style>
+
+    <div>
+      <div class="msg msg--error" hidden$="[[!_lastError]]">
+        <span>[[_lastError]]</span>
+      </div>
+      <div class="msg msg--info" hidden$="[[!_lastMessage]]">
+        <span>[[_lastMessage]]</span>
+      </div>
+    </div>
+
+    <form>
+      <paper-input id="emailInput"
+        type="email"
+        label="Email"
+        value="{{email}}"
+        error-message="Invalid email address"
+        required auto-validate>
+      </paper-input>
+      <paper-input id="passwordInput"
+        type="password"
+        label="Password"
+        value="{{password}}"
+        required>
+      </paper-input>
+      <p>
+        <a href="#" class="link--reset-pw" on-click="_resetPassword">
+          Reset password for entered email
+        </a>
+      </p>
+      <paper-button type="submit" on-tap="_signUp">Sign Up</paper-button>
+      <paper-button type="submit" on-tap="_signIn">Sign In</paper-button>
+    </form>
+
+    <firebase-auth id="auth"
+      app-name="[[appName]]"
+      user="{{_user}}"
+      signed-in="{{_signedIn}}"
+      status-known="{{_statusKnown}}">
+    </firebase-auth>
+  </template>
+
+  <script>
+  Polymer({
+    is: 'login-fire-form',
+    behaviors: [Convoo.LoginFireCommonBehavior],
+
+    properties: {
+      /**
+       * If true, will sign up a user who attempts to sign in with an account
+       * that doesn't already exist.
+       *
+       * @type {Boolean}
+       */
+      autoSignUp: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Provider ID to use for Firebase Auth.
+       *
+       * @type {String}
+       */
+      provider: {
+        type: String,
+        readOnly: true,
+        notify: false,
+        value: 'password'
+      },
+
+      /**
+       * Last error message.
+       *
+       * @type {String}
+       */
+      _lastError: {
+        type: String
+      },
+
+      /**
+       * Last message info.
+       *
+       * @type {String}
+       */
+      _lastMessage: {
+        type: String
+      }
+    },
+
+    listeners: {
+      'login-fire-error': '_handleError'
+    },
+
+    /**
+     * Cleans message and error sections.
+     */
+    _cleanMessages: function() {
+      this.set('_lastError', '');
+      this.set('_lastMessage', '');
+    },
+
+    /**
+     * Tries to sign in a user using the form values.
+     */
+    _signIn: function() {
+      this._cleanMessages();
+      this.signIn(this.email, this.password);
+    },
+
+    /**
+     * Tries to sign-up a user using the form values.
+     */
+    _signUp: function(e) {
+      this._cleanMessages();
+      this.signUp(this.email, this.password);
+    },
+
+    /**
+     * Displays error message. If the attribute `autoSignUp` if true, before
+     * to display the error message, a sign-up process is tried.
+     *
+     * @param  {Object} e the event caught that contains the error message
+     */
+    _handleError: function(e) {
+      if (this.autoSignUp && e.detail.code === 'auth/user-not-found') {
+        this.signUp(this.email, this.password);
+        this.email = null;
+        this.password = null;
+      } else {
+        this.set('_lastError', e.detail.message);
+      }
+    },
+
+    /**
+     * Sends an email for resetting the account password. The email is sent to
+     * the address entered in the form when the user clicks on the link to reset
+     * its password.
+     */
+    _resetPassword: function() {
+      this._cleanMessages();
+      if(!this.email) {
+        this.set('_lastError', 'Please enter a valid email address.');
+        return;
+      }
+
+      this.$.auth.sendPasswordResetEmail(this.email).then(function() {
+        this.set('_lastMessage', 'Password reset email has been sent. Please check your inbox.');
+      }.bind(this), function (error) {
+        this.set('_lastError', error.message);
+      }.bind(this));
+    }
+  });
+  </script>
+</dom-module>

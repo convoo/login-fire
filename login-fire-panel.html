@@ -1,7 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-media-query/iron-media-query.html">
 <link rel="import" href="../polymerfire/firebase-auth.html">
-<link rel="import" href="email-login-fire.html">
+<link rel="import" href="login-fire-form.html">
 <link rel="import" href="login-fire-social.html">
 
 
@@ -92,7 +92,7 @@
   </template>
 
   <template is="dom-if" if={{emailPassword}}>
-    <email-login-fire
+    <login-fire-form
       id="emailLogin"
       class="flex"
       app-name="{{appName}}"
@@ -101,7 +101,7 @@
       password-reset-message="{{passwordResetMessage}}"
       auto-sign-up="{{autoSignUp}}"
       status-known="{{emailStatusKnown}}"
-    ></email-login-fire>
+    ></login-fire-form>
   </template>
 
   <iron-media-query query="(max-width: 650px)" query-matches="{{isNarrow}}"></iron-media-query>
@@ -149,7 +149,7 @@
      * An element that allows simple configuration of email and social provider login with
      * firebase.
      *
-     * For email authentication only, use email-login-fire.
+     * For email authentication only, use login-fire-form.
      *
      * For social provider authentication only, use login-fire-social.
      *
