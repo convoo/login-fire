@@ -170,7 +170,9 @@ Example:
 
 ```javascript
 _signOut: function(e){
-  this.$$('login-fire').signOut();
+  this.$$('login-fire-panel').signOut();
+  // or
+  // this.$$('login-fire-button').signOut();
   // or
   // this.$$('login-fire-social').signOut();
   // or
