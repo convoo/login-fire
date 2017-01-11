@@ -5,6 +5,7 @@ Use of this source code is governed by a MIT license that can be found in the
 LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 -->
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./login-fire-common-behavior.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="./login-fire-button.html">
 
@@ -62,20 +63,9 @@ Example:
   <script>
   Polymer({
     is: 'login-fire-social',
+    behaviors: [Convoo.LoginFireCommonBehavior],
 
     properties: {
-      /**
-       * Your application name. This is required if you want use several
-       * Firebase configuration on the same page. All elements that implement
-       * this behavior and having the same application name share their
-       * properties.
-       *
-       * @type {String}
-       */
-      appName: {
-        type: String
-      },
-
       /**
        * Flat buttons, yes or no.
        *
@@ -94,29 +84,6 @@ Example:
       mini: {
         type: Boolean,
         value: false
-      },
-
-      /**
-       * True if the client is authenticated, and false if the client is not
-       * authenticated.
-       *
-       * @type {Boolean}
-       */
-      signedIn: {
-        type: Boolean,
-        readOnly: true,
-        notify: true
-      },
-
-      /**
-       * When true, login status can be determined by checking user property.
-       *
-       * @type {Boolean}
-       */
-      statusKnown: {
-        type: Boolean,
-        readOnly: true,
-        notify: true
       },
 
       /**
@@ -141,18 +108,6 @@ Example:
       },
 
       /**
-       * Signed-in user. It is accessible from all elements that use Firebase
-       * Auth with the same application name.
-       *
-       * @type {Object}
-       */
-      user: {
-        type: Object,
-        readOnly: true,
-        notify: true
-      },
-
-      /**
        * Authentication providers. A list of the providers to use for
        * authentication. A button is displayed for each provider.
        *
@@ -162,40 +117,6 @@ Example:
         type: Array,
         readOnly: true,
         computed: '_computeProviders(providers)'
-      },
-
-      /**
-       * True if the client is authenticated, and false if the client is not
-       * authenticated. Updated by Firebase Auth.
-       *
-       * @type {Boolean}
-       */
-      _signedIn: {
-        type: Boolean,
-        observer: '_signedInChanged'
-      },
-
-      /**
-       * When true, login status can be determined by checking user property.
-       * Updated by Firebase Auth.
-       *
-       * @type {Object}
-       */
-      _statusKnown: {
-        type: Boolean,
-        observer: '_statusKnownChanged'
-      },
-
-      /**
-       * Signed-in user (private). It is accessible from all elements that use
-       * Firebase Auth with the same application name through the property
-       * `user`.
-       *
-       * @type {Object}
-       */
-      _user: {
-        type: Object,
-        observer: '_userChanged'
       }
     },
 
@@ -230,33 +151,6 @@ Example:
         }
       }
       return providers;
-    },
-
-    /**
-     * Updates the readOnly value of signedIn.
-     *
-     * @param  {Boolean} newVal
-     */
-    _signedInChanged: function(isSignedIn) {
-      this._setSignedIn(isSignedIn);
-    },
-
-    /**
-     * Updates the readOnly value of statusKnown.
-     *
-     * @param  {Boolean} newVal
-     */
-    _statusKnownChanged: function(isStatusKnown) {
-      this._setStatusKnown(isStatusKnown);
-    },
-
-    /**
-     * Updates the readOnly value of user.
-     *
-     * @param  {Object} user currently signed-in
-     */
-    _userChanged: function(user) {
-      this._setUser(user);
     }
   });
   </script>
