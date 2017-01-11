@@ -190,11 +190,19 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       }
 
       if (this.provider === 'anonymous') {
-        this.$.auth.signInAnonymously().then(this._fireEvent.bind(this));
+        this.$.auth.signInAnonymously()
+          .then(this._fireEvent.bind(this))
+          .catch(this._fireError.bind(this));
+
       } else if (this.redirect) {
-        this.$.auth.signInWithRedirect().then(this._fireEvent.bind(this));
+        this.$.auth.signInWithRedirect()
+          .then(this._fireEvent.bind(this))
+          .catch(this._fireError.bind(this));
+
       } else {
-        this.$.auth.signInWithPopup().then(this._fireEvent.bind(this));
+        this.$.auth.signInWithPopup()
+          .then(this._fireEvent.bind(this))
+          .catch(this._fireError.bind(this));
       }
     },
 
@@ -223,6 +231,15 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         redirect: redirect,
         debug: this.debug
       };
+    },
+
+    /**
+     * Fires the Firebase errors.
+     *
+     * @param  {Object} error get from Firebase Auth API
+     */
+    _fireError: function(error) {
+      this.fire('login-fire-error', error);
     },
 
     /**
@@ -290,6 +307,13 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       }
       this._setUser(newVal);
     }
+
+    /**
+     * Fired when Firebase returns an error.
+     *
+     * @event login-fire-error
+     * @param  {Object} error returned by Firebase Auth API.
+     */
 
     /**
      * Fired when a `user` just signed-in.
