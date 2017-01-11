@@ -105,6 +105,29 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       },
 
       /**
+       * True if the client is authenticated, and false if the client is not
+       * authenticated.
+       *
+       * @type {Boolean}
+       */
+      signedIn: {
+        type: Boolean,
+        readOnly: true,
+        notify: true
+      },
+
+      /**
+       * When true, login status can be determined by checking user property.
+       *
+       * @type {Boolean}
+       */
+      statusKnown: {
+        type: Boolean,
+        readOnly: true,
+        notify: true
+      },
+
+      /**
        * Signed-in user. It is accessible from all elements that use Firebase
        * Auth with the same application name.
        *
@@ -133,6 +156,28 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         type: Array,
         readOnly: true,
         value: Convoo._firebaseProviders
+      },
+
+      /**
+       * True if the client is authenticated, and false if the client is not
+       * authenticated. Updated by Firebase Auth.
+       *
+       * @type {Boolean}
+       */
+      _signedIn: {
+        type: Boolean,
+        observer: '_signedInChanged'
+      },
+
+      /**
+       * When true, login status can be determined by checking user property.
+       * Updated by Firebase Auth.
+       *
+       * @type {Object}
+       */
+      _statusKnown: {
+        type: Boolean,
+        observer: '_statusKnownChanged'
       },
 
       /**
@@ -228,6 +273,32 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       } else {
         this.signOut();
       }
+    },
+
+    /**
+     * Updates the readOnly value of signedIn.
+     *
+     * @param  {Boolean} newVal
+     * @param  {Boolean} oldVal
+     */
+    _signedInChanged: function(newVal, oldVal) {
+      if (this.debug && typeof oldVal !== 'undefined') {
+        console.log('SignedIn changed for', newVal);
+      }
+      this._setSignedIn(newVal);
+    },
+
+    /**
+     * Updates the readOnly value of statusKnown.
+     *
+     * @param  {Boolean} newVal
+     * @param  {Boolean} oldVal
+     */
+    _statusKnownChanged: function(newVal, oldVal) {
+      if (this.debug && typeof oldVal !== 'undefined') {
+        console.log('StatusKnown changed for', newVal);
+      }
+      this._setStatusKnown(newVal);
     },
 
     /**

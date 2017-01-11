@@ -53,7 +53,12 @@ Example:
       <span>[[_text]]</span>
     </paper-button>
 
-    <firebase-auth id="auth" app-name="[[appName]]" provider="[[provider]]" user="{{_user}}">
+    <firebase-auth id="auth"
+      app-name="[[appName]]"
+      provider="[[provider]]"
+      user="{{_user}}"
+      status-known="{{_statusKnown}}"
+      signed-in="{{_signedIn}}">
     </firebase-auth>
   </template>
 
