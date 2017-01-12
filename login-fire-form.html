@@ -122,6 +122,16 @@ Example:
       },
 
       /**
+       * Message displayed when the user ask for resetting its password.
+       *
+       * @type {String}
+       */
+      passwordResetMessage: {
+        type: String,
+        value: 'Password reset email has been sent. Please check your inbox.'
+      },
+
+      /**
        * Provider ID to use for Firebase Auth.
        *
        * @type {String}
@@ -209,7 +219,7 @@ Example:
       }
 
       this.$.auth.sendPasswordResetEmail(this.email).then(function() {
-        this.set('_lastMessage', 'Password reset email has been sent. Please check your inbox.');
+        this.set('_lastMessage', this.passwordResetMessage);
       }.bind(this), function (error) {
         this.set('_lastError', error.message);
       }.bind(this));
