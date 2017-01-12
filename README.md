@@ -55,7 +55,7 @@ until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed.
   auth-domain="convoo-login-demo.firebaseapp.com"
   database-url="https://convoo-login-demo.firebaseio.com">
 </firebase-app>
-<login-fire-panel email-password anonymous twitter github google facebook app-name="login" user="{{user}}" signed-in="{{signedIn}}"></login-fire-panel>
+<login-fire-panel providers="google, facebook, twitter, github, anonymous" app-name="login" user="{{user}}" signed-in="{{signedIn}}"></login-fire-panel>
 ```
 
 ## \<login-fire-social\>
@@ -88,7 +88,7 @@ Add social provider authentication to your app with firebase.
   auth-domain="convoo-login-demo.firebaseapp.com"
   database-url="https://convoo-login-demo.firebaseio.com">
 </firebase-app>
-<login-fire-social google facebook twitter github anonymous app-name="social" user="{{user}}" signed-in="{{signedIn}}"></login-fire-social>
+<login-fire-social providers="google, facebook, twitter, github, anonymous" app-name="social" user="{{user}}" signed-in="{{signedIn}}"></login-fire-social>
 ```
 
 
