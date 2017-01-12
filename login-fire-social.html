@@ -29,10 +29,7 @@ Example:
     <style>
       :host {
         @apply(--layout-vertical);
-        @apply(--layout-center);
-        margin: 0 auto;
-        text-align: center;
-        margin: 0 auto;
+        @apply(--layout-center-center);
       }
 
       :host([horizontal]) {
@@ -44,6 +41,10 @@ Example:
 
       login-fire-button {
         margin-bottom: 15px;
+      }
+
+      :host([horizontal]) login-fire-button {
+        margin-bottom: 0;
       }
     </style>
 
