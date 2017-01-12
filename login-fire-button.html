@@ -135,17 +135,17 @@ Example:
     _computeButtonText: function(user, provider) {
       // User logged in.
       if (typeof user !== 'undefined' && user != null) {
-        return 'Sign-out';
+        return 'Sign out';
       }
 
       // User not logged in and mini format.
       if (this.mini) {
-        return 'Sign-in';
+        return provider.name;
       }
 
       // User not logged in.
       return provider.id !== 'anonymous' ?
-        'Sign-in with ' + provider.name : 'Sign-in ' + provider.name;
+        'Sign in with ' + provider.name : 'Sign in ' + provider.name;
     }
   });
   </script>
