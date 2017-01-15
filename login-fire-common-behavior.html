@@ -45,6 +45,21 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
    * Behaviour that allows an element using Firebase Auth to sign-in and
    * sign-out with the selected provider.
    *
+   * Current accepted providers are:
+   *
+   * ```
+   * 'anonymous' (for signin anonymously)
+   * 'facebook'
+   * 'github'
+   * 'google'
+   * 'password' (email & password)
+   * 'twitter'
+   * ```
+   *
+   * If your element has to authenticate a user by email address and password,
+   * it has to implement the `LoginFireFormBehavior` behavior and use
+   * the provider 'password'.
+   *
    * @polymerBehavior Convoo.LoginFireCommonBehavior
    */
   Convoo.LoginFireCommonBehavior = {
@@ -186,27 +201,14 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     },
 
     /**
-     * Starts the sign-in process. If the element implementing the behavior
-     * wants to sign-in with an email and a password it has to use the provider
-     * "password". Oterwise, the email and password are irrelevant and ignored
-     * when the method is called by an element that uses a social provider
-     * authetication.
-     *
-     * @param  {String} email    address (optional)
-     * @param  {String} password (optional)
+     * Starts the sign-in process using a social provider authetication.
      */
-    signIn: function(email, password) {
+    signIn: function() {
       if (this.debug) {
         console.log('User signed in with', Convoo._firebaseProviders[this.provider].name);
       }
 
-      if (this.provider === 'password') {
-        this.$.auth
-          .signInWithEmailAndPassword(email, password)
-          .then(this._fireEvent.bind(this))
-          .catch(this._fireError.bind(this));
-
-      } else if (this.provider === 'anonymous') {
+      if (this.provider === 'anonymous') {
         this.$.auth.signInAnonymously()
           .then(this._fireEvent.bind(this))
           .catch(this._fireError.bind(this));
@@ -231,26 +233,6 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         console.log('User signed out');
       }
       this.$.auth.signOut().then(this._fireEvent.bind(this));
-    },
-
-    /**
-     * Starts the sign-up process. It requires a provider "password" and the two
-     * parameters `email` and `password`. The password must follow the format
-     * defined by Firebase Auth.
-     *
-     * @param  {String} email    address to use for creating the account
-     * @param  {String} password of the new account
-     */
-    signUp: function(email, password) {
-      if (this.provider === 'password') {
-        this.$.auth
-          .createUserWithEmailAndPassword(email, password)
-          .then(this._fireEvent.bind(this))
-          .catch(this._fireError.bind(this));
-      } else {
-        console.error('The provider "password" is required for sign up with' +
-          ' email address and password.');
-      }
     },
 
     /**
@@ -294,7 +276,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     },
 
     /**
-     * Starts signe in or sign out a user. If there is currently a user logged
+     * Starts sign in or sign out a user. If there is currently a user logged
      * in the `signOut` method is called. If there is no user logged in, the
      * `signIn` method is called.
      */

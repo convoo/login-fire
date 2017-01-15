@@ -1,0 +1,88 @@
+<!--
+@license
+Copyright (c) 2016 Convoo All Rights Reserved.
+Use of this source code is governed by a MIT license that can be found in the
+LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./login-fire-common-behavior.html">
+<script>
+(function() {
+  'use strict';
+
+  window.Convoo = window.Convoo || {};
+
+  /**
+   * Behaviour that allows an element using Firebase Auth to sign-in, sign-up
+   * and sign-out with email address and password. If your element must be able
+   * to use social provider authentication only, you can implement directly the
+   * `LoginFireCommonBehavior`.
+   *
+   * @polymerBehavior Convoo.LoginFireFormBehavior
+   */
+  Convoo.LoginFireFormBehaviorImpl = {
+
+    /**
+     * Starts the sign-in process.
+     *
+     * @param  {String} email    address
+     * @param  {String} password
+     */
+    signIn: function(email, password) {
+      if (this.debug) {
+        console.log('User signed in with', Convoo._firebaseProviders[this.provider].name);
+      }
+
+      this.$.auth
+        .signInWithEmailAndPassword(email, password)
+        .then(this._fireEvent.bind(this))
+        .catch(this._fireError.bind(this));
+    },
+
+    /**
+     * Starts sign in or sign out a user. If there is currently a user logged
+     * in the `signOut` method is called. If there is no user logged in, the
+     * `signIn` method is called.
+     *
+     * @param  {String} email    address
+     * @param  {String} password
+     */
+    signInOrOut: function(email, password) {
+      if (typeof this.user === 'undefined' || this.user == null) {
+        this.signIn(email, password);
+      } else {
+        this.signOut();
+      }
+    },
+
+    /**
+     * Starts the sign-up process. It requires a provider "password" and the two
+     * parameters `email` and `password`. The password must follow the format
+     * defined by Firebase Auth.
+     *
+     * @param  {String} email    address to use for creating the account
+     * @param  {String} password of the new account
+     */
+    signUp: function(email, password) {
+      if (this.provider === 'password') {
+        this.$.auth
+          .createUserWithEmailAndPassword(email, password)
+          .then(this._fireEvent.bind(this))
+          .catch(this._fireError.bind(this));
+      } else {
+        console.error('The provider "password" is required for sign up with ' +
+          'email address and password.');
+      }
+    }
+  };
+
+  /**
+   * @polymerBehavior
+   */
+  Convoo.LoginFireFormBehavior = [
+    Convoo.LoginFireCommonBehavior,
+    Convoo.LoginFireFormBehaviorImpl
+  ];
+
+})();
+</script>
