@@ -276,7 +276,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      * @param  {Object} error get from Firebase Auth API
      */
     _fireError: function(error) {
-      this.fire('login-fire-error', error);
+      this.fire('error', error);
     },
 
     /**
@@ -287,9 +287,9 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     _fireEvent: function(response) {
       if (response) {
         var user = response.user || response;
-        this.fire('login-fire-signedin', user);
+        this.fire('signedin', user);
       } else {
-        this.fire('login-fire-signedout');
+        this.fire('signedout');
       }
     },
 
@@ -348,21 +348,21 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     /**
      * Fired when Firebase returns an error.
      *
-     * @event login-fire-error
+     * @event error
      * @param  {Object} error returned by Firebase Auth API.
      */
 
     /**
      * Fired when a `user` just signed-in.
      *
-     * @event login-fire-signedin
+     * @event signedin
      * @param {Object} user signed-in.
      */
 
     /**
      * Fired when the `user` signed-out.
      *
-     * @event login-fire-signedout
+     * @event signedout
      */
   };
 }());
