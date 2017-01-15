@@ -56,6 +56,10 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
    * 'twitter'
    * ```
    *
+   * If your element has to authenticate a user using a social provider
+   * authentication, it has to implement the `LoginFireSocialBehavior` behavior
+   * and use one of the social providers.
+   *
    * If your element has to authenticate a user by email address and password,
    * it has to implement the `LoginFireFormBehavior` behavior and use
    * the provider 'password'.
@@ -201,31 +205,6 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     },
 
     /**
-     * Starts the sign-in process using a social provider authetication.
-     */
-    signIn: function() {
-      if (this.debug) {
-        console.log('User signed in with', Convoo._firebaseProviders[this.provider].name);
-      }
-
-      if (this.provider === 'anonymous') {
-        this.$.auth.signInAnonymously()
-          .then(this._fireEvent.bind(this))
-          .catch(this._fireError.bind(this));
-
-      } else if (this.redirect) {
-        this.$.auth.signInWithRedirect()
-          .then(this._fireEvent.bind(this))
-          .catch(this._fireError.bind(this));
-
-      } else {
-        this.$.auth.signInWithPopup()
-          .then(this._fireEvent.bind(this))
-          .catch(this._fireError.bind(this));
-      }
-    },
-
-    /**
      * Starts the sign-out process.
      */
     signOut: function() {
@@ -272,19 +251,6 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         this.fire('signedin', user);
       } else {
         this.fire('signedout');
-      }
-    },
-
-    /**
-     * Starts sign in or sign out a user. If there is currently a user logged
-     * in the `signOut` method is called. If there is no user logged in, the
-     * `signIn` method is called.
-     */
-    signInOrOut: function() {
-      if (typeof this.user === 'undefined' || this.user == null) {
-        this.signIn();
-      } else {
-        this.signOut();
       }
     },
 
