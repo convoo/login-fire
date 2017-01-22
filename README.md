@@ -125,7 +125,29 @@ Add email authentication to your app with firebase.
 <email-login-fire app-name="email" user="{{user}}" signed-in="{{signedIn}}"></email-login-fire>
 ```
 
-## Signing Out
+## \<logout-fire\>
+
+A helper component for logging out. It creates a paper-button with the text that you type in its content.
+
+<!--
+```
+<custom-element-demo>
+  <template>
+    <link rel="import" href="logout-fire.html">
+    <div>
+      <template is="dom-bind">
+        <next-code-block></next-code-block>
+      </template>
+    </div>
+  </template>
+</custom-element-demo>
+```
+-->
+```html
+<logout-fire app-name="theAppName">Sign Out</logout-fire>
+```
+
+## Signing Out without \<logout-fire\>
 
 To sign out, access the login-fire element and call its signOut function.
 Example:

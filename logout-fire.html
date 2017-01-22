@@ -1,0 +1,43 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../polymerfire/firebase-auth.html">
+
+<dom-module id="logout-fire">
+<template>
+  <style>
+  :host {
+      display: block;
+  }
+  </style>
+  <firebase-auth id="auth" app-name="{{appName}}"></firebase-auth>
+  <paper-button raised on-tap="_logout"><content></content></paper-button>
+</template>
+<script>
+    /**
+     * An element to logout of firebase.
+     *
+     *
+     * Example:
+     * ```
+     * <firebase-app
+     *   name="demo"
+     *   api-key="API_KEY"
+     *   auth-domain="AUTH_DOMAIN"
+     *   database-url="DATABASE_URL"></firebase-app>
+     * <logout-fire app-name="demo"></logout-fire>
+     * ```
+     *
+     * @demo demo/index.html
+     */
+    Polymer({
+    is: 'logout-fire',
+    properties: {
+        appName: String
+    },
+    _logout: function(){
+        this.$.auth.signOut();
+    }
+    });
+
+</script>
+</dom-module>

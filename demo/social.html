@@ -10,6 +10,7 @@
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
 
     <link rel="import" href="../social-login-fire.html">
+    <link rel="import" href="../logout-fire.html">
     <link rel="import" href="../../polymerfire/firebase-app.html">
     <link rel="import" href="../../paper-dialog/paper-dialog.html">
 
@@ -29,6 +30,7 @@
             database-url="https://convoo-login-demo.firebaseio.com">
           </firebase-app>
           <social-login-fire google facebook twitter github anonymous app-name="narrowDemo"></social-login-fire>
+          <logout-fire app-name="narrowDemo">Sign Out</logout-fire>
         </template>
       </demo-snippet>
     </div>
@@ -45,6 +47,7 @@
           >
           </firebase-app>
           <social-login-fire google facebook twitter github anonymous app-name="debugDemo" debug></social-login-fire>
+          <logout-fire app-name="debugDemo">Sign Out</logout-fire>
         </template>
       </demo-snippet>
     </div>
@@ -61,6 +64,7 @@
           >
           </firebase-app>
           <social-login-fire google facebook twitter github anonymous app-name="wideDemo"></social-login-fire>
+          <logout-fire app-name="wideDemo">Sign Out</logout-fire>
         </template>
       </demo-snippet>
     </div>
@@ -77,6 +81,7 @@
           >
           </firebase-app>
           <social-login-fire horizontal google facebook twitter github anonymous app-name="horizontalDemo"></social-login-fire>
+          <logout-fire app-name="horizontalDemo">Sign Out</logout-fire>
         </template>
       </demo-snippet>
     </div>
@@ -94,6 +99,7 @@
           </firebase-app>
           <h2 style="text-align: center;">Sign In</h2>
           <social-login-fire mini horizontal google facebook twitter github anonymous app-name="miniHorizontalDemo"></social-login-fire>
+          <logout-fire app-name="miniHorizontalDemo">Sign Out</logout-fire>
         </template>
       </demo-snippet>
     </div>
@@ -110,6 +116,7 @@
           </firebase-app>
           <h2 style="text-align: center;">Sign In</h2>
           <social-login-fire mini google facebook twitter github anonymous app-name="miniNarrowDemo"></social-login-fire>
+          <logout-fire app-name="miniNarrowDemo">Sign Out</logout-fire>
         </template>
       </demo-snippet>
     </div>
@@ -134,6 +141,7 @@
                 database-url="https://convoo-login-demo.firebaseio.com">
               </firebase-app>
               <social-login-fire google facebook twitter github anonymous app-name="modalDemo"></social-login-fire>
+              <logout-fire app-name="modalDemo">Sign Out</logout-fire>
             </paper-dialog-scrollable>
           </paper-dialog>
         </template>

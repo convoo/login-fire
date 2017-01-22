@@ -10,6 +10,7 @@
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
 
     <link rel="import" href="../email-login-fire.html">
+    <link rel="import" href="../logout-fire.html">
     <link rel="import" href="../../polymerfire/firebase-app.html">
     <link rel="import" href="../../paper-dialog/paper-dialog.html">
 
@@ -29,6 +30,7 @@
             database-url="https://convoo-login-demo.firebaseio.com">
           </firebase-app>
           <email-login-fire app-name="narrowDemo"></email-login-fire>
+          <logout-fire app-name="narrowDemo">Sign Out</logout-fire>
         </template>
       </demo-snippet>
     </div>
@@ -45,6 +47,7 @@
           >
           </firebase-app>
           <email-login-fire app-name="debugDemo" debug></email-login-fire>
+          <logout-fire app-name="debugDemo">Sign Out</logout-fire>
         </template>
       </demo-snippet>
     </div>
@@ -61,6 +64,7 @@
           >
           </firebase-app>
           <email-login-fire app-name="wideDemo"></email-login-fire>
+          <logout-fire app-name="wideDemo">Sign Out</logout-fire>
         </template>
       </demo-snippet>
     </div>
@@ -85,6 +89,7 @@
                 database-url="https://convoo-login-demo.firebaseio.com">
               </firebase-app>
               <email-login-fire app-name="modalDemo"></email-login-fire>
+              <logout-fire app-name="modalDemo">Sign Out</logout-fire>
             </paper-dialog-scrollable>
           </paper-dialog>
         </template>
