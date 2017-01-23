@@ -25,10 +25,6 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      * Starts the sign-in process using a social provider authetication.
      */
     signIn: function() {
-      if (this.debug) {
-        console.log('User signed in with', Convoo._firebaseProviders[this.provider].name);
-      }
-
       if (this.provider === 'anonymous') {
         this.$.auth.signInAnonymously()
           .then(this._fireEvent.bind(this))

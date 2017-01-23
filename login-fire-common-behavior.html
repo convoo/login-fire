@@ -199,8 +199,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 
     ready: function() {
       if (this.debug) {
-        console.info('### Debug Mode Enabled ###');
-        console.log('Initial configuration:', this.config);
+        console.debug('### Debug Mode Enabled ###');
+        console.debug('Initial configuration:', this.config);
       }
     },
 
@@ -209,9 +209,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      */
     signOut: function() {
       if (this.debug) {
-        console.log('User signed out');
+        console.debug('User signed out');
       }
-      this.$.auth.signOut().then(this._fireEvent.bind(this));
     },
 
     /**
@@ -249,8 +248,14 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       if (response) {
         var user = response.user || response;
         this.fire('signedin', user);
+        if (this.debug) {
+          console.debug('User signed in with', this.config.provider.name);
+        }
       } else {
         this.fire('signedout');
+        if (this.debug) {
+          console.debug('User signed out from', this.config.provider.name);
+        }
       }
     },
 
@@ -262,7 +267,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      */
     _signedInChanged: function(newVal, oldVal) {
       if (this.debug && typeof oldVal !== 'undefined') {
-        console.log('SignedIn changed for', newVal);
+        console.debug('SignedIn changed for', newVal);
       }
       this._setSignedIn(newVal);
     },
@@ -275,7 +280,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      */
     _statusKnownChanged: function(newVal, oldVal) {
       if (this.debug && typeof oldVal !== 'undefined') {
-        console.log('StatusKnown changed for', newVal);
+        console.debug('StatusKnown changed for', newVal);
       }
       this._setStatusKnown(newVal);
     },
@@ -288,7 +293,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      */
     _userChanged: function(newVal, oldVal) {
       if (this.debug && typeof oldVal !== 'undefined') {
-        console.log('User changed for', newVal);
+        console.debug('User changed for', newVal);
       }
       this._setUser(newVal);
     }

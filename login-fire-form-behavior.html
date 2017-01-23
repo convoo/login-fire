@@ -29,10 +29,6 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      * @param  {String} password
      */
     signIn: function(email, password) {
-      if (this.debug) {
-        console.log('User signed in with', Convoo._firebaseProviders[this.provider].name);
-      }
-
       this.$.auth
         .signInWithEmailAndPassword(email, password)
         .then(this._fireEvent.bind(this))
