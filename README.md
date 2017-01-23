@@ -23,14 +23,14 @@ bower install login-fire --save
 ```
 
 
-## \<login-fire-panel\>
+## \<login-fire\>
 
 Add email and password authentication as well as social provider authentication to your app.
 If you want to only add social authentication or only email authentication please use \<login-fire-social\> or \<login-fire-form\> instead
 until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed.
 
 ```html
-<link rel="import" href="/bower_components/login-fire/login-fire-panel.html">
+<link rel="import" href="/bower_components/login-fire/login-fire.html">
 ```
 
 <!--
@@ -38,7 +38,7 @@ until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed.
 <custom-element-demo>
   <template>
     <link rel="import" href="../polymerfire/firebase-app.html">
-    <link rel="import" href="login-fire-panel.html">
+    <link rel="import" href="login-fire.html">
     <div>
       <template is="dom-bind">
         <next-code-block></next-code-block>
@@ -55,7 +55,7 @@ until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed.
   auth-domain="convoo-login-demo.firebaseapp.com"
   database-url="https://convoo-login-demo.firebaseio.com">
 </firebase-app>
-<login-fire-panel providers="google, facebook, twitter, github, anonymous" app-name="login" user="{{user}}" signed-in="{{signedIn}}"></login-fire-panel>
+<login-fire providers="google, facebook, twitter, github, anonymous" app-name="login" user="{{user}}" signed-in="{{signedIn}}"></login-fire>
 ```
 
 ## \<login-fire-social\>
@@ -170,7 +170,7 @@ Example:
 
 ```javascript
 _signOut: function(e){
-  this.$$('login-fire-panel').signOut();
+  this.$$('login-fire').signOut();
   // or
   // this.$$('login-fire-button').signOut();
   // or

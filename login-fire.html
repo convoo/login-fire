@@ -1,5 +1,228 @@
-<link rel="import" href="./login-fire-panel.html">
-<link rel="import" href="./login-fire-social.html">
-<link rel="import" href="./login-fire-button.html">
-<link rel="import" href="./login-fire-form.html">
+<!--
+@license
+Copyright (c) 2016 Convoo All Rights Reserved.
+Use of this source code is governed by a MIT license that can be found in the
+LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
+-->
+<link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="./login-fire-common-behavior.html">
+<link rel="import" href="../iron-media-query/iron-media-query.html">
+<link rel="import" href="../polymerfire/firebase-auth.html">
+<link rel="import" href="./login-fire-form.html">
+<link rel="import" href="./login-fire-social.html">
+
+<!--
+An element that allows simple configuration of email and social provider login with Firebase.
+
+For email authentication only, use login-fire-form.
+For social provider authentication only, use login-fire-social.
+For both email and social provider authentication, use login-fire.
+
+Example:
+```
+<firebase-app
+ name="demo"
+ api-key="API_KEY"
+ auth-domain="AUTH_DOMAIN"
+ database-url="DATABASE_URL"></firebase-app>
+<login-fire app-name="demo" email-password twitter google facebook></login-fire>
+```
+
+@demo demo/login-fire.html
+-->
+<dom-module id="login-fire">
+  <template>
+    <style>
+    :host {
+      @apply(--layout-horizontal);
+      @apply(--layout-wrap);
+      @apply(--layout-center-center);
+    }
+    :host([reverse]) {
+      @apply(--layout-horizontal-reverse);
+    }
+    :host([horizontal]) {
+      @apply(--layout-vertical);
+      @apply(--layout-center);
+    }
+    :host([horizontal][reverse]) {
+      @apply(--layout-vertical-reverse);
+    }
+    .div {
+      @apply(--layout-center-center);
+      width: 1px;
+      border-top: 1px solid #e0e0e0;
+      border-right: 1px solid #e0e0e0;
+    }
+    .div__span {
+      padding: 10px;
+      background-color: white;
+      font-size: 12px;
+      font-style: italic;
+      color: grey;
+      font-weight: lighter;
+    }
+    .div--hidden {
+      display: none;
+    }
+    .div--vertical {
+      @apply(--layout-horizontal);
+      margin: 0 50px;
+      min-height: 200px;
+      max-height: 400px;
+    }
+    .div--horizontal {
+      @apply(--layout-vertical);
+      height: 1px;
+      margin: 50px 0;
+      min-width: 300px;
+      max-width: 400px;
+    }
+    </style>
+
+    <login-fire-form
+      app-name="[[appName]]"
+      user="{{_user}}"
+      signed-in="{{_signedIn}}"
+      status-known="{{_statusKnown}}"
+      password-reset-message="[[passwordResetMessage]]"
+      auto-sign-up="[[autoSignUp]]"
+      can-sign-out="[[canSignOut]]">
+    </login-fire-form>
+
+    <div class$="div [[_dividerStyle]]" hidden$="[[noDivider]]">
+      <span class="div__span">or</span>
+    </div>
+
+    <login-fire-social
+      app-name="[[appName]]"
+      providers="[[providers]]"
+      user="{{_user}}"
+      signed-in="{{_signedIn}}"
+      status-known="{{_statusKnown}}"
+      can-sign-out="[[canSignOut]]"
+      redirect="[[redirect]]"
+      mini$="[[mini]]"
+      horizontal$="[[horizontal]]">
+    </login-fire-social>
+
+    <iron-media-query query="(max-width: 650px)" query-matches="{{isNarrow}}">
+    </iron-media-query>
+  </template>
+
+  <script>
+  Polymer({
+    is: 'login-fire',
+    behaviors: [Convoo.LoginFireCommonBehavior],
+
+    properties: {
+      /**
+       * Enables automatic sign-up on form if the user does not exist.
+       *
+       * @type {Boolean}
+       */
+      autoSignUp: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+      * Prefers a horizontally structured social login.
+      *
+      * @type{Boolean}
+      */
+      horizontal: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Sets custom message displayed when use ask to reset its password.
+       *
+       * @type {String}
+       */
+      passwordResetMessage: {
+        type: String
+      },
+
+      /**
+      * Providers names. A list of the providers names, seperated by comma, to
+      * use for authentication. A button is displayed for each provider.
+      *
+      * Current accepted providers are:
+      *
+      * ```
+      * 'anonymous' (for signin anonymously)
+      * 'facebook'
+      * 'github'
+      * 'google'
+      * 'twitter'
+      * ```
+      *
+      * @type {String}
+      */
+      providers: {
+        type: String,
+        value: 'anonymous'
+      },
+
+      /**
+       * Displays mini social sign in buttons removing the "Sign in with" text
+       */
+      mini: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Hides the divider.
+       *
+       * @type {Boolean}
+       */
+      noDivider: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+      * Displays social buttons first instead of the form. By default, the form
+      * is displayed first.
+      *
+      * @type{Boolean}
+      */
+      reverse: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Sets the divider in horizontal or vertical orientation.
+       *
+       * @type {String}
+       */
+      _dividerStyle: {
+        type: String,
+        computed: '_computeDividerStyle(isNarrow, horizontal)'
+      }
+    },
+
+    /**
+     * Signs the user out regardless the provider used for the sign-in.
+     */
+    signOut: function() {
+      this.$$('login-fire-social').signOut();
+    },
+
+    /**
+     * Computes CSS class for the divider.
+     *
+     * @param  {Boolean} isNarrow
+     * @param  {Boolean} horizontal
+     * @return {String}            CSS class to set to the divider
+     */
+    _computeDividerStyle: function(isNarrow, horizontal) {
+      return (horizontal || isNarrow) ? 'div--horizontal' : 'div--vertical';
+    }
+  });
+  </script>
+</dom-module>
