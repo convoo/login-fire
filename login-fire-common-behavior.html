@@ -81,6 +81,20 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       },
 
       /**
+       * Allows the element to sign out. It means, if this attribute is `true`,
+       * the element can use the method `signOut`. Otherwise, when the value is
+       * `false`, the method has no effect. This attribute allows your element
+       * to have two states ("signed in" and "signed out") and to know easily
+       * the current one combined with the value of `signedIn`.
+       *
+       * @type {Boolean}
+       */
+      canSignOut: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
        * Element configuration (app name, provider, etc...).
        *
        * @type {Object}
@@ -209,7 +223,10 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      */
     signOut: function() {
       if (this.debug) {
-        console.debug('User signed out');
+        console.debug('The element ' + this.is + (this.canSignOut ? ' can' : ' cannot') + ' sign out.');
+      }
+      if (this.canSignOut) {
+        this.$.auth.signOut().then(this._fireEvent.bind(this));
       }
     },
 

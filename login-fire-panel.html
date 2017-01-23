@@ -86,7 +86,8 @@ Example:
       signed-in="{{_signedIn}}"
       status-known="{{_statusKnown}}"
       password-reset-message="[[passwordResetMessage]]"
-      auto-sign-up="[[autoSignUp]]">
+      auto-sign-up="[[autoSignUp]]"
+      can-sign-out="[[canSignOut]]">
     </login-fire-form>
 
     <div class$="div [[_dividerStyle]]" hidden$="[[noDivider]]">
@@ -101,7 +102,8 @@ Example:
       status-known="{{_statusKnown}}"
       redirect="[[redirect]]"
       mini$="[[mini]]"
-      horizontal$="[[horizontal]]">
+      horizontal$="[[horizontal]]"
+      can-sign-out="[[canSignOut]]">
     </login-fire-social>
 
     <iron-media-query query="(max-width: 650px)" query-matches="{{isNarrow}}">

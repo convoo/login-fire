@@ -49,7 +49,7 @@ Example:
     </style>
 
     <paper-button class$="btn btn--[[provider]] [[_miniClass]]" raised$="[[!flat]]">
-      <iron-icon class="btn__icon" icon="login-fire-icons:[[provider]]" hidden$="[[_user]]"></iron-icon>
+      <iron-icon class="btn__icon" icon="login-fire-icons:[[provider]]" hidden$="[[_hideIcon]]"></iron-icon>
       <span>[[_text]]</span>
     </paper-button>
 
@@ -89,6 +89,16 @@ Example:
       },
 
       /**
+       * Defines if the provider icon must be hidden or not.
+       *
+       * @type {Boolean}
+       */
+      _hideIcon: {
+        type: Boolean,
+        computed: '_computeHideIcon(canSignOut, signedIn)'
+      },
+
+      /**
        * CSS class added when the button has mini format.
        *
        * @type {String}
@@ -114,6 +124,19 @@ Example:
     },
 
     /**
+     * The provider logo must be hidden if the element can sign out and a user
+     * is currently signed in.
+     *
+     * @param  {Boolean} canSignOut is `true` of the element can signing out
+     * @param  {Boolean} signedIn   is `true` if a user is actually signed in
+     * @return {Boolean}            `true` if the element can sign out and a
+     * user is currently signed in.
+     */
+    _computeHideIcon: function(canSignOut, signedIn) {
+      return canSignOut && signedIn;
+    },
+
+    /**
      * Computes the CSS class to add according to the mini format of the
      * element.
      *
@@ -134,7 +157,7 @@ Example:
      */
     _computeButtonText: function(user, provider) {
       // User logged in.
-      if (typeof user !== 'undefined' && user != null) {
+      if (this.canSignOut && this.signedIn) {
         return 'Sign out';
       }
 
