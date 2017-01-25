@@ -1,0 +1,68 @@
+<!--
+@license
+Copyright (c) 2016 Convoo All Rights Reserved.
+Use of this source code is governed by a MIT license that can be found in the
+LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./login-fire-common-behavior.html">
+<script>
+(function() {
+  'use strict';
+
+  window.Convoo = window.Convoo || {};
+
+  /**
+   * Behaviour that allows an element using Firebase Auth to sign-in, sign-up
+   * and sign-out with social provider authentication. If your element must be
+   * able to use email address and password authentication only, you can
+   * implement the `LoginFireFormBehavior`.
+   *
+   * @polymerBehavior Convoo.LoginFireSocialBehavior
+   */
+  Convoo.LoginFireSocialBehaviorImpl = {
+    /**
+     * Starts the sign-in process using a social provider authetication.
+     */
+    signIn: function() {
+      if (this.provider === 'anonymous') {
+        this.$.auth.signInAnonymously()
+          .then(this._fireEvent.bind(this))
+          .catch(this._fireError.bind(this));
+
+      } else if (this.redirect) {
+        this.$.auth.signInWithRedirect()
+          .then(this._fireEvent.bind(this))
+          .catch(this._fireError.bind(this));
+
+      } else {
+        this.$.auth.signInWithPopup()
+          .then(this._fireEvent.bind(this))
+          .catch(this._fireError.bind(this));
+      }
+    },
+
+    /**
+     * Starts sign in or sign out a user. If there is currently a user logged
+     * in the `signOut` method is called. If there is no user logged in, the
+     * `signIn` method is called.
+     */
+    signInOrOut: function() {
+      if (typeof this.user === 'undefined' || this.user == null) {
+        this.signIn();
+      } else {
+        this.signOut();
+      }
+    }
+  };
+
+  /**
+   * @polymerBehavior
+   */
+  Convoo.LoginFireSocialBehavior = [
+    Convoo.LoginFireCommonBehavior,
+    Convoo.LoginFireSocialBehaviorImpl
+  ]
+
+})();
+</script>

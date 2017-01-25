@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>social-login-fire demo</title>
+    <title>login-fire-social demo</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
@@ -9,7 +9,7 @@
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
 
-    <link rel="import" href="../social-login-fire.html">
+    <link rel="import" href="../login-fire-social.html">
     <link rel="import" href="../../polymerfire/firebase-app.html">
     <link rel="import" href="../../paper-dialog/paper-dialog.html">
 
@@ -19,7 +19,7 @@
   <body>
 
     <div class="vertical-section-container centered">
-      <h3>Narrow social-login-fire Demo</h3>
+      <h3>Narrow login-fire-social Demo</h3>
       <demo-snippet>
         <template >
           <firebase-app
@@ -28,98 +28,75 @@
             auth-domain="convoo-login-demo.firebaseapp.com"
             database-url="https://convoo-login-demo.firebaseio.com">
           </firebase-app>
-          <social-login-fire google facebook twitter github anonymous app-name="narrowDemo"></social-login-fire>
+          <login-fire-social app-name="narrowDemo"></login-fire-social>
         </template>
       </demo-snippet>
     </div>
 
     <div class="vertical-section-container centered">
-      <h3>Debug narrow social-login-fire Demo</h3>
+      <h3>Wide login-fire-social Demo</h3>
       <demo-snippet>
         <template >
           <firebase-app
-            name="debugDemo"
+            name="allDemo"
             api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
             auth-domain="convoo-login-demo.firebaseapp.com"
-            database-url="https://convoo-login-demo.firebaseio.com"
-          >
+            database-url="https://convoo-login-demo.firebaseio.com">
           </firebase-app>
-          <social-login-fire google facebook twitter github anonymous app-name="debugDemo" debug></social-login-fire>
+          <login-fire-social app-name="allDemo" providers="google, facebook, twitter, github, anonymous"></login-fire-social>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>Mini login-fire-social Demo</h3>
+      <demo-snippet>
+        <template >
+          <firebase-app
+            name="miniDemo"
+            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+            auth-domain="convoo-login-demo.firebaseapp.com"
+            database-url="https://convoo-login-demo.firebaseio.com">
+          </firebase-app>
+          <login-fire-social mini providers="google, facebook, twitter, github, anonymous" app-name="miniDemo"></login-fire-social>
         </template>
       </demo-snippet>
     </div>
 
     <div class="horizontal-section-container centered">
-      <h3>Wide social-login-fire Demo</h3>
-      <demo-snippet>
-        <template >
-          <firebase-app
-            name="wideDemo"
-            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
-            auth-domain="convoo-login-demo.firebaseapp.com"
-            database-url="https://convoo-login-demo.firebaseio.com"
-          >
-          </firebase-app>
-          <social-login-fire google facebook twitter github anonymous app-name="wideDemo"></social-login-fire>
-        </template>
-      </demo-snippet>
-    </div>
-
-    <div class="horizontal-section-container centered">
-      <h3>Wide horizontal social-login-fire Demo</h3>
+      <h3>Wide horizontal login-fire-social Demo</h3>
       <demo-snippet>
         <template >
           <firebase-app
             name="horizontalDemo"
             api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
             auth-domain="convoo-login-demo.firebaseapp.com"
-            database-url="https://convoo-login-demo.firebaseio.com"
-          >
+            database-url="https://convoo-login-demo.firebaseio.com">
           </firebase-app>
-          <social-login-fire horizontal google facebook twitter github anonymous app-name="horizontalDemo"></social-login-fire>
+          <login-fire-social horizontal providers="google, facebook, twitter, github, anonymous" app-name="horizontalDemo"></login-fire-social>
         </template>
       </demo-snippet>
     </div>
 
     <div class="horizontal-section-container centered">
-      <h3>Mini horizontal social-login-fire Demo</h3>
+      <h3>Mini horizontal login-fire-social Demo</h3>
       <demo-snippet>
         <template >
           <firebase-app
             name="miniHorizontalDemo"
             api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
             auth-domain="convoo-login-demo.firebaseapp.com"
-            database-url="https://convoo-login-demo.firebaseio.com"
-          >
-          </firebase-app>
-          <h2 style="text-align: center;">Sign In</h2>
-          <social-login-fire mini horizontal google facebook twitter github anonymous app-name="miniHorizontalDemo"></social-login-fire>
-        </template>
-      </demo-snippet>
-    </div>
-
-    <div class="vertical-section-container centered">
-      <h3>Narrow mini social-login-fire Demo</h3>
-      <demo-snippet>
-        <template >
-          <firebase-app
-            name="miniNarrowDemo"
-            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
-            auth-domain="convoo-login-demo.firebaseapp.com"
             database-url="https://convoo-login-demo.firebaseio.com">
           </firebase-app>
-          <h2 style="text-align: center;">Sign In</h2>
-          <social-login-fire mini google facebook twitter github anonymous app-name="miniNarrowDemo"></social-login-fire>
+          <login-fire-social mini horizontal providers="google, facebook, twitter, github, anonymous" app-name="miniHorizontalDemo"></login-fire-social>
         </template>
       </demo-snippet>
     </div>
 
     <div class="vertical-section-container centered">
-      <h3>social-login-fire in modal demo </h3>
+      <h3>login-fire-social in modal demo </h3>
       <demo-snippet>
-
         <paper-button raised onclick="dialog.open()">login-fire in modal</paper-button>
-
         <template>
           <style>
             paper-dialog {
@@ -133,7 +110,7 @@
                 auth-domain="convoo-login-demo.firebaseapp.com"
                 database-url="https://convoo-login-demo.firebaseio.com">
               </firebase-app>
-              <social-login-fire google facebook twitter github anonymous app-name="modalDemo"></social-login-fire>
+              <login-fire-social providers="google, facebook, twitter, github, anonymous" app-name="modalDemo"></login-fire-social>
             </paper-dialog-scrollable>
           </paper-dialog>
         </template>

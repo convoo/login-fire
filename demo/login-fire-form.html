@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>email-login-fire demo</title>
+    <title>login-fire-form demo</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
@@ -9,7 +9,7 @@
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
 
-    <link rel="import" href="../email-login-fire.html">
+    <link rel="import" href="../login-fire-form.html">
     <link rel="import" href="../../polymerfire/firebase-app.html">
     <link rel="import" href="../../paper-dialog/paper-dialog.html">
 
@@ -18,8 +18,8 @@
   </head>
   <body>
 
-  <div class="vertical-section-container centered">
-      <h3>Narrow email-login-fire Demo</h3>
+    <div class="vertical-section-container centered">
+      <h3>Narrow login-fire-form Demo</h3>
       <demo-snippet>
         <template >
           <firebase-app
@@ -28,45 +28,43 @@
             auth-domain="convoo-login-demo.firebaseapp.com"
             database-url="https://convoo-login-demo.firebaseio.com">
           </firebase-app>
-          <email-login-fire app-name="narrowDemo"></email-login-fire>
+          <login-fire-form app-name="narrowDemo"></login-fire-form>
         </template>
       </demo-snippet>
     </div>
 
     <div class="vertical-section-container centered">
-      <h3>Debug narrow email-login-fire Demo</h3>
+      <h3>Debug narrow login-fire-form Demo</h3>
       <demo-snippet>
         <template >
           <firebase-app
             name="debugDemo"
             api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
             auth-domain="convoo-login-demo.firebaseapp.com"
-            database-url="https://convoo-login-demo.firebaseio.com"
-          >
+            database-url="https://convoo-login-demo.firebaseio.com">
           </firebase-app>
-          <email-login-fire app-name="debugDemo" debug></email-login-fire>
+          <login-fire-form app-name="debugDemo" debug></login-fire-form>
         </template>
       </demo-snippet>
     </div>
 
     <div class="horizontal-section-container centered">
-      <h3>Wide email-login-fire Demo</h3>
+      <h3>Wide login-fire-form Demo</h3>
       <demo-snippet>
         <template >
           <firebase-app
             name="wideDemo"
             api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
             auth-domain="convoo-login-demo.firebaseapp.com"
-            database-url="https://convoo-login-demo.firebaseio.com"
-          >
+            database-url="https://convoo-login-demo.firebaseio.com">
           </firebase-app>
-          <email-login-fire app-name="wideDemo"></email-login-fire>
+          <login-fire-form app-name="wideDemo"></login-fire-form>
         </template>
       </demo-snippet>
     </div>
 
     <div class="vertical-section-container centered">
-      <h3>email-login-fire in modal demo </h3>
+      <h3>login-fire-form in modal demo </h3>
       <demo-snippet>
 
         <paper-button raised onclick="dialog.open()">login-fire in modal</paper-button>
@@ -84,7 +82,7 @@
                 auth-domain="convoo-login-demo.firebaseapp.com"
                 database-url="https://convoo-login-demo.firebaseio.com">
               </firebase-app>
-              <email-login-fire app-name="modalDemo"></email-login-fire>
+              <login-fire-form app-name="modalDemo"></login-fire-form>
             </paper-dialog-scrollable>
           </paper-dialog>
         </template>

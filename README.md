@@ -25,8 +25,8 @@ bower install login-fire --save
 
 ## \<login-fire\>
 
-Add email and password authentication as well as social provider authentication to your app. 
-If you want to only add social authentication or only email authentication please use \<social-login-fire\> or \<email-login-fire\> instead
+Add email and password authentication as well as social provider authentication to your app.
+If you want to only add social authentication or only email authentication please use \<login-fire-social\> or \<login-fire-form\> instead
 until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed.
 
 ```html
@@ -55,15 +55,15 @@ until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed.
   auth-domain="convoo-login-demo.firebaseapp.com"
   database-url="https://convoo-login-demo.firebaseio.com">
 </firebase-app>
-<login-fire email-password anonymous twitter github google facebook app-name="login" user="{{user}}" signed-in="{{signedIn}}"></login-fire>
+<login-fire providers="google, facebook, twitter, github, anonymous" app-name="login" user="{{user}}" signed-in="{{signedIn}}"></login-fire>
 ```
 
-## \<social-login-fire\>
+## \<login-fire-social\>
 
 Add social provider authentication to your app with firebase.
 
 ```html
-<link rel="import" href="/bower_components/login-fire/social-login-fire.html">
+<link rel="import" href="/bower_components/login-fire/login-fire-social.html">
 ```
 
 <!--
@@ -71,7 +71,7 @@ Add social provider authentication to your app with firebase.
 <custom-element-demo>
   <template>
     <link rel="import" href="../polymerfire/firebase-app.html">
-    <link rel="import" href="social-login-fire.html">
+    <link rel="import" href="login-fire-social.html">
     <div>
       <template is="dom-bind">
         <next-code-block></next-code-block>
@@ -88,16 +88,16 @@ Add social provider authentication to your app with firebase.
   auth-domain="convoo-login-demo.firebaseapp.com"
   database-url="https://convoo-login-demo.firebaseio.com">
 </firebase-app>
-<social-login-fire google facebook twitter github anonymous app-name="social" user="{{user}}" signed-in="{{signedIn}}"></social-login-fire>
+<login-fire-social providers="google, facebook, twitter, github, anonymous" app-name="social" user="{{user}}" signed-in="{{signedIn}}"></login-fire-social>
 ```
 
 
-## \<email-login-fire\>
+## \<login-fire-form\>
 
 Add email authentication to your app with firebase.
 
 ```html
-<link rel="import" href="/bower_components/login-fire/email-login-fire.html">
+<link rel="import" href="/bower_components/login-fire/login-fire-form.html">
 ```
 
 <!--
@@ -105,7 +105,7 @@ Add email authentication to your app with firebase.
 <custom-element-demo>
   <template>
     <link rel="import" href="../polymerfire/firebase-app.html">
-    <link rel="import" href="email-login-fire.html">
+    <link rel="import" href="login-fire-form.html">
     <div>
       <template is="dom-bind">
         <next-code-block></next-code-block>
@@ -122,7 +122,41 @@ Add email authentication to your app with firebase.
   auth-domain="convoo-login-demo.firebaseapp.com"
   database-url="https://convoo-login-demo.firebaseio.com">
 </firebase-app>
-<email-login-fire app-name="email" user="{{user}}" signed-in="{{signedIn}}"></email-login-fire>
+<login-fire-form app-name="email" user="{{user}}" signed-in="{{signedIn}}"></login-fire-form>
+```
+
+## \<login-fire-button\>
+
+It's a button with a social provider authentication to your app with Firebase. This button allows your users to sign-in and sign-out.
+
+```html
+<link rel="import" href="/bower_components/login-fire/login-fire-button.html">
+```
+<!--
+```
+<custom-element-demo>
+  <template>
+    <link rel="import" href="../polymerfire/firebase-app.html">
+    <link rel="import" href="login-fire-button.html">
+    <div>
+      <template is="dom-bind">
+        <next-code-block></next-code-block>
+      </template>
+    </div>
+  </template>
+</custom-element-demo>
+```
+-->
+```html
+<firebase-app
+  name="button"
+  api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+  auth-domain="convoo-login-demo.firebaseapp.com"
+  database-url="https://convoo-login-demo.firebaseio.com">
+</firebase-app>
+<login-fire-button app-name="button" provider="google" user="{{user}}"></login-fire-button>
+<login-fire-button app-name="button" provider="facebook" user="{{user}}"></login-fire-button>
+<login-fire-button app-name="button" user="{{user}}"></login-fire-button>
 ```
 
 ## Signing Out
@@ -138,9 +172,11 @@ Example:
 _signOut: function(e){
   this.$$('login-fire').signOut();
   // or
-  // this.$$('social-login-fire').signOut();
+  // this.$$('login-fire-button').signOut();
   // or
-  // this.$$('email-login-fire').signOut();
+  // this.$$('login-fire-social').signOut();
+  // or
+  // this.$$('login-fire-form').signOut();
 }
 ```
 
@@ -150,7 +186,7 @@ To make it easier to debug, we've added the `debug` attribute. Simply add "debug
 Example:
 
 ```html
-<email-login-fire debug app-name="email" user="{{user}}" signed-in="{{signedIn}}"></email-login-fire>
+<login-fire-form debug app-name="email" user="{{user}}" signed-in="{{signedIn}}"></login-fire-form>
 ```
 
 

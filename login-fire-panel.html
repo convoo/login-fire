@@ -16,7 +16,7 @@ An element that allows simple configuration of email and social provider login w
 
 For email authentication only, use login-fire-form.
 For social provider authentication only, use login-fire-social.
-For both email and social provider authentication, use login-fire.
+For both email and social provider authentication, use login-fire-panel.
 
 Example:
 ```
@@ -25,12 +25,12 @@ Example:
  api-key="API_KEY"
  auth-domain="AUTH_DOMAIN"
  database-url="DATABASE_URL"></firebase-app>
-<login-fire app-name="demo" email-password twitter google facebook></login-fire>
+<login-fire-panel app-name="demo" email-password twitter google facebook></login-fire-panel>
 ```
 
-@demo demo/login-fire.html
+@demo demo/login-fire-panel.html
 -->
-<dom-module id="login-fire">
+<dom-module id="login-fire-panel">
   <template>
     <style>
     :host {
@@ -100,10 +100,10 @@ Example:
       user="{{_user}}"
       signed-in="{{_signedIn}}"
       status-known="{{_statusKnown}}"
-      can-sign-out="[[canSignOut]]"
       redirect="[[redirect]]"
       mini$="[[mini]]"
-      horizontal$="[[horizontal]]">
+      horizontal$="[[horizontal]]"
+      can-sign-out="[[canSignOut]]">
     </login-fire-social>
 
     <iron-media-query query="(max-width: 650px)" query-matches="{{isNarrow}}">
@@ -112,7 +112,7 @@ Example:
 
   <script>
   Polymer({
-    is: 'login-fire',
+    is: 'login-fire-panel',
     behaviors: [Convoo.LoginFireCommonBehavior],
 
     properties: {
