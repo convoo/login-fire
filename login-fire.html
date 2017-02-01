@@ -34,6 +34,9 @@ Example:
   <template>
     <style>
     :host {
+      background: var(--login-fire-background-color, white);
+      padding-top: 40px;
+      padding-bottom: 40px;
       @apply(--layout-horizontal);
       @apply(--layout-wrap);
       @apply(--layout-center-center);
@@ -51,16 +54,22 @@ Example:
     .div {
       @apply(--layout-center-center);
       width: 1px;
-      border-top: 1px solid #e0e0e0;
-      border-right: 1px solid #e0e0e0;
+      border-top: 1px solid ;
+      border-right: 1px solid ;
+      border-color: var(--login-fire-divider-color, lightgray)
     }
     .div__span {
       padding: 10px;
-      background-color: white;
+      background: var(--login-fire-background-color, white);
       font-size: 12px;
       font-style: italic;
-      color: grey;
+      color: var(--login-fire-divider-color, gray);
       font-weight: lighter;
+      -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
     }
     .div--hidden {
       display: none;

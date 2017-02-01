@@ -28,35 +28,46 @@ Example:
 -->
 <dom-module id="login-fire-form">
   <template>
-    <style>
+    <style is="custom-style">
     :host {
       display: block;
     }
+     paper-button.btn--signup {
+        color: grey;
+        @apply(--login-fire-btn-signup);
+    }
+
+     paper-button.btn--signin {
+        color: grey;
+        @apply(--login-fire-btn-signin);
+    }
+
     .link--reset-pw {
-      color: grey;
+      color: var(--login-fire-reset-password-color, gray);
       text-decoration: none;
       font-size: 12px;
       font-style: italic;
       font-weight: lighter;
     }
     .link--reset-pw:hover{
-      color: grey;
+      color: var(--login-fire-reset-password-hover-color, gray);
       text-decoration: underline;
     }
     .msg {
       text-align: center;
-      font-size: 16px;
+      font-size: 12px;
       font-weight: 500;
       line-height: 24px;
       margin: 0;
       padding: 0;
     }
     .msg--error {
-      color: var(--error-color);
+      color: var(--login-fire-error-msg-color, --error-color);
     }
     .msg--info {
-      color: var(--primary-color);
+      color: var(--login-fire-info-msg-color, gray);
     }
+
     form {
       min-width: 200px;
       margin: 0 auto;
@@ -72,13 +83,13 @@ Example:
       </div>
     </div>
 
-    <form>
+    <form form novalidate="novalidate">
       <paper-input id="emailInput"
         type="email"
         label="Email"
         value="{{email}}"
         error-message="Invalid email address"
-        required auto-validate>
+        required>
       </paper-input>
       <paper-input id="passwordInput"
         type="password"
@@ -91,8 +102,8 @@ Example:
           Reset password for entered email
         </a>
       </p>
-      <paper-button type="submit" on-tap="_signUp">Sign Up</paper-button>
-      <paper-button type="submit" on-tap="_signIn">Sign In</paper-button>
+      <paper-button type="submit" on-tap="_signUp" class="btn--signup"> Sign Up</paper-button>
+      <paper-button type="submit" on-tap="_signIn" class="btn--signin"> Sign In</paper-button>
     </form>
 
     <firebase-auth id="auth"
