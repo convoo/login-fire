@@ -37,20 +37,26 @@ Example:
         display: inline-block;
       }
       .btn {
-        width: 220px;
-        text-align: center;
+        width: 210px;
+        text-align: left;
         text-transform: none;
         min-height: 40px;
       }
       .btn__icon {
         padding-right: 8px;
         max-height: 15px;
+        position: absolute;
+        left: 20px;
+      }
+      .btn__text {
+        position: absolute;
+        left: 50px;
       }
     </style>
 
     <paper-button class$="btn btn--[[provider]] [[_miniClass]]" raised$="[[!flat]]">
       <iron-icon class="btn__icon" icon="login-fire-icons:[[provider]]" hidden$="[[_hideIcon]]"></iron-icon>
-      <span>[[_text]]</span>
+      <span class="btn__text">[[_text]]</span>
     </paper-button>
 
     <firebase-auth id="auth"
