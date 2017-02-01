@@ -28,7 +28,7 @@ Example:
 -->
 <dom-module id="login-fire-form">
   <template>
-    <style is="custom-style">
+    <style>
     :host {
       display: block;
     }
@@ -98,65 +98,28 @@ Example:
         <span>[[_lastMessage]]</span>
       </div>
     </div>
-    <form>
-        <template is="dom-if" if="[[!showResetPW]]">
-            <paper-input id="emailInput"
-                type="email"
-                label="Email"
-                value="{{email}}"
-                error-message="Invalid email address"
-                required>
-            </paper-input>
-            <paper-input id="passwordInput"
-                type="password"
-                label="Password"
-                value="{{password}}"
-                required>
-            </paper-input>
-            <template is="dom-if" if="[[showSignUp]]">
-                <paper-input id="repeatPasswordInput"
-                    type="password"
-                    label="Re-enter Password"
-                    value="{{passwordAgain}}"
-                    error-message="Passwords do not match"
-                    required>
-                </paper-input>
-                <div class="action">
-                    <paper-button raised type="submit" on-tap="_signUp" class="btn--signup">Sign Up</paper-button>
-                </div>
-                <p class="signup-toggle">
-                    Already have an account? <a on-tap="_toggleShowSignUp">Sign in</a>
-                </p>
-            </template>
-            <template is="dom-if" if="[[!showSignUp]]">
-                <p>
-                    <a class="link--reset-pw" on-click="toggleShowResetPW">
-                    Reset password
-                    </a>
-                </p>
-                <div class="action">
-                    <paper-button raised type="submit" on-tap="_signIn" class="btn--signin">Sign In</paper-button>
-                </div>
-                <p class="signup-toggle">
-                    Don't have an account? <a on-tap="_toggleShowSignUp">Sign up</a>
-                </p>
-            </template>
-        </template>
-        <template is="dom-if" if="[[showResetPW]]">
-            <paper-input id="resetEmailInput"
-                type="email"
-                label="Email"
-                value="{{email}}"
-                error-message="Invalid email address"
-                required>
-            </paper-input>
-            <paper-button raised type="submit" on-tap="_resetPassword" class="btn--resetpw">Reset Password</paper-button>
-            <p>
-                <a class="link--reset-pw" on-click="toggleShowResetPW">
-                Nevermind, I remembered my password.
-                </a>
-            </p>
-        </template>
+
+    <form form novalidate="novalidate">
+      <paper-input id="emailInput"
+        type="email"
+        label="Email"
+        value="{{email}}"
+        error-message="Invalid email address"
+        required>
+      </paper-input>
+      <paper-input id="passwordInput"
+        type="password"
+        label="Password"
+        value="{{password}}"
+        required>
+      </paper-input>
+      <p>
+        <a href="#" class="link--reset-pw" on-click="_resetPassword">
+          Reset password for entered email
+        </a>
+      </p>
+      <paper-button type="submit" on-tap="_signUp" class="btn--signup"> Sign Up</paper-button>
+      <paper-button type="submit" on-tap="_signIn" class="btn--signin"> Sign In</paper-button>
     </form>
 
     <firebase-auth id="auth"
@@ -300,3 +263,63 @@ Example:
   });
   </script>
 </dom-module>
+
+    <form>
+        <template is="dom-if" if="[[!showResetPW]]">
+            <paper-input id="emailInput"
+                type="email"
+                label="Email"
+                value="{{email}}"
+                error-message="Invalid email address"
+                required>
+            </paper-input>
+            <paper-input id="passwordInput"
+                type="password"
+                label="Password"
+                value="{{password}}"
+                required>
+            </paper-input>
+            <template is="dom-if" if="[[showSignUp]]">
+                <paper-input id="repeatPasswordInput"
+                    type="password"
+                    label="Re-enter Password"
+                    value="{{passwordAgain}}"
+                    error-message="Passwords do not match"
+                    required>
+                </paper-input>
+                <div class="action">
+                    <paper-button raised type="submit" on-tap="_signUp" class="btn--signup">Sign Up</paper-button>
+                </div>
+                <p class="signup-toggle">
+                    Already have an account? <a on-tap="_toggleShowSignUp">Sign in</a>
+                </p>
+            </template>
+            <template is="dom-if" if="[[!showSignUp]]">
+                <p>
+                    <a class="link--reset-pw" on-click="toggleShowResetPW">
+                    Reset password
+                    </a>
+                </p>
+                <div class="action">
+                    <paper-button raised type="submit" on-tap="_signIn" class="btn--signin">Sign In</paper-button>
+                </div>
+                <p class="signup-toggle">
+                    Don't have an account? <a on-tap="_toggleShowSignUp">Sign up</a>
+                </p>
+            </template>
+        </template>
+        <template is="dom-if" if="[[showResetPW]]">
+            <paper-input id="resetEmailInput"
+                type="email"
+                label="Email"
+                value="{{email}}"
+                error-message="Invalid email address"
+                required>
+            </paper-input>
+            <paper-button raised type="submit" on-tap="_resetPassword" class="btn--resetpw">Reset Password</paper-button>
+            <p>
+                <a class="link--reset-pw" on-click="toggleShowResetPW">
+                Nevermind, I remembered my password.
+                </a>
+            </p>
+        </template>
