@@ -22,6 +22,13 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
    */
   Convoo.LoginFireFormBehaviorImpl = {
 
+    properties: {
+        showResetPW: {
+            type: Boolean,
+            value: false
+        }
+    },
+
     /**
      * Starts the sign-in process.
      *
@@ -69,6 +76,18 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         console.error('The provider "password" is required for sign up with ' +
           'email address and password.');
       }
+    },
+
+    /**
+     * Toggles showing reset password view
+     */
+    toggleShowResetPW: function() {
+        if(this.showResetPW){
+            this.showResetPW = false;
+            this.signUp = false
+        }else{
+            this.showResetPW = true;
+        }
     }
   };
 

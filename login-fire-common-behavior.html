@@ -154,6 +154,16 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       },
 
       /**
+        * Whether to show the view at sign up or sign in
+        *
+        * @type {Boolean}
+        */
+        showSignUp: {
+            type: Boolean,
+            value: false
+        },
+
+      /**
        * When true, login status can be determined by checking user property.
        *
        * @type {Boolean}
@@ -300,6 +310,13 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         console.debug('StatusKnown changed for', newVal);
       }
       this._setStatusKnown(newVal);
+    },
+
+    /**
+     * Toggles signUp property
+     */
+    _toggleShowSignUp: function(){
+        this.showSignUp = !this.showSignUp;
     },
 
     /**

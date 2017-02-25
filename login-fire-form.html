@@ -38,6 +38,7 @@ Example:
       font-size: 12px;
       font-style: italic;
       font-weight: lighter;
+      cursor: pointer;
     }
     .link--reset-pw:hover{
       color: grey;
@@ -61,6 +62,14 @@ Example:
       min-width: 200px;
       margin: 0 auto;
     }
+    .signup-toggle {
+        text-align: center;
+    }
+
+    .signup-toggle a {
+        text-decoration: underline;
+        cursor: pointer;
+    }
     </style>
 
     <div>
@@ -73,26 +82,61 @@ Example:
     </div>
 
     <form>
-      <paper-input id="emailInput"
-        type="email"
-        label="Email"
-        value="{{email}}"
-        error-message="Invalid email address"
-        required auto-validate>
-      </paper-input>
-      <paper-input id="passwordInput"
-        type="password"
-        label="Password"
-        value="{{password}}"
-        required>
-      </paper-input>
-      <p>
-        <a href="#" class="link--reset-pw" on-click="_resetPassword">
-          Reset password for entered email
-        </a>
-      </p>
-      <paper-button type="submit" on-tap="_signUp">Sign Up</paper-button>
-      <paper-button type="submit" on-tap="_signIn">Sign In</paper-button>
+        <template is="dom-if" if="[[!showResetPW]]">
+            <paper-input id="emailInput"
+                type="email"
+                label="Email"
+                value="{{email}}"
+                error-message="Invalid email address"
+                required>
+            </paper-input>
+            <paper-input id="passwordInput"
+                type="password"
+                label="Password"
+                value="{{password}}"
+                required>
+            </paper-input>
+            <template is="dom-if" if="[[showSignUp]]">
+                <paper-input id="repeatPasswordInput"
+                    type="password"
+                    label="Re-enter Password"
+                    value="{{passwordAgain}}"
+                    error-message="Passwords do not match"
+                    required>
+                </paper-input>
+                <paper-button raised type="submit" on-tap="_signUp">Sign Up</paper-button>
+                <p class="signup-toggle">
+                    Already have an account? <a on-tap="_toggleShowSignUp">Sign in</a>
+                </p>
+            </template>
+            <template is="dom-if" if="[[!showSignUp]]">
+                <p>
+                    <a class="link--reset-pw" on-click="toggleShowResetPW">
+                    Reset password
+                    </a>
+                </p>
+                <paper-button raised type="submit" on-tap="_signIn">Sign In</paper-button>
+                <p class="signup-toggle">
+                    Don't have an account? <a on-tap="_toggleShowSignUp">Sign up</a>
+                </p>
+            </template>
+        </template>
+        <template is="dom-if" if="[[showResetPW]]">
+            <paper-input id="resetEmailInput"
+                type="email"
+                label="Email"
+                value="{{email}}"
+                error-message="Invalid email address"
+                required>
+            </paper-input>
+            <paper-button raised type="submit" on-tap="_resetPassword">Reset Password</paper-button>
+            <p>
+                <a class="link--reset-pw" on-click="toggleShowResetPW">
+                Nevermind, I remembered my password.
+                </a>
+            </p>
+        </template>
+      
     </form>
 
     <firebase-auth id="auth"
@@ -185,12 +229,23 @@ Example:
      * Tries to sign-up a user using the form values.
      */
     _signUp: function(e) {
-      this._cleanMessages();
-      this.signUp(this.email, this.password);
+        this._cleanMessages();
+        this.$$("#repeatPasswordInput").invalid=false;
+        e = this.$.emailInput.validate()
+        p = this.$.passwordInput.validate()
+        pRepeat = this.password == this.passwordAgain
+        if (e && p && pRepeat) {
+            this.signUp(this.email, this.password);
+            this.email = null;
+            this.password = null;
+            this.passwordAgain = null;
+        }else if(!pRepeat){
+            this.$$("#repeatPasswordInput").invalid=true;
+        }
     },
 
     /**
-     * Displays error message. If the attribute `autoSignUp` if true, before
+     * Displays error message. If the attribute `autoSignUp` is true, before
      * to display the error message, a sign-up process is tried.
      *
      * @param  {Object} e the event caught that contains the error message
@@ -212,16 +267,15 @@ Example:
      */
     _resetPassword: function() {
       this._cleanMessages();
-      if(!this.email) {
-        this.set('_lastError', 'Please enter a valid email address.');
-        return;
-      }
+      e = this.$$("#resetEmailInput").validate() 
 
-      this.$.auth.sendPasswordResetEmail(this.email).then(function() {
-        this.set('_lastMessage', this.passwordResetMessage);
-      }.bind(this), function (error) {
-        this.set('_lastError', error.message);
-      }.bind(this));
+      if (e){
+        this.$$("#auth").auth.sendPasswordResetEmail(this.email).then(function() {
+            this.set('_lastMessage', this.passwordResetMessage);
+        }.bind(this), function (error) {
+            this.set('_lastError', error.message);
+        }.bind(this));
+      }
     }
   });
   </script>
