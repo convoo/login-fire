@@ -62,10 +62,17 @@ Example:
       min-width: 200px;
       margin: 0 auto;
     }
-    .signup-toggle {
+    .action {
         text-align: center;
     }
-
+    .action paper-button {
+        width: 100%;
+    }
+    .signup-toggle {
+        font-size: 12px;
+        color:grey;
+        text-align: center;
+    }
     .signup-toggle a {
         text-decoration: underline;
         cursor: pointer;
@@ -104,7 +111,9 @@ Example:
                     error-message="Passwords do not match"
                     required>
                 </paper-input>
-                <paper-button raised type="submit" on-tap="_signUp">Sign Up</paper-button>
+                <div class="action">
+                    <paper-button raised type="submit" on-tap="_signUp">Sign Up</paper-button>
+                </div>
                 <p class="signup-toggle">
                     Already have an account? <a on-tap="_toggleShowSignUp">Sign in</a>
                 </p>
@@ -115,7 +124,9 @@ Example:
                     Reset password
                     </a>
                 </p>
-                <paper-button raised type="submit" on-tap="_signIn">Sign In</paper-button>
+                <div class="action">
+                    <paper-button raised type="submit" on-tap="_signIn">Sign In</paper-button>
+                </div>
                 <p class="signup-toggle">
                     Don't have an account? <a on-tap="_toggleShowSignUp">Sign up</a>
                 </p>
