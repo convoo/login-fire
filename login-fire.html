@@ -113,11 +113,11 @@ The following custom properties and mixins are available for styling:
       user="{{_user}}"
       signed-in="{{_signedIn}}"
       status-known="{{_statusKnown}}"
-      password-reset-message="[[passwordResetMessage]]"
       auto-sign-up="[[autoSignUp]]"
       can-sign-out="[[canSignOut]]"
       show-sign-up="{{showSignUp}}"
-      flat="{{flat}}">
+      flat="{{flat}}"
+      language="[[language]]">
     </login-fire-form>
 
     <div class$="div [[_dividerStyle]]" hidden$="[[noDivider]]">
@@ -135,7 +135,8 @@ The following custom properties and mixins are available for styling:
       mini$="[[mini]]"
       horizontal$="[[horizontal]]"
       show-sign-up="{{showSignUp}}"
-      flat="{{flat}}">
+      flat="{{flat}}"
+      language="[[language]]">
     </login-fire-social>
 
     <iron-media-query query="(max-width: 650px)" query-matches="{{isNarrow}}">

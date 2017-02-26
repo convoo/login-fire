@@ -123,44 +123,44 @@ The following custom properties and mixins are available for styling:
         <template is="dom-if" if="[[!showResetPW]]">
             <paper-input id="emailInput"
                 type="email"
-                label="Email"
+                label="{{localize('lf-email')}}"
                 value="{{email}}"
-                error-message="Invalid email address"
+                error-message="{{localize('lf-email-invalid')}}"
                 required>
             </paper-input>
             <paper-input id="passwordInput"
                 type="password"
-                label="Password"
+                label="{{localize('lf-password')}}"
                 value="{{password}}"
                 required>
             </paper-input>
             <template is="dom-if" if="[[showSignUp]]">
                 <paper-input id="repeatPasswordInput"
                     type="password"
-                    label="Re-enter Password"
+                    label="{{localize('lf-reenter-password')}}"
                     value="{{passwordAgain}}"
-                    error-message="Passwords do not match"
+                    error-message="{{localize('lf-passwords-dont-match')}}"
                     required>
                 </paper-input>
 
                 <div class="action">
-                    <paper-button raised$="[[!flat]]" type="submit" on-tap="_signUp" class="btn--signup">Sign Up</paper-button>
+                    <paper-button raised$="[[!flat]]" type="submit" on-tap="_signUp" class="btn--signup">{{localize('lf-signup-button')}}</paper-button>
                 </div>
                 <p class="signup-toggle">
-                    Already have an account? <a on-tap="_toggleShowSignUp">Sign in</a>
+                    {{localize('lf-already-have-account')}} <a on-tap="_toggleShowSignUp">{{localize('lf-already-have-account-action')}}</a>
                 </p>
             </template>
             <template is="dom-if" if="[[!showSignUp]]">
                 <p>
                     <a class="link--reset-pw" on-click="toggleShowResetPW">
-                    Reset password
+                        {{localize('lf-resetpw-link')}}
                     </a>
                 </p>
                 <div class="action">
-                    <paper-button raised$="[[!flat]]" type="submit" on-tap="_signIn" class="btn--signin">Sign In</paper-button>
+                    <paper-button raised$="[[!flat]]" type="submit" on-tap="_signIn" class="btn--signin">{{localize('lf-signin-button')}}</paper-button>
                 </div>
                 <p class="signup-toggle">
-                    Don't have an account? <a on-tap="_toggleShowSignUp">Sign up</a>
+                    {{localize('lf-no-account')}} <a on-tap="_toggleShowSignUp">{{localize('lf-no-account-action')}}</a>
                 </p>
             </template>
         </template>
@@ -172,10 +172,10 @@ The following custom properties and mixins are available for styling:
                 error-message="Invalid email address"
                 required>
             </paper-input>
-            <paper-button raised$="[[!flat]]" type="submit" on-tap="_resetPassword" class="btn--resetpw">Reset Password</paper-button>
+            <paper-button raised$="[[!flat]]" type="submit" on-tap="_resetPassword" class="btn--resetpw">{{localize('lf-resetpw-button')}}</paper-button>
             <p>
                 <a class="link--reset-pw" on-click="toggleShowResetPW">
-                Nevermind, I remembered my password.
+                    {{localize('lf-resetpw-cancel-link')}}
                 </a>
             </p>
         </template>
@@ -204,16 +204,6 @@ The following custom properties and mixins are available for styling:
       autoSignUp: {
         type: Boolean,
         value: false
-      },
-
-      /**
-       * Message displayed when the user ask for resetting its password.
-       *
-       * @type {String}
-       */
-      passwordResetMessage: {
-        type: String,
-        value: 'Password reset email has been sent. Please check your inbox.'
       },
 
       /**
@@ -310,10 +300,9 @@ The following custom properties and mixins are available for styling:
     _resetPassword: function() {
       this._cleanMessages();
       e = this.$$("#resetEmailInput").validate() 
-
       if (e){
         this.$$("#auth").auth.sendPasswordResetEmail(this.email).then(function() {
-            this.set('_lastMessage', this.passwordResetMessage);
+            this.set('_lastMessage', this.localize('lf-resetpw-success-message'));
         }.bind(this), function (error) {
             this.set('_lastError', error.message);
         }.bind(this));
