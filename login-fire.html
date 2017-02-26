@@ -28,12 +28,33 @@ Example:
 <login-fire app-name="demo" email-password twitter google facebook></login-fire>
 ```
 
+### Styling
+
+Style the buttons with CSS as you would a normal DOM element. 
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description | Default |
+| --- | --- | --- |
+| `--login-fire-reset-password-color` | The color of reset password text | `gray` |
+| `--login-fire-reset-password-hover-color` | The color of reset password text when hovered | `gray` |
+| `--login-fire-error-msg-color` | The color for the error message  | `--error-color` |
+| `--login-fire-info-msg-color` | The color for the info message | `gray` |
+| `--login-fire-divider-color` | The color for the divider bar | `gray` |
+| `--login-fire-background-color` | The color for the divider bar | `white` |
+| `--login-fire-btn-signup` | Mixin applied to the signup button | `{}` |
+| `--login-fire-btn-signin` | Mixin applied to the signin button | `{}` |
+| `--login-fire-btn-signout` | Mixin applied to the signin button | `{}` |
+
 @demo demo/login-fire.html
 -->
 <dom-module id="login-fire">
   <template>
     <style>
     :host {
+      background: var(--login-fire-background-color, white);
+      padding-top: 40px;
+      padding-bottom: 40px;
       @apply(--layout-horizontal);
       @apply(--layout-wrap);
       @apply(--layout-center-center);
@@ -51,16 +72,22 @@ Example:
     .div {
       @apply(--layout-center-center);
       width: 1px;
-      border-top: 1px solid #e0e0e0;
-      border-right: 1px solid #e0e0e0;
+      border-top: 1px solid ;
+      border-right: 1px solid ;
+      border-color: var(--login-fire-divider-color, lightgray);
     }
     .div__span {
       padding: 10px;
-      background-color: white;
+      background: var(--login-fire-background-color, white);
       font-size: 12px;
       font-style: italic;
-      color: grey;
+      color: var(--login-fire-divider-color, gray);
       font-weight: lighter;
+      -moz-user-select: -moz-none;
+      -khtml-user-select: none;
+      -webkit-user-select: none;
+      -o-user-select: none;
+      user-select: none;
     }
     .div--hidden {
       display: none;
@@ -70,6 +97,7 @@ Example:
       margin: 0 50px;
       min-height: 200px;
       max-height: 400px;
+      width: 1px;
     }
     .div--horizontal {
       @apply(--layout-vertical);

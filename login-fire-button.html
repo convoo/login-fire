@@ -28,6 +28,24 @@ Example:
 <login-fire-button app-name="myApp" provider="twitter" flat mini></login-fire-button>
 ```
 
+### Styling
+
+Style the buttons with CSS as you would a normal DOM element. 
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description | Default |
+| --- | --- | --- |
+| `--login-fire-reset-password-color` | The color of reset password text | `gray` |
+| `--login-fire-reset-password-hover-color` | The color of reset password text when hovered | `gray` |
+| `--login-fire-error-msg-color` | The color for the error message  | `--error-color` |
+| `--login-fire-info-msg-color` | The color for the info message | `gray` |
+| `--login-fire-divider-color` | The color for the divider bar | `gray` |
+| `--login-fire-background-color` | The color for the divider bar | `white` |
+| `--login-fire-btn-signup` | Mixin applied to the signup button | `{}` |
+| `--login-fire-btn-signin` | Mixin applied to the signin button | `{}` |
+| `--login-fire-btn-signout` | Mixin applied to the signin button | `{}` |
+
 @demo demo/login-fire-button.html
 -->
 <dom-module id="login-fire-button">
@@ -37,20 +55,33 @@ Example:
         display: inline-block;
       }
       .btn {
-        width: 220px;
-        text-align: center;
+        width: 210px;
+        text-align: left;
         text-transform: none;
         min-height: 40px;
       }
       .btn__icon {
         padding-right: 8px;
         max-height: 15px;
+        position: absolute;
+        left: 15px;
+      }
+      .btn__text {
+        position: absolute;
+        left: 50px;
+      }
+      .btn__signed-out{
+          background-color: transparent;
+          color: grey;
+          text-align: center;
+          width: 170px;
+          @apply(--login-fire-btn-signout);
       }
     </style>
 
-    <paper-button class$="btn btn--[[provider]] [[_miniClass]]" raised$="[[!flat]]">
+    <paper-button class$="btn btn--[[provider]] [[_miniClass]] [[_signOutClass]]" raised$="[[!flat]]">
       <iron-icon class="btn__icon" icon="login-fire-icons:[[provider]]" hidden$="[[_hideIcon]]"></iron-icon>
-      <span>[[_text]]</span>
+      <span class="btn__text">[[_text]]</span>
     </paper-button>
 
     <firebase-auth id="auth"
@@ -109,6 +140,16 @@ Example:
       },
 
       /**
+       * CSS class added when the log-out button is shown.
+       *
+       * @type {String}
+       */
+      _signOutClass: {
+        type: String,
+        computed: '_computeSignOutClass(canSignOut, signedIn)'
+      },
+
+      /**
        * Button text.
        *
        * @type {String}
@@ -149,6 +190,20 @@ Example:
     },
 
     /**
+     * Compute the CSS class to add when the user is is currently signed in.
+     *
+     * @param  {Boolean} canSignOut is `true` of the element can signing out
+     * @param  {Boolean} signedIn   is `true` if a user is actually signed in
+     * @return {String}            a CSS class name to add when `canSignOut` 
+     * is true and when signedIn is `true`.
+     */
+    _computeSignOutClass: function(canSignOut, signedIn) {
+      if (canSignOut && signedIn){
+          return 'btn__signed-out';
+      };
+    },
+
+    /**
      * Computes the text to be displayed inside the button.
      *
      * @param  {Object} user     logged-in
@@ -158,7 +213,7 @@ Example:
     _computeButtonText: function(user, provider) {
       // User logged in.
       if (this.canSignOut && this.signedIn) {
-        return 'Sign out';
+        return 'SIGN OUT';
       }
 
       // User not logged in and mini format.

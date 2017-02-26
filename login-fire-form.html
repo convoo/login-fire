@@ -24,6 +24,25 @@ Example:
 <login-fire-form app-name="myApp"></login-fire-form>
 ```
 
+### Styling
+
+Style the buttons with CSS as you would a normal DOM element. 
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description | Default |
+| --- | --- | --- |
+| `--login-fire-reset-password-color` | The color of reset password text | `gray` |
+| `--login-fire-reset-password-hover-color` | The color of reset password text when hovered | `gray` |
+| `--login-fire-error-msg-color` | The color for the error message  | `--error-color` |
+| `--login-fire-info-msg-color` | The color for the info message | `gray` |
+| `--login-fire-divider-color` | The color for the divider bar | `gray` |
+| `--login-fire-background-color` | The color for the divider bar | `white` |
+| `--login-fire-btn-signup` | Mixin applied to the signup button | `{}` |
+| `--login-fire-btn-signin` | Mixin applied to the signin button | `{}` |
+| `--login-fire-btn-signout` | Mixin applied to the signin button | `{}` |
+
+
 @demo demo/login-fire-form.html
 -->
 <dom-module id="login-fire-form">
@@ -32,30 +51,39 @@ Example:
     :host {
       display: block;
     }
+     paper-button.btn--signup {
+        @apply(--login-fire-btn-signup);
+    }
+     paper-button.btn--signin {
+        @apply(--login-fire-btn-signin);
+    }
+    .btn{
+        color: gray;
+    }
     .link--reset-pw {
-      color: grey;
+      color: var(--login-fire-reset-password-color, gray);
       text-decoration: none;
       font-size: 12px;
       font-style: italic;
       font-weight: lighter;
     }
     .link--reset-pw:hover{
-      color: grey;
+      color: var(--login-fire-reset-password-hover-color, gray);
       text-decoration: underline;
     }
     .msg {
       text-align: center;
-      font-size: 16px;
+      font-size: 12px;
       font-weight: 500;
       line-height: 24px;
       margin: 0;
       padding: 0;
     }
     .msg--error {
-      color: var(--error-color);
+      color: var(--login-fire-error-msg-color, --error-color);
     }
     .msg--info {
-      color: var(--primary-color);
+      color: var(--login-fire-info-msg-color, gray);
     }
     form {
       min-width: 200px;
@@ -72,13 +100,13 @@ Example:
       </div>
     </div>
 
-    <form>
+    <form novalidate="novalidate">
       <paper-input id="emailInput"
         type="email"
         label="Email"
         value="{{email}}"
         error-message="Invalid email address"
-        required auto-validate>
+        required>
       </paper-input>
       <paper-input id="passwordInput"
         type="password"
@@ -91,8 +119,8 @@ Example:
           Reset password for entered email
         </a>
       </p>
-      <paper-button type="submit" on-tap="_signUp">Sign Up</paper-button>
-      <paper-button type="submit" on-tap="_signIn">Sign In</paper-button>
+      <paper-button type="submit" on-tap="_signUp" class="btn btn--signup">Sign Up</paper-button>
+      <paper-button type="submit" on-tap="_signIn" class="btn btn--signin">Sign In</paper-button>
     </form>
 
     <firebase-auth id="auth"
