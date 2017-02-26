@@ -28,12 +28,22 @@ Example:
 -->
 <dom-module id="login-fire-form">
   <template>
-    <style>
+    <style is="custom-style">
     :host {
       display: block;
     }
+     paper-button.btn--signup {
+        color: grey;
+        @apply(--login-fire-btn-signup);
+    }
+
+     paper-button.btn--signin {
+        color: grey;
+        @apply(--login-fire-btn-signin);
+    }
+
     .link--reset-pw {
-      color: grey;
+      color: var(--login-fire-reset-password-color, gray);
       text-decoration: none;
       font-size: 12px;
       font-style: italic;
@@ -41,23 +51,24 @@ Example:
       cursor: pointer;
     }
     .link--reset-pw:hover{
-      color: grey;
+      color: var(--login-fire-reset-password-hover-color, gray);
       text-decoration: underline;
     }
     .msg {
       text-align: center;
-      font-size: 16px;
+      font-size: 12px;
       font-weight: 500;
       line-height: 24px;
       margin: 0;
       padding: 0;
     }
     .msg--error {
-      color: var(--error-color);
+      color: var(--login-fire-error-msg-color, --error-color);
     }
     .msg--info {
-      color: var(--primary-color);
+      color: var(--login-fire-info-msg-color, gray);
     }
+
     form {
       min-width: 200px;
       margin: 0 auto;
@@ -87,7 +98,6 @@ Example:
         <span>[[_lastMessage]]</span>
       </div>
     </div>
-
     <form>
         <template is="dom-if" if="[[!showResetPW]]">
             <paper-input id="emailInput"
@@ -112,7 +122,7 @@ Example:
                     required>
                 </paper-input>
                 <div class="action">
-                    <paper-button raised type="submit" on-tap="_signUp">Sign Up</paper-button>
+                    <paper-button raised type="submit" on-tap="_signUp" class="btn--signup">Sign Up</paper-button>
                 </div>
                 <p class="signup-toggle">
                     Already have an account? <a on-tap="_toggleShowSignUp">Sign in</a>
@@ -125,7 +135,7 @@ Example:
                     </a>
                 </p>
                 <div class="action">
-                    <paper-button raised type="submit" on-tap="_signIn">Sign In</paper-button>
+                    <paper-button raised type="submit" on-tap="_signIn" class="btn--signin">Sign In</paper-button>
                 </div>
                 <p class="signup-toggle">
                     Don't have an account? <a on-tap="_toggleShowSignUp">Sign up</a>
@@ -140,14 +150,13 @@ Example:
                 error-message="Invalid email address"
                 required>
             </paper-input>
-            <paper-button raised type="submit" on-tap="_resetPassword">Reset Password</paper-button>
+            <paper-button raised type="submit" on-tap="_resetPassword" class="btn--resetpw">Reset Password</paper-button>
             <p>
                 <a class="link--reset-pw" on-click="toggleShowResetPW">
                 Nevermind, I remembered my password.
                 </a>
             </p>
         </template>
-      
     </form>
 
     <firebase-auth id="auth"

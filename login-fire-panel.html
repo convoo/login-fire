@@ -32,11 +32,12 @@ Example:
 -->
 <dom-module id="login-fire-panel">
   <template>
-    <style>
+    <style is="custom-style">
     :host {
       @apply(--layout-horizontal);
       @apply(--layout-wrap);
       @apply(--layout-center-center);
+      
     }
     :host([reverse]) {
       @apply(--layout-horizontal-reverse);

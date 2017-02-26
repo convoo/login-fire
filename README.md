@@ -192,6 +192,27 @@ Example:
 
 Note: login-fire is not associated with [firebase](https://firebase.google.com/). [polymerfire](https://github.com/firebase/polymerfire) components are used with login-fire.
 
+
+
+### Styling
+
+Style the buttons with CSS as you would a normal DOM element. 
+
+The following custom properties and mixins are available for styling:
+
+| Custom property | Description | Default |
+| --- | --- | --- |
+| `--login-fire-reset-password-color` | The color of reset password text | `gray` |
+| `--login-fire-reset-password-hover-color` | The color of reset password text when hovered | `gray` |
+| `--login-fire-error-msg-color` | The color for the error message  | `--error-color` |
+| `--login-fire-info-msg-color` | The color for the info message | `gray` |
+| `--login-fire-divider-color` | The color for the divider bar | `gray` |
+| `--login-fire-background-color` | The color for the divider bar | `white` |
+| `--login-fire-btn-signup` | Mixin applied to the signup button | `{}` |
+| `--login-fire-btn-signin` | Mixin applied to the signin button | `{}` |
+
+
+
 ## Contributing
 
 ### Install the Polymer-CLI

@@ -33,6 +33,51 @@
       </demo-snippet>
     </div>
 
+        <div>
+      <h3>login-fire Demo with all options in dark style</h3>
+      <demo-snippet>
+        <template >
+          <firebase-app
+            name="allSocialDemo"
+            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+            auth-domain="convoo-login-demo.firebaseapp.com"
+            database-url="https://convoo-login-demo.firebaseio.com">
+          </firebase-app>
+          <login-fire app-name="allSocialDemo" providers="google, facebook, twitter, github, anonymous" debug can-sign-out mini class="custom"></login-fire>
+          <style is="custom-style">
+          login-fire.custom{
+                --login-fire-background-color: #2a363b;
+                --login-fire-divider-color: #a58e7a;
+                --login-fire-error-msg-color:#e84a5f;
+                --login-fire-reset-password-color: #a58e7a;
+                --login-fire-reset-password-hover-color: #fecea8;
+                --paper-input-container-color: #a58e7a;
+                --paper-input-container-focus-color: #fecea8;
+                --paper-input-container-input-color: white;
+                --login-fire-btn-signup: {
+                    color: white !important;
+                    background: #ff847c;
+                    padding-left: 25px;
+                    padding-right: 25px;
+                    margin-top: 10px;
+                    margin-left: 0px;
+                }
+                --login-fire-btn-signin: {
+                    color: white !important;
+                    background: #99b898;
+                    padding-left: 25px;
+                    padding-right: 25px;
+                    margin-top: 10px;
+                    margin-left: 0px;
+                }
+
+ 
+          }
+          </style>
+        </template>
+      </demo-snippet>
+    </div>
+
     <div>
       <h3>Mini horizontal login-fire Demo with all options</h3>
       <demo-snippet>
