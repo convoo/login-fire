@@ -90,10 +90,17 @@ The following custom properties and mixins are available for styling:
       min-width: 200px;
       margin: 0 auto;
     }
-    .signup-toggle {
+    .action {
         text-align: center;
     }
-
+    .action paper-button {
+        width: 100%;
+    }
+    .signup-toggle {
+        font-size: 12px;
+        color:grey;
+        text-align: center;
+    }
     .signup-toggle a {
         text-decoration: underline;
         cursor: pointer;
@@ -132,7 +139,10 @@ The following custom properties and mixins are available for styling:
                     error-message="Passwords do not match"
                     required>
                 </paper-input>
-                <paper-button raised type="submit" on-tap="_signUp" class="btn--signup">Sign Up</paper-button>
+
+                <div class="action">
+                    <paper-button raised type="submit" on-tap="_signUp" class="btn--signup">Sign Up</paper-button>
+                </div>
                 <p class="signup-toggle">
                     Already have an account? <a on-tap="_toggleShowSignUp">Sign in</a>
                 </p>
@@ -143,7 +153,9 @@ The following custom properties and mixins are available for styling:
                     Reset password
                     </a>
                 </p>
-                <paper-button raised type="submit" on-tap="_signIn" class="btn--signin">Sign In</paper-button>
+                <div class="action">
+                    <paper-button raised type="submit" on-tap="_signIn" class="btn--signin">Sign In</paper-button>
+                </div>
                 <p class="signup-toggle">
                     Don't have an account? <a on-tap="_toggleShowSignUp">Sign up</a>
                 </p>
