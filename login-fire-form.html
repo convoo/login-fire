@@ -50,8 +50,10 @@ The following custom properties and mixins are available for styling:
     <style>
     :host {
       display: block;
+      @apply(--login-fire-form);
     }
      paper-button.btn--signup {
+         margin: 15px 0;
         @apply(--login-fire-btn-signup);
     }
      paper-button.btn--signin {
@@ -100,6 +102,7 @@ The following custom properties and mixins are available for styling:
         font-size: 12px;
         color:grey;
         text-align: center;
+        @apply(--login-fire-form-toggle);
     }
     .signup-toggle a {
         text-decoration: underline;
@@ -141,7 +144,7 @@ The following custom properties and mixins are available for styling:
                 </paper-input>
 
                 <div class="action">
-                    <paper-button raised type="submit" on-tap="_signUp" class="btn--signup">Sign Up</paper-button>
+                    <paper-button raised$="[[!flat]]" type="submit" on-tap="_signUp" class="btn--signup">Sign Up</paper-button>
                 </div>
                 <p class="signup-toggle">
                     Already have an account? <a on-tap="_toggleShowSignUp">Sign in</a>
@@ -154,7 +157,7 @@ The following custom properties and mixins are available for styling:
                     </a>
                 </p>
                 <div class="action">
-                    <paper-button raised type="submit" on-tap="_signIn" class="btn--signin">Sign In</paper-button>
+                    <paper-button raised$="[[!flat]]" type="submit" on-tap="_signIn" class="btn--signin">Sign In</paper-button>
                 </div>
                 <p class="signup-toggle">
                     Don't have an account? <a on-tap="_toggleShowSignUp">Sign up</a>
@@ -169,7 +172,7 @@ The following custom properties and mixins are available for styling:
                 error-message="Invalid email address"
                 required>
             </paper-input>
-            <paper-button raised type="submit" on-tap="_resetPassword" class="btn--resetpw">Reset Password</paper-button>
+            <paper-button raised$="[[!flat]]" type="submit" on-tap="_resetPassword" class="btn--resetpw">Reset Password</paper-button>
             <p>
                 <a class="link--reset-pw" on-click="toggleShowResetPW">
                 Nevermind, I remembered my password.
