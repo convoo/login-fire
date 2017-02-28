@@ -63,6 +63,21 @@ The following custom properties and mixins are available for styling:
         display: flex;
         @apply(--login-fire-button);
       }
+      .btn--google{
+          @apply(--login-fire-button-google)
+      }
+      .btn--twitter{
+          @apply(--login-fire-button-twitter)
+      }
+      .btn--facebook{
+          @apply(--login-fire-button-facebook)
+      }
+      .btn--github{
+          @apply(--login-fire-button-github)
+      }
+      .btn--anonymous{
+          @apply(--login-fire-button-anonymous)
+      }
       .btn__icon {
         padding-left: 8px;
         width:30px;
@@ -109,16 +124,6 @@ The following custom properties and mixins are available for styling:
        * @type {Boolean}
        */
       mini: {
-        type: Boolean,
-        value: false
-      },
-
-      /**
-       * Flat button, yes or not.
-       *
-       * @type {Boolean}
-       */
-      flat: {
         type: Boolean,
         value: false
       },
