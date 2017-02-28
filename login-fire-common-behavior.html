@@ -118,6 +118,16 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       },
 
       /**
+       * Flat button, yes or not.
+       *
+       * @type {Boolean}
+       */
+      flat: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
        * ID of the OAuth provider to be used by the element. The list of
        * available providers is located at `Convoo._firebaseProviders`. The
        * default value is "anonymous" and tells to not use any provider for
@@ -160,7 +170,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         */
         showSignUp: {
             type: Boolean,
-            value: false
+            value: false,
+            notify: true
         },
 
       /**
