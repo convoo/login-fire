@@ -36,14 +36,14 @@
         <div>
       <h3>login-fire Demo with all options in dark style</h3>
       <demo-snippet>
-        <template >
+        <template>
           <firebase-app
-            name="allSocialDemo"
+            name="allSocialDarkDemo"
             api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
             auth-domain="convoo-login-demo.firebaseapp.com"
             database-url="https://convoo-login-demo.firebaseio.com">
           </firebase-app>
-          <login-fire app-name="allSocialDemo" providers="google, facebook, twitter, github, anonymous" debug can-sign-out mini class="custom"></login-fire>
+          <login-fire flat show-sign-up="{{showSignUp}}" app-name="allSocialDarkDemo" providers="google, facebook, twitter, github, anonymous" debug can-sign-out mini class="custom"></login-fire>
           <style is="custom-style">
           login-fire.custom{
                 --login-fire-background-color: #2a363b;
@@ -54,6 +54,16 @@
                 --paper-input-container-color: #a58e7a;
                 --paper-input-container-focus-color: #fecea8;
                 --paper-input-container-input-color: white;
+                --login-fire-form: {
+                    width: 400px;
+                }
+                --login-fire-form-toggle: {
+                    color: #a58e7a;
+                    text-align: left;
+                }
+                --login-fire-button: {
+                    min-width: 150px;
+                }
                 --login-fire-btn-signup: {
                     color: white;
                     background: #ff847c;
@@ -74,7 +84,7 @@
                     margin-left: 0px;
                     height: 40px;
                     position: relative;
-                    top:15px;
+                    top:-5px;
                 }
                 --login-fire-btn-signout:{
                     color: white;
@@ -83,7 +93,7 @@
                 }
           }
           </style>
-        </template>
+      </template>
       </demo-snippet>
     </div>
 
