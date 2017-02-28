@@ -53,22 +53,26 @@ The following custom properties and mixins are available for styling:
     <style include="shared-styles">
       :host {
         display: inline-block;
+        @apply(--login-fire-button);
       }
       .btn {
         width: 210px;
         text-align: left;
         text-transform: none;
         min-height: 40px;
+        display: flex;
+        @apply(--login-fire-button);
       }
       .btn__icon {
-        padding-right: 8px;
-        max-height: 15px;
-        position: absolute;
-        left: 15px;
+        padding-left: 8px;
+        width:30px;
+        height: 14px;
+        @apply(--login-fire-button-icon);
       }
       .btn__text {
-        position: absolute;
-        left: 50px;
+        text-align: center;
+        width: 100%;
+        @apply(--login-fire-button-text);
       }
       .btn__signed-out{
           background-color: transparent;

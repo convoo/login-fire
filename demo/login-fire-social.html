@@ -93,6 +93,36 @@
       </demo-snippet>
     </div>
 
+        <div class="horizontal-section-container centered">
+      <h3>Max horizontal login-fire-social Demo</h3>
+      <demo-snippet style="max-width: 800px !important">
+        <template>
+          <firebase-app
+            name="maxHorizontalDemo"
+            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+            auth-domain="convoo-login-demo.firebaseapp.com"
+            database-url="https://convoo-login-demo.firebaseio.com">
+          </firebase-app>
+          <login-fire-social providers="google, facebook, twitter, github, anonymous" app-name="maxHorizontalDemo" class="custom"></login-fire-social>
+        
+        <style is="custom-style">
+        login-fire-social.custom{
+            --login-fire-button:{
+                min-width: 100%
+            }
+            --login-fire-button-text:{
+                font-size: 12px;
+                font-weight: bold;
+            }
+            --login-fire-button-icon:{
+                display: none
+            }
+        }
+        </style>
+        </template>
+      </demo-snippet>
+    </div>
+
     <div class="vertical-section-container centered">
       <h3>login-fire-social in modal demo </h3>
       <demo-snippet>
@@ -116,6 +146,8 @@
         </template>
       </demo-snippet>
     </div>
+
+
 
   </body>
 </html>
