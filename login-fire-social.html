@@ -40,7 +40,7 @@ Example:
       }
 
       login-fire-button {
-        margin-bottom: 15px;
+        margin-bottom: 10px;
       }
 
       :host([horizontal]) login-fire-button {
@@ -57,6 +57,7 @@ Example:
         signed-in="{{_signedIn}}"
         mini$="[[mini]]"
         flat$="[[flat]]"
+        redirect="[[redirect]]"
         can-sign-out="[[canSignOut]]">
       </login-fire-button>
     </template>
@@ -68,15 +69,6 @@ Example:
     behaviors: [Convoo.LoginFireCommonBehavior],
 
     properties: {
-      /**
-       * Flat buttons, yes or no.
-       *
-       * @type {Boolean}
-       */
-      flat: {
-        type: Boolean,
-        value: false
-      },
 
       /**
        * Mini buttons, yes or no.

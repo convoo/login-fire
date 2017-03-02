@@ -118,6 +118,16 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       },
 
       /**
+       * Flat button, yes or not.
+       *
+       * @type {Boolean}
+       */
+      flat: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
        * ID of the OAuth provider to be used by the element. The list of
        * available providers is located at `Convoo._firebaseProviders`. The
        * default value is "anonymous" and tells to not use any provider for
@@ -152,6 +162,17 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         readOnly: true,
         notify: true
       },
+
+      /**
+        * Whether to show the view at sign up or sign in
+        *
+        * @type {Boolean}
+        */
+        showSignUp: {
+            type: Boolean,
+            value: false,
+            notify: true
+        },
 
       /**
        * When true, login status can be determined by checking user property.
@@ -300,6 +321,13 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         console.debug('StatusKnown changed for', newVal);
       }
       this._setStatusKnown(newVal);
+    },
+
+    /**
+     * Toggles signUp property
+     */
+    _toggleShowSignUp: function(){
+        this.showSignUp = !this.showSignUp;
     },
 
     /**

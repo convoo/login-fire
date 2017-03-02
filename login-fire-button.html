@@ -53,22 +53,41 @@ The following custom properties and mixins are available for styling:
     <style include="shared-styles">
       :host {
         display: inline-block;
+        @apply(--login-fire-button);
       }
       .btn {
         width: 210px;
         text-align: left;
         text-transform: none;
         min-height: 40px;
+        display: flex;
+        @apply(--login-fire-button);
+      }
+      .btn--google{
+          @apply(--login-fire-button-google)
+      }
+      .btn--twitter{
+          @apply(--login-fire-button-twitter)
+      }
+      .btn--facebook{
+          @apply(--login-fire-button-facebook)
+      }
+      .btn--github{
+          @apply(--login-fire-button-github)
+      }
+      .btn--anonymous{
+          @apply(--login-fire-button-anonymous)
       }
       .btn__icon {
-        padding-right: 8px;
-        max-height: 15px;
-        position: absolute;
-        left: 15px;
+        padding-left: 8px;
+        width:30px;
+        height: 14px;
+        @apply(--login-fire-button-icon);
       }
       .btn__text {
-        position: absolute;
-        left: 50px;
+        text-align: center;
+        width: 100%;
+        @apply(--login-fire-button-text);
       }
       .btn__signed-out{
           background-color: transparent;
@@ -105,16 +124,6 @@ The following custom properties and mixins are available for styling:
        * @type {Boolean}
        */
       mini: {
-        type: Boolean,
-        value: false
-      },
-
-      /**
-       * Flat button, yes or not.
-       *
-       * @type {Boolean}
-       */
-      flat: {
         type: Boolean,
         value: false
       },
