@@ -165,7 +165,7 @@ The following custom properties and mixins are available for styling:
        */
       _text: {
         type: String,
-        computed: '_computeButtonText(_user, config.provider, localize)'
+        computed: '_computeButtonText(_user, config.provider, localize, showSignUp)'
       }
     },
 
@@ -219,7 +219,7 @@ The following custom properties and mixins are available for styling:
      * @param  {Object} provider used for the authentication
      * @return {String}          the text to be displayed inside the button.
      */
-    _computeButtonText: function(user, provider, localize) {
+    _computeButtonText: function(user, provider, localize, showSignUp) {
       // User logged in.
       if (this.canSignOut && this.signedIn) {
         return localize("lf-signout");
@@ -230,8 +230,14 @@ The following custom properties and mixins are available for styling:
         return provider.name;
       }
 
-      // User not logged in.
-      return localize("lf-signup-"+provider.id);
+      if (showSignUp){
+        // User doesn't have account
+        return localize("lf-signup-"+provider.id);
+      } else {
+        // User has account
+        return localize("lf-signin-"+provider.id);
+      }
+
     }
   });
   </script>
