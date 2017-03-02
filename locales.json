@@ -1,5 +1,5 @@
 {
-    "English": {
+    "en": {
         "lf-email": "Email",
         "lf-email-invalid": "Invalid email address",
         "lf-password": "Password",
@@ -26,25 +26,5 @@
         "lf-signin-github": "Sign in with GitHub",
         "lf-signin-anonymous": "Sign in anonymously",
         "lf-signout": "Sign out"
-    },
-    "Pirate": {
-        "lf-email": "Yer Address",
-        "lf-email-invalid": "Bad Address",
-        "lf-password": "Yer Code",
-        "lf-resetpw-link": "Forgot yer code?",
-        "lf-resetpw-success-message": "Yer code was sent",
-        "lf-signup-button": "Join Crew",
-        "lf-signup-facebook": "Join crew with Facebook",
-        "lf-signup-google": "Join crew with Google",
-        "lf-signup-twitter": "Join crew with Twitter",
-        "lf-signup-github": "Join crew with GitHub",
-        "lf-signup-anonymous": "Join crew anonymously",
-        "lf-signin-button": "Come Aboard",
-        "lf-signin-facebook": "Come aboard with Facebook",
-        "lf-signin-google": "Come aboard with Google",
-        "lf-signin-twitter": "Come aboard with Twitter",
-        "lf-signin-github": "Come aboard with GitHub",
-        "lf-signin-anonymous": "Come aboard anonymously",
-        "lf-signout": "Abandon Ship"
     }
 }

@@ -43,6 +43,30 @@ The following custom properties and mixins are available for styling:
 | `--login-fire-btn-signout` | Mixin applied to the signin button | `{}` |
 
 
+### Localization
+
+You can specify the following codes and language in a json file passed to the localesFile property to update the text used. Here are the defaults:
+
+"en": {
+        "lf-email": "Email",
+        "lf-email-invalid": "Invalid email address",
+        "lf-password": "Password",
+        "lf-reenter-password": "Re-enter Password",
+        "lf-passwords-dont-match": "Passwords do not match",
+        "lf-already-have-account": "Already have an account?",
+        "lf-already-have-account-action": "Sign in",
+        "lf-no-account": "Don' have an account?",
+        "lf-no-account-action": "Sign up",
+        "lf-resetpw-link": "Forgot password",
+        "lf-resetpw-cancel-link": "Nevermind, I remembered my password.",
+        "lf-resetpw-button": "Reset password",
+        "lf-resetpw-success-message": "Password reset email has been sent. Please check your inbox.",
+        "lf-signup-button": "Sign Up",
+        "lf-signin-button": "Sign In"
+        "lf-signout": "Sign out"
+    }
+
+
 @demo demo/login-fire-form.html
 -->
 <dom-module id="login-fire-form">
