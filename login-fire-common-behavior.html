@@ -5,6 +5,7 @@ Use of this source code is governed by a MIT license that can be found in the
 LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 -->
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
 <script>
 (function() {
   'use strict';
@@ -66,7 +67,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
    *
    * @polymerBehavior Convoo.LoginFireCommonBehavior
    */
-  Convoo.LoginFireCommonBehavior = {
+  Convoo.LoginFireCommonBehaviorImpl = {
     properties: {
       /**
        * Your application name. This is required if you want use several
@@ -125,6 +126,27 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       flat: {
         type: Boolean,
         value: false
+      },
+
+      /**
+       * Sets the current language
+       *
+       * @type {String}
+       */
+      language: {
+        type: String,
+        value: "English"
+      },
+
+      /**
+       * Sets the path to the locales json file 
+       * where the specific text to use is stored
+       *
+       * @type {String}
+       */
+      localesFile: {
+        type: String,
+        value: "locales.json"
       },
 
       /**
@@ -230,6 +252,10 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         type: Object,
         observer: '_userChanged'
       }
+    },
+
+    attached: function(){
+        this.loadResources(this.resolveUrl(this.localesFile));
     },
 
     ready: function() {
@@ -363,5 +389,14 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      * @event signedout
      */
   };
+
+  
+    /**
+    * @polymerBehavior
+    */
+    Convoo.LoginFireCommonBehavior = [
+        Polymer.AppLocalizeBehavior,
+        Convoo.LoginFireCommonBehaviorImpl
+    ];  
 }());
 </script>
