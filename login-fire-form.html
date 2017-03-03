@@ -171,12 +171,12 @@ You can specify the following codes and language in a json file passed to the lo
                     <paper-button raised$="[[!flat]]" type="submit" on-tap="_signUp" class="btn--signup">{{localize('lf-signup-button')}}</paper-button>
                 </div>
                 <p class="signup-toggle">
-                    {{localize('lf-already-have-account')}} <a on-tap="_toggleShowSignUp">{{localize('lf-already-have-account-action')}}</a>
+                    {{localize('lf-already-have-account')}} <a on-tap="_toggleShowSignUp" tabindex="0" title="{{localize('lf-already-have-account')}} {{localize('lf-already-have-account-action')}}" href="#" on-tap="">{{localize('lf-already-have-account-action')}}</a>
                 </p>
             </template>
             <template is="dom-if" if="[[!showSignUp]]">
                 <p>
-                    <a class="link--reset-pw" on-click="toggleShowResetPW">
+                    <a class="link--reset-pw" on-click="toggleShowResetPW" tabindex="0" href="#" on-tap="">
                         {{localize('lf-resetpw-link')}}
                     </a>
                 </p>
@@ -184,7 +184,7 @@ You can specify the following codes and language in a json file passed to the lo
                     <paper-button raised$="[[!flat]]" type="submit" on-tap="_signIn" class="btn--signin">{{localize('lf-signin-button')}}</paper-button>
                 </div>
                 <p class="signup-toggle">
-                    {{localize('lf-no-account')}} <a on-tap="_toggleShowSignUp">{{localize('lf-no-account-action')}}</a>
+                    {{localize('lf-no-account')}} <a on-tap="_toggleShowSignUp" tabindex="0" title="{{localize('lf-no-account')}} {{localize('lf-no-account-action')}}" href="#" on-tap="">{{localize('lf-no-account-action')}}</a>
                 </p>
             </template>
         </template>
@@ -198,7 +198,7 @@ You can specify the following codes and language in a json file passed to the lo
             </paper-input>
             <paper-button raised$="[[!flat]]" type="submit" on-tap="_resetPassword" class="btn--resetpw">{{localize('lf-resetpw-button')}}</paper-button>
             <p>
-                <a class="link--reset-pw" on-click="toggleShowResetPW">
+                <a class="link--reset-pw" on-click="toggleShowResetPW" tabindex="0" href="#" on-tap="">
                     {{localize('lf-resetpw-cancel-link')}}
                 </a>
             </p>
