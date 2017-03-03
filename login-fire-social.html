@@ -66,27 +66,48 @@ You can specify the following codes and language in a json file passed to the lo
       }
     </style>
 
-    <template is="dom-repeat" items="{{_providers}}">
-      <login-fire-button
-        app-name="[[appName]]"
-        provider="[[item.id]]"
-        user="{{_user}}"
-        status-known="{{_statusKnown}}"
-        signed-in="{{_signedIn}}"
-        mini$="[[mini]]"
-        flat$="[[flat]]"
-        redirect="[[redirect]]"
-        can-sign-out="[[canSignOut]]"
-        show-sign-up="{{showSignUp}}"
-        locales-file="[[localesFile]]"
-        language="[[language]]"
-        google-scopes="[[googleScopes]]"
-        facebook-scopes="[[facebookScopes]]"
-        github-scopes="[[githubScopes]]"
-        debug="[[debug]]"
-        >
-      </login-fire-button>
+    <template is="dom-if" if="[[onlySignOut]]">
+        <login-fire-button
+            app-name="[[appName]]"
+            user="{{_user}}"
+            status-known="{{_statusKnown}}"
+            signed-in="{{_signedIn}}"
+            mini$="[[mini]]"
+            flat$="[[flat]]"
+            only-sign-out="[[onlySignOut]]"
+            only-sign-in="[[onlySignIn]]"
+            show-sign-up="{{showSignUp}}"
+            locales-file="[[localesFile]]"
+            language="[[language]]"
+            debug="[[debug]]"
+            >
+        </login-fire-button>
     </template>
+    <template is="dom-if" if="[[!onlySignOut]]">
+        <template is="dom-repeat" items="{{_providers}}">
+            <login-fire-button
+                app-name="[[appName]]"
+                provider="[[item.id]]"
+                user="{{_user}}"
+                status-known="{{_statusKnown}}"
+                signed-in="{{_signedIn}}"
+                mini$="[[mini]]"
+                flat$="[[flat]]"
+                redirect="[[redirect]]"
+                only-sign-out="[[onlySignOut]]"
+                only-sign-in="[[onlySignIn]]"
+                show-sign-up="{{showSignUp}}"
+                locales-file="[[localesFile]]"
+                language="[[language]]"
+                google-scopes="[[googleScopes]]"
+                facebook-scopes="[[facebookScopes]]"
+                github-scopes="[[githubScopes]]"
+                debug="[[debug]]"
+                >
+            </login-fire-button>
+        </template>
+    </template>
+
   </template>
 
   <script>

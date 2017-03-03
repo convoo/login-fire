@@ -119,6 +119,44 @@
     </div>
 
     <div>
+      <h3>login-fire Demo only sign out</h3>
+      <demo-snippet>
+        <template >
+          <firebase-app
+            name="onlySignOutDemo"
+            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+            auth-domain="convoo-login-demo.firebaseapp.com"
+            database-url="https://convoo-login-demo.firebaseio.com">
+          </firebase-app>
+          <login-fire app-name="onlySignOutDemo"
+            providers="google, facebook, twitter, github, anonymous"
+            only-sign-out
+            debug
+            ></login-fire>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div>
+      <h3>login-fire Demo only sign in</h3>
+      <demo-snippet>
+        <template >
+          <firebase-app
+            name="onlySignInDemo"
+            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+            auth-domain="convoo-login-demo.firebaseapp.com"
+            database-url="https://convoo-login-demo.firebaseio.com">
+          </firebase-app>
+          <login-fire app-name="onlySignInDemo"
+            providers="google, facebook, twitter, github, anonymous"
+            only-sign-in
+            debug
+            ></login-fire>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div>
       <h3>Mini horizontal login-fire Demo with all options</h3>
       <demo-snippet>
         <template >

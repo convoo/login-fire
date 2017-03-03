@@ -144,45 +144,67 @@ You can specify the following codes and language in a json file passed to the lo
     }
     </style>
 
-    <login-fire-form
-      app-name="[[appName]]"
-      user="{{_user}}"
-      signed-in="{{_signedIn}}"
-      status-known="{{_statusKnown}}"
-      auto-sign-up="[[autoSignUp]]"
-      can-sign-out="[[canSignOut]]"
-      show-sign-up="{{showSignUp}}"
-      flat="{{flat}}"
-      locales-file="[[localesFile]]"
-      language="[[language]]"
-      debug="[[debug]]"
-      >
-    </login-fire-form>
+    <template is="dom-if" if="[[onlySignOut]]">
+        <login-fire-button
+            app-name="[[appName]]"
+            user="{{_user}}"
+            status-known="{{_statusKnown}}"
+            signed-in="{{_signedIn}}"
+            mini$="[[mini]]"
+            flat$="[[flat]]"
+            only-sign-out="[[onlySignOut]]"
+            only-sign-in="[[onlySignIn]]"
+            show-sign-up="{{showSignUp}}"
+            locales-file="[[localesFile]]"
+            language="[[language]]"
+            debug="[[debug]]"
+            >
+        </login-fire-button>
+    </template>
 
-    <div class$="div [[_dividerStyle]]" hidden$="[[noDivider]]">
-      <span class="div__span">or</span>
-    </div>
+    <template is="dom-if" if="[[!onlySignOut]]">
 
-    <login-fire-social
-      app-name="[[appName]]"
-      providers="[[providers]]"
-      user="{{_user}}"
-      signed-in="{{_signedIn}}"
-      status-known="{{_statusKnown}}"
-      can-sign-out="[[canSignOut]]"
-      redirect="[[redirect]]"
-      mini$="[[mini]]"
-      horizontal$="[[horizontal]]"
-      show-sign-up="{{showSignUp}}"
-      flat="{{flat}}"
-      locales-file="[[localesFile]]"
-      language="[[language]]"
-      google-scopes="[[googleScopes]]"
-      facebook-scopes="[[facebookScopes]]"
-      github-scopes="[[githubScopes]]"
-      debug="[[debug]]"
-      >
-    </login-fire-social>
+        <login-fire-form
+            app-name="[[appName]]"
+            user="{{_user}}"
+            signed-in="{{_signedIn}}"
+            status-known="{{_statusKnown}}"
+            auto-sign-up="[[autoSignUp]]"
+            can-sign-out="[[canSignOut]]"
+            show-sign-up="{{showSignUp}}"
+            flat="{{flat}}"
+            locales-file="[[localesFile]]"
+            language="[[language]]"
+            debug="[[debug]]"
+            >
+        </login-fire-form>
+
+        <div class$="div [[_dividerStyle]]" hidden$="[[noDivider]]">
+            <span class="div__span">or</span>
+        </div>
+
+        <login-fire-social
+            app-name="[[appName]]"
+            providers="[[providers]]"
+            user="{{_user}}"
+            signed-in="{{_signedIn}}"
+            status-known="{{_statusKnown}}"
+            only-sign-out="[[onlySignOut]]"
+            only-sign-in="[[onlySignIn]]"
+            redirect="[[redirect]]"
+            mini$="[[mini]]"
+            horizontal$="[[horizontal]]"
+            show-sign-up="{{showSignUp}}"
+            flat="{{flat}}"
+            locales-file="[[localesFile]]"
+            language="[[language]]"
+            google-scopes="[[googleScopes]]"
+            facebook-scopes="[[facebookScopes]]"
+            github-scopes="[[githubScopes]]"
+            debug="[[debug]]"
+            >
+        </login-fire-social>
+    </template>
 
     <iron-media-query query="(max-width: 650px)" query-matches="{{isNarrow}}">
     </iron-media-query>

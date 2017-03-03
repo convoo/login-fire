@@ -47,21 +47,21 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      * Starts the sign-in process using a social provider authetication.
      */
     signIn: function() {
-      if (this.provider === 'anonymous') {
-        this.$.auth.signInAnonymously()
-          .then(this._fireEvent.bind(this))
-          .catch(this._fireError.bind(this));
-
-      } else if (this.redirect) {
-        this.$.auth.signInWithRedirect(this._computedProvider)
-          .then(this._fireEvent.bind(this))
-          .catch(this._fireError.bind(this));
-
-      } else {
-        this.$.auth.signInWithPopup(this._computedProvider)
-          .then(this._fireEvent.bind(this))
-          .catch(this._fireError.bind(this));
-      }
+        if (!this.onlySignOut){
+            if (this.provider === 'anonymous') {
+                this.$.auth.signInAnonymously()
+                .then(this._fireEvent.bind(this))
+                .catch(this._fireError.bind(this));
+            } else if (this.redirect) {
+                this.$.auth.signInWithRedirect(this._computedProvider)
+                .then(this._fireEvent.bind(this))
+                .catch(this._fireError.bind(this));
+            } else {
+                this.$.auth.signInWithPopup(this._computedProvider)
+                .then(this._fireEvent.bind(this))
+                .catch(this._fireError.bind(this));
+            }
+        }
     },
 
     /**

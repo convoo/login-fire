@@ -66,17 +66,32 @@ The following custom properties and mixins are available for styling:
       .btn--google{
           @apply(--login-fire-button-google)
       }
+      .btn--google:hover{
+          @apply(--login-fire-button-google-hover)
+      }
       .btn--twitter{
           @apply(--login-fire-button-twitter)
+      }
+      .btn--twitter:hover{
+          @apply(--login-fire-button-twitter-hover)
       }
       .btn--facebook{
           @apply(--login-fire-button-facebook)
       }
+      .btn--facebook:hover{
+          @apply(--login-fire-button-facebook-hover)
+      }
       .btn--github{
           @apply(--login-fire-button-github)
       }
+      .btn--github:hover{
+          @apply(--login-fire-button-github-hover)
+      }
       .btn--anonymous{
           @apply(--login-fire-button-anonymous)
+      }
+      .btn--anonymous:hover{
+          @apply(--login-fire-button-anonymous-hover)
       }
       .btn__icon {
         padding-left: 8px;
@@ -95,6 +110,11 @@ The following custom properties and mixins are available for styling:
           text-align: center;
           width: 170px;
           @apply(--login-fire-btn-signout);
+      }
+
+      .btn__signed-out:hover {
+          background-color: lightgray;
+          @apply(--login-fire-btn-signout-hover);
       }
     </style>
 
@@ -135,7 +155,7 @@ The following custom properties and mixins are available for styling:
        */
       _hideIcon: {
         type: Boolean,
-        computed: '_computeHideIcon(canSignOut, signedIn)'
+        computed: '_computeHideIcon(onlySignOut, onlySignIn, signedIn)'
       },
 
       /**
@@ -155,7 +175,7 @@ The following custom properties and mixins are available for styling:
        */
       _signOutClass: {
         type: String,
-        computed: '_computeSignOutClass(canSignOut, signedIn)'
+        computed: '_computeSignOutClass(onlySignOut, onlySignIn, signedIn)'
       },
 
       /**
@@ -165,7 +185,7 @@ The following custom properties and mixins are available for styling:
        */
       _text: {
         type: String,
-        computed: '_computeButtonText(_user, config.provider, localize, showSignUp)'
+        computed: '_computeButtonText(_user, config.provider, localize, showSignUp, onlySignOut, onlySignIn, signedIn)'
       }
     },
 
@@ -177,13 +197,13 @@ The following custom properties and mixins are available for styling:
      * The provider logo must be hidden if the element can sign out and a user
      * is currently signed in.
      *
-     * @param  {Boolean} canSignOut is `true` of the element can signing out
+     * @param  {Boolean} onlySignIn is `false` if the element can sign out
      * @param  {Boolean} signedIn   is `true` if a user is actually signed in
      * @return {Boolean}            `true` if the element can sign out and a
      * user is currently signed in.
      */
-    _computeHideIcon: function(canSignOut, signedIn) {
-      return canSignOut && signedIn;
+    _computeHideIcon: function(onlySignOut, onlySignIn, signedIn) {
+      return onlySignOut || (!onlySignIn && signedIn);
     },
 
     /**
@@ -199,15 +219,14 @@ The following custom properties and mixins are available for styling:
     },
 
     /**
-     * Compute the CSS class to add when the user is is currently signed in.
+     * Compute the CSS class to add when the user is currently signed in.
      *
-     * @param  {Boolean} canSignOut is `true` of the element can signing out
+     * @param  {Boolean} onlySignIn is `false` if the element can sign out
      * @param  {Boolean} signedIn   is `true` if a user is actually signed in
-     * @return {String}            a CSS class name to add when `canSignOut` 
-     * is true and when signedIn is `true`.
+     * @return {String}            a CSS class name to add when element can sign out
      */
-    _computeSignOutClass: function(canSignOut, signedIn) {
-      if (canSignOut && signedIn){
+    _computeSignOutClass: function(onlySignOut, onlySignIn, signedIn) {
+      if (onlySignOut || (!onlySignIn && signedIn)){
           return 'btn__signed-out';
       };
     },
@@ -219,9 +238,9 @@ The following custom properties and mixins are available for styling:
      * @param  {Object} provider used for the authentication
      * @return {String}          the text to be displayed inside the button.
      */
-    _computeButtonText: function(user, provider, localize, showSignUp) {
+    _computeButtonText: function(user, provider, localize, showSignUp, onlySignOut, onlySignIn, signedIn) {
       // User logged in.
-      if (this.canSignOut && this.signedIn) {
+      if (onlySignOut || (!onlySignIn && signedIn)) {
         return localize("lf-signout");
       }
 
@@ -230,10 +249,10 @@ The following custom properties and mixins are available for styling:
         return provider.name;
       }
 
-      if (showSignUp){
+      if (showSignUp && !onlySignOut){
         // User doesn't have account
         return localize("lf-signup-"+provider.id);
-      } else {
+      } else if (!onlySignOut){
         // User has account
         return localize("lf-signin-"+provider.id);
       }
