@@ -21,6 +21,28 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
    * @polymerBehavior Convoo.LoginFireSocialBehavior
    */
   Convoo.LoginFireSocialBehaviorImpl = {
+
+
+      properties: {
+
+        googleScopes: {
+            type: String,
+            value: ""
+        },
+        facebookScopes: {
+            type: String,
+            value: ""
+        },
+        githubScopes: {
+            type: String,
+            value: ""
+        },
+        _computedProvider: {
+            type: Object,
+            computed: "_computeProvider(provider, googleScopes, facebookScopes, githubScopes)"
+
+        }
+      },
     /**
      * Starts the sign-in process using a social provider authetication.
      */
@@ -31,12 +53,12 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
           .catch(this._fireError.bind(this));
 
       } else if (this.redirect) {
-        this.$.auth.signInWithRedirect()
+        this.$.auth.signInWithRedirect(this._computedProvider)
           .then(this._fireEvent.bind(this))
           .catch(this._fireError.bind(this));
 
       } else {
-        this.$.auth.signInWithPopup()
+        this.$.auth.signInWithPopup(this._computedProvider)
           .then(this._fireEvent.bind(this))
           .catch(this._fireError.bind(this));
       }
@@ -53,6 +75,24 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       } else {
         this.signOut();
       }
+    },
+
+    _computeProvider: function(provider, googleScopes, facebookScopes, githubScopes){
+        provider = provider.toLowerCase();
+        var compProvider;
+        if (provider === "google"){
+            compProvider =  new firebase.auth.GoogleAuthProvider();
+            compProvider.addScope(googleScopes)
+        } else if (provider === "facebook"){
+            compProvider =  new firebase.auth.FacebookAuthProvider();
+            compProvider.addScope(facebookScopes)
+        } else if (provider === "twitter"){
+            compProvider =  new firebase.auth.TwitterAuthProvider();
+        } else if (provider === "github"){
+            compProvider =  new firebase.auth.GithubAuthProvider();
+            compProvider.addScope(githubScopes)
+        }
+        return compProvider;
     }
   };
 

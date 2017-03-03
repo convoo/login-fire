@@ -154,7 +154,9 @@ You can specify the following codes and language in a json file passed to the lo
       show-sign-up="{{showSignUp}}"
       flat="{{flat}}"
       locales-file="[[localesFile]]"
-      language="[[language]]">
+      language="[[language]]"
+      debug="[[debug]]"
+      >
     </login-fire-form>
 
     <div class$="div [[_dividerStyle]]" hidden$="[[noDivider]]">
@@ -174,7 +176,12 @@ You can specify the following codes and language in a json file passed to the lo
       show-sign-up="{{showSignUp}}"
       flat="{{flat}}"
       locales-file="[[localesFile]]"
-      language="[[language]]">
+      language="[[language]]"
+      google-scopes="[[googleScopes]]"
+      facebook-scopes="[[facebookScopes]]"
+      github-scopes="[[githubScopes]]"
+      debug="[[debug]]"
+      >
     </login-fire-social>
 
     <iron-media-query query="(max-width: 650px)" query-matches="{{isNarrow}}">

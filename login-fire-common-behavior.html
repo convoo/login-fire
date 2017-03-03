@@ -135,7 +135,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
        */
       language: {
         type: String,
-        value: "English"
+        value: "en"
       },
 
       /**
@@ -311,9 +311,11 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     _fireEvent: function(response) {
       if (response) {
         var user = response.user || response;
-        this.fire('signedin', user);
+        var credential = response.credential;
+        this.fire('signedin', {user: user, credential: credential});
         if (this.debug) {
           console.debug('User signed in with', this.config.provider.name);
+          console.debug({user: user, credential: credential})
         }
       } else {
         this.fire('signedout');
