@@ -8,6 +8,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 <link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="./login-fire-form-behavior.html">
 <link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-input/paper-input.html">
 
 <!--
@@ -158,15 +159,29 @@ You can specify the following codes and language in a json file passed to the lo
                 value="{{password}}"
                 error-message="{{localize('lf-password-invalid')}}"
                 required>
+                <template is="dom-if" if="[[!noToggleablePassword]]">
+                    <paper-icon-button 
+                        id="passwordIconButton"
+                        suffix
+                        on-down="_revealPW"
+                        on-up="_hidePW"
+                        icon="visibility"
+                        title="Hold to view password text">
+                    </paper-icon-button>
+                </template>
             </paper-input>
             <template is="dom-if" if="[[showSignUp]]">
-                <paper-input id="repeatPasswordInput"
-                    type="password"
-                    label="{{localize('lf-reenter-password')}}"
-                    value="{{passwordAgain}}"
-                    error-message="{{localize('lf-passwords-dont-match')}}"
-                    required>
-                </paper-input>
+                
+                <template is="dom-if" if="[[repeatPassword]]">
+                    <paper-input id="repeatPasswordInput"
+                        type="password"
+                        label="{{localize('lf-reenter-password')}}"
+                        value="{{passwordAgain}}"
+                        error-message="{{localize('lf-passwords-dont-match')}}"
+                        required>
+                    </paper-input>
+                </template>
+                
 
                 <div class="action">
                     <paper-button raised$="[[!flat]]" type="submit" on-tap="_signUp" class="btn--signup">{{localize('lf-signup-button')}}</paper-button>
@@ -291,17 +306,25 @@ You can specify the following codes and language in a json file passed to the lo
      */
     _signUp: function(e) {
         this._cleanMessages();
-        this.$$("#repeatPasswordInput").invalid=false;
         e = this.$$("#emailInput").validate()
         p = this.$$("#passwordInput").validate()
-        pRepeat = this.password == this.passwordAgain && this.$$("#repeatPasswordInput").validate()
-        if (e && p && pRepeat) {
-            this.signUp(this.email, this.password);
-            this.email = null;
-            this.password = null;
-            this.passwordAgain = null;
-        }else if(!pRepeat){
-            this.$$("#repeatPasswordInput").invalid=true;
+        if (this.reenterPassword){
+            this.$$("#repeatPasswordInput").invalid=false;
+            pRepeat = this.password == this.passwordAgain && this.$$("#repeatPasswordInput").validate()
+            if (e && p && pRepeat) {
+                this.signUp(this.email, this.password);
+                this.email = null;
+                this.password = null;
+                this.passwordAgain = null;
+            }else if(!pRepeat){
+                this.$$("#repeatPasswordInput").invalid=true;
+            }
+        } else {
+            if (e && p){
+                this.signUp(this.email, this.password);
+                this.email = null;
+                this.password = null;
+            }
         }
     },
 
@@ -336,7 +359,23 @@ You can specify the following codes and language in a json file passed to the lo
             this.set('_lastError', error.message);
         }.bind(this));
       }
-    }
+    },
+
+    /*
+     *  Reveals the password in the parent by switching the type to text
+     */
+     _revealPW: function(e){
+        this.$$("#passwordIconButton").icon = "visibility-off";
+        this.$$("#passwordInput").type = "text";
+     },
+
+     /*
+      * Hides the password in the parent by switching the type to password
+      */
+     _hidePW: function(e){
+        this.$$("#passwordIconButton").icon = "visibility";
+        this.$$("#passwordInput").type = "password";
+     }
   });
   </script>
 </dom-module>
