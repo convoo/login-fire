@@ -156,6 +156,7 @@ You can specify the following codes and language in a json file passed to the lo
                 type="password"
                 label="{{localize('lf-password')}}"
                 value="{{password}}"
+                error-message="{{localize('lf-password-invalid')}}"
                 required>
             </paper-input>
             <template is="dom-if" if="[[showSignUp]]">
@@ -278,7 +279,11 @@ You can specify the following codes and language in a json file passed to the lo
      */
     _signIn: function() {
       this._cleanMessages();
-      this.signIn(this.email, this.password);
+      e = this.$$("#emailInput").validate();
+      p = this.$$("#passwordInput").validate();
+      if (e && p){
+        this.signIn(this.email, this.password);
+      }
     },
 
     /**
@@ -287,9 +292,9 @@ You can specify the following codes and language in a json file passed to the lo
     _signUp: function(e) {
         this._cleanMessages();
         this.$$("#repeatPasswordInput").invalid=false;
-        e = this.$.emailInput.validate()
-        p = this.$.passwordInput.validate()
-        pRepeat = this.password == this.passwordAgain
+        e = this.$$("#emailInput").validate()
+        p = this.$$("#passwordInput").validate()
+        pRepeat = this.password == this.passwordAgain && this.$$("#repeatPasswordInput").validate()
         if (e && p && pRepeat) {
             this.signUp(this.email, this.password);
             this.email = null;
