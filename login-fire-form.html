@@ -10,6 +10,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="./icons.html">
 
 <!--
 An element that allows simple configuration of email and password authentication with Firebase.
@@ -165,7 +166,7 @@ You can specify the following codes and language in a json file passed to the lo
                         suffix
                         on-down="_revealPW"
                         on-up="_hidePW"
-                        icon="visibility"
+                        icon="login-fire-icons:visibility"
                         title="Hold to view password text">
                     </paper-icon-button>
                 </template>
@@ -365,7 +366,7 @@ You can specify the following codes and language in a json file passed to the lo
      *  Reveals the password in the parent by switching the type to text
      */
      _revealPW: function(e){
-        this.$$("#passwordIconButton").icon = "visibility-off";
+        this.$$("#passwordIconButton").icon = "login-fire-icons:visibility-off";
         this.$$("#passwordInput").type = "text";
      },
 
@@ -373,7 +374,7 @@ You can specify the following codes and language in a json file passed to the lo
       * Hides the password in the parent by switching the type to password
       */
      _hidePW: function(e){
-        this.$$("#passwordIconButton").icon = "visibility";
+        this.$$("#passwordIconButton").icon = "login-fire-icons:visibility";
         this.$$("#passwordInput").type = "password";
      }
   });
