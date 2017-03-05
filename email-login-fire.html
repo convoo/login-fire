@@ -83,7 +83,7 @@
     <paper-input id="emailInput" type="email" label="Email" value="{{email}}" validator="email-validator" error-message="Invalid email address" required auto-validate></paper-input>
     <paper-input id="pwInput" type="password" label="Password" value="{{pw}}" required></paper-input>
     <p><a href="#" id="reset" on-click="_resetPW">Reset password for entered email</a></p>
-    <paper-button id="emailSignUp" type="submit" on-tap="_signUpEmailPW">Sign Up</paper-button>
+    <paper-button id="emailSignUp" type="submit" on-tap="_signUpEmailPW" hidden$="[[noSignUp]]">Sign Up</paper-button>
     <paper-button id="emailSignIn" type="submit" on-tap="_signInEmailPW">Sign In</paper-button>
   </form>
 
@@ -154,6 +154,13 @@
           value:  "Password reset email has been sent. Please check your inbox."
         },
         /**
+         * If true, SignUp will be hidden.
+         */
+        noSignUp: {
+          type: Boolean,
+          value: false
+        },
+        /**
          * If true, will sign up a user who attempts to sign in with an account that doesn't already exist
          */
         autoSignUp: {
@@ -184,6 +191,7 @@
         this.$$("#emailPassword").signInWithEmailAndPassword(this.email, this.pw);
       },
       _signUpEmailPW: function(e){
+        if (this.noSignUp) return;
         this._cleanMessages();
         this.$$("#emailPassword").createUserWithEmailAndPassword(this.email, this.pw);
       },
