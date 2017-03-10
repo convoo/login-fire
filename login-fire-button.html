@@ -156,7 +156,7 @@ The following custom properties and mixins are available for styling:
        */
       _hideIcon: {
         type: Boolean,
-        computed: '_computeHideIcon(onlySignOut, onlySignIn, signedIn)'
+        computed: '_computeHideIcon(noSignIn, noSignOut, signedIn)'
       },
 
       /**
@@ -176,7 +176,7 @@ The following custom properties and mixins are available for styling:
        */
       _signOutClass: {
         type: String,
-        computed: '_computeSignOutClass(onlySignOut, onlySignIn, signedIn)'
+        computed: '_computeSignOutClass(noSignIn, noSignOut, signedIn)'
       },
 
       /**
@@ -186,7 +186,7 @@ The following custom properties and mixins are available for styling:
        */
       _text: {
         type: String,
-        computed: '_computeButtonText(_user, config.provider, localize, showSignUp, onlySignOut, onlySignIn, signedIn)'
+        computed: '_computeButtonText(_user, config.provider, localize, showSignUp, noSignIn, noSignOut, signedIn)'
       }
     },
 
@@ -198,13 +198,13 @@ The following custom properties and mixins are available for styling:
      * The provider logo must be hidden if the element can sign out and a user
      * is currently signed in.
      *
-     * @param  {Boolean} onlySignIn is `false` if the element can sign out
+     * @param  {Boolean} noSignOut is `false` if the element can sign out
      * @param  {Boolean} signedIn   is `true` if a user is actually signed in
      * @return {Boolean}            `true` if the element can sign out and a
      * user is currently signed in.
      */
-    _computeHideIcon: function(onlySignOut, onlySignIn, signedIn) {
-      return onlySignOut || (!onlySignIn && signedIn);
+    _computeHideIcon: function(noSignIn, noSignOut, signedIn) {
+      return noSignIn || (!noSignOut && signedIn);
     },
 
     /**
@@ -222,12 +222,12 @@ The following custom properties and mixins are available for styling:
     /**
      * Compute the CSS class to add when the user is currently signed in.
      *
-     * @param  {Boolean} onlySignIn is `false` if the element can sign out
+     * @param  {Boolean} noSignOut is `false` if the element can sign out
      * @param  {Boolean} signedIn   is `true` if a user is actually signed in
      * @return {String}            a CSS class name to add when element can sign out
      */
-    _computeSignOutClass: function(onlySignOut, onlySignIn, signedIn) {
-      if (onlySignOut || (!onlySignIn && signedIn)){
+    _computeSignOutClass: function(noSignIn, noSignOut, signedIn) {
+      if (noSignIn || (!noSignOut && signedIn)){
           return 'btn__signed-out';
       };
     },
@@ -239,9 +239,9 @@ The following custom properties and mixins are available for styling:
      * @param  {Object} provider used for the authentication
      * @return {String}          the text to be displayed inside the button.
      */
-    _computeButtonText: function(user, provider, localize, showSignUp, onlySignOut, onlySignIn, signedIn) {
+    _computeButtonText: function(user, provider, localize, showSignUp, noSignIn, noSignOut, signedIn) {
       // User logged in.
-      if (onlySignOut || (!onlySignIn && signedIn)) {
+      if (noSignIn || (!noSignOut && signedIn)) {
         return localize("lf-signout");
       }
 
@@ -250,10 +250,10 @@ The following custom properties and mixins are available for styling:
         return provider.name;
       }
 
-      if (showSignUp && !onlySignOut){
+      if (showSignUp && !noSignIn){
         // User doesn't have account
         return localize("lf-signup-"+provider.id);
-      } else if (!onlySignOut){
+      } else if (!noSignIn){
         // User has account
         return localize("lf-signin-"+provider.id);
       }

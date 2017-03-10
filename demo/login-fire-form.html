@@ -34,6 +34,21 @@
     </div>
 
     <div class="vertical-section-container centered">
+      <h3>No toggle view password and reenter password for sign up login-fire-form Demo</h3>
+      <demo-snippet>
+        <template >
+          <firebase-app
+            name="noToggleDemo"
+            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+            auth-domain="convoo-login-demo.firebaseapp.com"
+            database-url="https://convoo-login-demo.firebaseio.com">
+          </firebase-app>
+          <login-fire-form app-name="noToggle" no-toggleable-password reenter-password show-sign-up></login-fire-form>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
       <h3>Debug narrow login-fire-form Demo</h3>
       <demo-snippet>
         <template >
@@ -59,6 +74,21 @@
             database-url="https://convoo-login-demo.firebaseio.com">
           </firebase-app>
           <login-fire-form app-name="wideDemo"></login-fire-form>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>No signup email-login-fire Demo</h3>
+      <demo-snippet>
+        <template >
+          <firebase-app
+            name="noSignUpDemo"
+            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+            auth-domain="convoo-login-demo.firebaseapp.com"
+            database-url="https://convoo-login-demo.firebaseio.com">
+          </firebase-app>
+          <login-fire-form app-name="noSignUpDemo" no-sign-up></login-fire-form>
         </template>
       </demo-snippet>
     </div>

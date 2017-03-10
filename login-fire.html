@@ -144,7 +144,7 @@ You can specify the following codes and language in a json file passed to the lo
     }
     </style>
 
-    <template is="dom-if" if="[[onlySignOut]]">
+    <template is="dom-if" if="[[_showOneButton]]">
         <login-fire-button
             app-name="[[appName]]"
             user="{{_user}}"
@@ -152,8 +152,8 @@ You can specify the following codes and language in a json file passed to the lo
             signed-in="{{_signedIn}}"
             mini$="[[mini]]"
             flat$="[[flat]]"
-            only-sign-out="[[onlySignOut]]"
-            only-sign-in="[[onlySignIn]]"
+            no-sign-in="[[noSignIn]]"
+            no-sign-out="[[noSignOut]]"
             show-sign-up="{{showSignUp}}"
             locales-file="[[localesFile]]"
             language="[[language]]"
@@ -162,7 +162,7 @@ You can specify the following codes and language in a json file passed to the lo
         </login-fire-button>
     </template>
 
-    <template is="dom-if" if="[[!onlySignOut]]">
+    <template is="dom-if" if="[[!_showOneButton]]">
 
         <login-fire-form
             app-name="[[appName]]"
@@ -191,8 +191,8 @@ You can specify the following codes and language in a json file passed to the lo
             user="{{_user}}"
             signed-in="{{_signedIn}}"
             status-known="{{_statusKnown}}"
-            only-sign-out="[[onlySignOut]]"
-            only-sign-in="[[onlySignIn]]"
+            no-sign-in="[[noSignIn]]"
+            no-sign-out="[[noSignOut]]"
             redirect="[[redirect]]"
             mini$="[[mini]]"
             horizontal$="[[horizontal]]"

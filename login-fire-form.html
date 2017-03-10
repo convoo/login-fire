@@ -171,9 +171,8 @@ You can specify the following codes and language in a json file passed to the lo
                     </paper-icon-button>
                 </template>
             </paper-input>
-            <template is="dom-if" if="[[showSignUp]]">
-                
-                <template is="dom-if" if="[[repeatPassword]]">
+            <template is="dom-if" if="[[_showSignUp]]">
+                <template is="dom-if" if="[[reenterPassword]]">
                     <paper-input id="repeatPasswordInput"
                         type="password"
                         label="{{localize('lf-reenter-password')}}"
@@ -182,8 +181,6 @@ You can specify the following codes and language in a json file passed to the lo
                         required>
                     </paper-input>
                 </template>
-                
-
                 <div class="action">
                     <paper-button raised$="[[!flat]]" type="submit" on-tap="_signUp" class="btn--signup">{{localize('lf-signup-button')}}</paper-button>
                 </div>
@@ -191,7 +188,7 @@ You can specify the following codes and language in a json file passed to the lo
                     {{localize('lf-already-have-account')}} <a on-tap="_toggleShowSignUp" tabindex="0" title="{{localize('lf-already-have-account')}} {{localize('lf-already-have-account-action')}}" href="#" on-tap="">{{localize('lf-already-have-account-action')}}</a>
                 </p>
             </template>
-            <template is="dom-if" if="[[!showSignUp]]">
+            <template is="dom-if" if="[[!_showSignUp]]">
                 <p>
                     <a class="link--reset-pw" on-click="toggleShowResetPW" tabindex="0" href="#" on-tap="">
                         {{localize('lf-resetpw-link')}}
@@ -200,9 +197,12 @@ You can specify the following codes and language in a json file passed to the lo
                 <div class="action">
                     <paper-button raised$="[[!flat]]" type="submit" on-tap="_signIn" class="btn--signin">{{localize('lf-signin-button')}}</paper-button>
                 </div>
-                <p class="signup-toggle">
-                    {{localize('lf-no-account')}} <a on-tap="_toggleShowSignUp" tabindex="0" title="{{localize('lf-no-account')}} {{localize('lf-no-account-action')}}" href="#" on-tap="">{{localize('lf-no-account-action')}}</a>
-                </p>
+                
+                <template is="dom-if" if="[[!noSignUp]]">
+                    <p class="signup-toggle">
+                        {{localize('lf-no-account')}} <a on-tap="_toggleShowSignUp" tabindex="0" title="{{localize('lf-no-account')}} {{localize('lf-no-account-action')}}" href="#" on-tap="">{{localize('lf-no-account-action')}}</a>
+                    </p>
+                </template>
             </template>
         </template>
         <template is="dom-if" if="[[showResetPW]]">
@@ -260,6 +260,16 @@ You can specify the following codes and language in a json file passed to the lo
       },
 
       /**
+       * Computed property to show show sign up form.
+       *
+       * @type {Boolean}
+       */
+      _showSignUp: {
+        type: Boolean,
+        computed: '_computeShowSignUp(showSignUp,noSignUp)'
+      },
+
+      /**
        * Last error message.
        *
        * @type {String}
@@ -288,6 +298,13 @@ You can specify the following codes and language in a json file passed to the lo
     _cleanMessages: function() {
       this.set('_lastError', '');
       this.set('_lastMessage', '');
+    },
+
+    /**
+     * Calculates whether to show the sign up section
+     */
+    _computeShowSignUp: function(showSignUp,noSignUp){
+        return showSignUp && !noSignUp;
     },
 
     /**

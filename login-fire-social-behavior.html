@@ -25,14 +25,24 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 
       properties: {
 
+        /**
+         *  The scopes that you want to access from Google sign in. Available scopes at https://developers.google.com/identity/protocols/googlescopes
+         *  Make sure to enter full url.
+         */
         googleScopes: {
             type: String,
             value: ""
         },
+        /**
+         *  The scopes that you want to access from Facebook sign in. Available scopes at https://developers.facebook.com/docs/facebook-login/permissions
+         */
         facebookScopes: {
             type: String,
             value: ""
         },
+        /**
+         *  The scopes that you want to access from GitHub sign in. Available scopes at https://developer.github.com/v3/oauth/#scopes
+         */
         githubScopes: {
             type: String,
             value: ""
@@ -47,7 +57,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      * Starts the sign-in process using a social provider authetication.
      */
     signIn: function() {
-        if (!this.onlySignOut){
+        if (!this.noSignIn){
+            console.log("Signing in")
             if (this.provider === 'anonymous') {
                 this.$.auth.signInAnonymously()
                 .then(this._fireEvent.bind(this))
