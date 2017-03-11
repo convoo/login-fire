@@ -169,7 +169,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         type: Boolean,
         value: false,
         readOnly: true,
-        notify: true,
+        notify: true
       },
 
       /**
@@ -264,6 +264,10 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         observer: '_userChanged'
       },
 
+      /**
+       *    This property is used in login-fire and login-fire-social when the user is signed in
+       *    and is allowed to sign out. It then shows just one button instead of multiple to sign out.
+       */
       _showOneButton: {
             type: Boolean,
             computed: "_computeShowOneButton(noSignIn, signedIn, noSignOut)"

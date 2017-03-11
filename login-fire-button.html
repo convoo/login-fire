@@ -195,16 +195,17 @@ The following custom properties and mixins are available for styling:
     },
 
     /**
-     * The provider logo must be hidden if the element can sign out and a user
-     * is currently signed in.
+     * The provider logo is shown when the user can sign in and is not signed in
+     * Or when they can not sign out. It is hidden otherwise.
      *
+     * @param  {Boolean} noSignIn   is `false` if a user can sign in
      * @param  {Boolean} noSignOut is `false` if the element can sign out
      * @param  {Boolean} signedIn   is `true` if a user is actually signed in
      * @return {Boolean}            `true` if the element can sign out and a
      * user is currently signed in.
      */
     _computeHideIcon: function(noSignIn, noSignOut, signedIn) {
-      return noSignIn || (!noSignOut && signedIn);
+      return !((!noSignIn && !signedIn) || noSignOut);
     },
 
     /**
