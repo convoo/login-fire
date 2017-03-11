@@ -409,8 +409,10 @@ You can specify the following codes and language in a json file passed to the lo
       * Hides the password in the parent by switching the type to password
       */
      _hidePW: function(e){
-        this.$$("#passwordIconButton").icon = "login-fire-icons:visibility";
-        this.$$("#passwordInput").type = "password";
+        setTimeout(function(){
+            this.$$("#passwordIconButton").icon = "login-fire-icons:visibility";
+            this.$$("#passwordInput").type = "password";
+        }.bind(this), 1000)
      }
   });
   </script>
