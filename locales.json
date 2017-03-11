@@ -26,6 +26,7 @@
         "lf-signin-twitter": "Sign in with Twitter",
         "lf-signin-github": "Sign in with GitHub",
         "lf-signin-anonymous": "Sign in anonymously",
-        "lf-signout": "Sign out"
+        "lf-signout": "Sign out",
+        "lf-or": "or"
     }
 }
