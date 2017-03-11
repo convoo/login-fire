@@ -152,6 +152,7 @@ You can specify the following codes and language in a json file passed to the lo
                 label="[[localize('lf-email')]]"
                 value="{{email}}"
                 error-message="[[localize('lf-email-invalid')]]"
+                on-keydown="_submitOnEnter"
                 required>
             </paper-input>
             <paper-input id="passwordInput"
@@ -159,6 +160,7 @@ You can specify the following codes and language in a json file passed to the lo
                 label="[[localize('lf-password')]]"
                 value="{{password}}"
                 error-message="[[localize('lf-password-invalid')]]"
+                on-keydown="_submitOnEnter"
                 required>
                 <template is="dom-if" if="[[!noToggleablePassword]]">
                     <paper-icon-button 
@@ -178,6 +180,7 @@ You can specify the following codes and language in a json file passed to the lo
                         label="[[localize('lf-reenter-password')]]"
                         value="{{passwordAgain}}"
                         error-message="[[localize('lf-passwords-dont-match')]]"
+                        on-keydown="_submitOnEnter"
                         required>
                     </paper-input>
                 </template>
@@ -211,6 +214,7 @@ You can specify the following codes and language in a json file passed to the lo
                 label="Email"
                 value="{{email}}"
                 error-message="Invalid email address"
+                on-keydown="_submitOnEnter"
                 required>
             </paper-input>
             <paper-button raised$="[[!flat]]" type="submit" on-tap="_resetPassword" class="btn--resetpw">[[localize('lf-resetpw-button')]]</paper-button>
@@ -260,7 +264,7 @@ You can specify the following codes and language in a json file passed to the lo
       },
 
       /**
-       * Computed property to show show sign up form.
+       * Computed property to show sign up form.
        *
        * @type {Boolean}
        */
@@ -377,6 +381,20 @@ You can specify the following codes and language in a json file passed to the lo
             this.set('_lastError', error.message);
         }.bind(this));
       }
+    },
+    /**
+     *  Checks for enter being pressed and submits the appropriate form action
+     */
+    _submitOnEnter: function(e){
+        if(e.keyCode === 13){
+            if (this._showSignUp){
+                this._signUp();
+            } else if (this.showResetPW){
+                this._resetPassword();
+            } else if (!this._showSignUp){
+                this._signIn()
+            }
+        }
     },
 
     /*
