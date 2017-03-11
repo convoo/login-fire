@@ -149,16 +149,16 @@ You can specify the following codes and language in a json file passed to the lo
         <template is="dom-if" if="[[!showResetPW]]">
             <paper-input id="emailInput"
                 type="email"
-                label="{{localize('lf-email')}}"
+                label="[[localize('lf-email')]]"
                 value="{{email}}"
-                error-message="{{localize('lf-email-invalid')}}"
+                error-message="[[localize('lf-email-invalid')]]"
                 required>
             </paper-input>
             <paper-input id="passwordInput"
                 type="password"
-                label="{{localize('lf-password')}}"
+                label="[[localize('lf-password')]]"
                 value="{{password}}"
-                error-message="{{localize('lf-password-invalid')}}"
+                error-message="[[localize('lf-password-invalid')]]"
                 required>
                 <template is="dom-if" if="[[!noToggleablePassword]]">
                     <paper-icon-button 
@@ -175,32 +175,32 @@ You can specify the following codes and language in a json file passed to the lo
                 <template is="dom-if" if="[[reenterPassword]]">
                     <paper-input id="repeatPasswordInput"
                         type="password"
-                        label="{{localize('lf-reenter-password')}}"
+                        label="[[localize('lf-reenter-password')]]"
                         value="{{passwordAgain}}"
-                        error-message="{{localize('lf-passwords-dont-match')}}"
+                        error-message="[[localize('lf-passwords-dont-match')]]"
                         required>
                     </paper-input>
                 </template>
                 <div class="action">
-                    <paper-button raised$="[[!flat]]" type="submit" on-tap="_signUp" class="btn--signup">{{localize('lf-signup-button')}}</paper-button>
+                    <paper-button raised$="[[!flat]]" type="submit" on-tap="_signUp" class="btn--signup">[[localize('lf-signup-button')]]</paper-button>
                 </div>
                 <p class="signup-toggle">
-                    {{localize('lf-already-have-account')}} <a on-tap="_toggleShowSignUp" tabindex="0" title="{{localize('lf-already-have-account')}} {{localize('lf-already-have-account-action')}}" href="#" on-tap="">{{localize('lf-already-have-account-action')}}</a>
+                    [[localize('lf-already-have-account')]] <a on-tap="_toggleShowSignUp" tabindex="0" title="[[localize('lf-already-have-account')]] [[localize('lf-already-have-account-action')]]" href="#" on-tap="">[[localize('lf-already-have-account-action')]]</a>
                 </p>
             </template>
             <template is="dom-if" if="[[!_showSignUp]]">
                 <p>
                     <a class="link--reset-pw" on-click="toggleShowResetPW" tabindex="0" href="#" on-tap="">
-                        {{localize('lf-resetpw-link')}}
+                        [[localize('lf-resetpw-link')]]
                     </a>
                 </p>
                 <div class="action">
-                    <paper-button raised$="[[!flat]]" type="submit" on-tap="_signIn" class="btn--signin">{{localize('lf-signin-button')}}</paper-button>
+                    <paper-button raised$="[[!flat]]" type="submit" on-tap="_signIn" class="btn--signin">[[localize('lf-signin-button')]]</paper-button>
                 </div>
                 
                 <template is="dom-if" if="[[!noSignUp]]">
                     <p class="signup-toggle">
-                        {{localize('lf-no-account')}} <a on-tap="_toggleShowSignUp" tabindex="0" title="{{localize('lf-no-account')}} {{localize('lf-no-account-action')}}" href="#" on-tap="">{{localize('lf-no-account-action')}}</a>
+                        [[localize('lf-no-account')]] <a on-tap="_toggleShowSignUp" tabindex="0" title="[[localize('lf-no-account')]] [[localize('lf-no-account-action')]]" href="#" on-tap="">[[localize('lf-no-account-action')]]</a>
                     </p>
                 </template>
             </template>
@@ -213,10 +213,10 @@ You can specify the following codes and language in a json file passed to the lo
                 error-message="Invalid email address"
                 required>
             </paper-input>
-            <paper-button raised$="[[!flat]]" type="submit" on-tap="_resetPassword" class="btn--resetpw">{{localize('lf-resetpw-button')}}</paper-button>
+            <paper-button raised$="[[!flat]]" type="submit" on-tap="_resetPassword" class="btn--resetpw">[[localize('lf-resetpw-button')]]</paper-button>
             <p>
                 <a class="link--reset-pw" on-click="toggleShowResetPW" tabindex="0" href="#" on-tap="">
-                    {{localize('lf-resetpw-cancel-link')}}
+                    [[localize('lf-resetpw-cancel-link')]]
                 </a>
             </p>
         </template>
