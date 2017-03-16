@@ -3,6 +3,7 @@
         "lf-email": "Email",
         "lf-email-invalid": "Invalid email address",
         "lf-password": "Password",
+        "lf-password-invalid": "Invalid password",
         "lf-reenter-password": "Re-enter Password",
         "lf-passwords-dont-match": "Passwords do not match",
         "lf-already-have-account": "Already have an account?",
@@ -25,6 +26,7 @@
         "lf-signin-twitter": "Sign in with Twitter",
         "lf-signin-github": "Sign in with GitHub",
         "lf-signin-anonymous": "Sign in anonymously",
-        "lf-signout": "Sign out"
+        "lf-signout": "Sign out",
+        "lf-or": "or"
     }
 }

@@ -9,7 +9,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 <link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="./shared-styles.html">
-<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="./icons.html">
 
 <!--
@@ -66,17 +66,32 @@ The following custom properties and mixins are available for styling:
       .btn--google{
           @apply(--login-fire-button-google)
       }
+      .btn--google:hover{
+          @apply(--login-fire-button-google-hover)
+      }
       .btn--twitter{
           @apply(--login-fire-button-twitter)
+      }
+      .btn--twitter:hover{
+          @apply(--login-fire-button-twitter-hover)
       }
       .btn--facebook{
           @apply(--login-fire-button-facebook)
       }
+      .btn--facebook:hover{
+          @apply(--login-fire-button-facebook-hover)
+      }
       .btn--github{
           @apply(--login-fire-button-github)
       }
+      .btn--github:hover{
+          @apply(--login-fire-button-github-hover)
+      }
       .btn--anonymous{
           @apply(--login-fire-button-anonymous)
+      }
+      .btn--anonymous:hover{
+          @apply(--login-fire-button-anonymous-hover)
       }
       .btn__icon {
         padding-left: 8px;
@@ -96,10 +111,16 @@ The following custom properties and mixins are available for styling:
           width: 170px;
           @apply(--login-fire-btn-signout);
       }
+
+      .btn__signed-out:hover {
+          background-color: lightgray;
+          @apply(--login-fire-btn-signout-hover);
+      }
     </style>
 
     <paper-button class$="btn btn--[[provider]] [[_miniClass]] [[_signOutClass]]" raised$="[[!flat]]">
       <iron-icon class="btn__icon" icon="login-fire-icons:[[provider]]" hidden$="[[_hideIcon]]"></iron-icon>
+      <iron-icon class="btn__icon" icon="login-fire-icons:logout" hidden$="[[!_hideIcon]]"></iron-icon>
       <span class="btn__text">[[_text]]</span>
     </paper-button>
 
@@ -135,7 +156,7 @@ The following custom properties and mixins are available for styling:
        */
       _hideIcon: {
         type: Boolean,
-        computed: '_computeHideIcon(canSignOut, signedIn)'
+        computed: '_computeHideIcon(noSignIn, noSignOut, signedIn)'
       },
 
       /**
@@ -155,7 +176,7 @@ The following custom properties and mixins are available for styling:
        */
       _signOutClass: {
         type: String,
-        computed: '_computeSignOutClass(canSignOut, signedIn)'
+        computed: '_computeSignOutClass(noSignIn, noSignOut, signedIn)'
       },
 
       /**
@@ -165,7 +186,7 @@ The following custom properties and mixins are available for styling:
        */
       _text: {
         type: String,
-        computed: '_computeButtonText(_user, config.provider, localize, showSignUp)'
+        computed: '_computeButtonText(_user, config.provider, localize, showSignUp, noSignIn, noSignOut, signedIn)'
       }
     },
 
@@ -174,16 +195,17 @@ The following custom properties and mixins are available for styling:
     },
 
     /**
-     * The provider logo must be hidden if the element can sign out and a user
-     * is currently signed in.
+     * The provider logo is shown when the user can sign in and is not signed in
+     * Or when they can not sign out. It is hidden otherwise.
      *
-     * @param  {Boolean} canSignOut is `true` of the element can signing out
+     * @param  {Boolean} noSignIn   is `false` if a user can sign in
+     * @param  {Boolean} noSignOut is `false` if the element can sign out
      * @param  {Boolean} signedIn   is `true` if a user is actually signed in
      * @return {Boolean}            `true` if the element can sign out and a
      * user is currently signed in.
      */
-    _computeHideIcon: function(canSignOut, signedIn) {
-      return canSignOut && signedIn;
+    _computeHideIcon: function(noSignIn, noSignOut, signedIn) {
+      return !((!noSignIn && !signedIn) || noSignOut);
     },
 
     /**
@@ -199,15 +221,14 @@ The following custom properties and mixins are available for styling:
     },
 
     /**
-     * Compute the CSS class to add when the user is is currently signed in.
+     * Compute the CSS class to add when the user is currently signed in.
      *
-     * @param  {Boolean} canSignOut is `true` of the element can signing out
+     * @param  {Boolean} noSignOut is `false` if the element can sign out
      * @param  {Boolean} signedIn   is `true` if a user is actually signed in
-     * @return {String}            a CSS class name to add when `canSignOut` 
-     * is true and when signedIn is `true`.
+     * @return {String}            a CSS class name to add when element can sign out
      */
-    _computeSignOutClass: function(canSignOut, signedIn) {
-      if (canSignOut && signedIn){
+    _computeSignOutClass: function(noSignIn, noSignOut, signedIn) {
+      if (noSignIn || (!noSignOut && signedIn)){
           return 'btn__signed-out';
       };
     },
@@ -219,9 +240,9 @@ The following custom properties and mixins are available for styling:
      * @param  {Object} provider used for the authentication
      * @return {String}          the text to be displayed inside the button.
      */
-    _computeButtonText: function(user, provider, localize, showSignUp) {
+    _computeButtonText: function(user, provider, localize, showSignUp, noSignIn, noSignOut, signedIn) {
       // User logged in.
-      if (this.canSignOut && this.signedIn) {
+      if (noSignIn || (!noSignOut && signedIn)) {
         return localize("lf-signout");
       }
 
@@ -230,10 +251,10 @@ The following custom properties and mixins are available for styling:
         return provider.name;
       }
 
-      if (showSignUp){
+      if (showSignUp && !noSignIn){
         // User doesn't have account
         return localize("lf-signup-"+provider.id);
-      } else {
+      } else if (!noSignIn){
         // User has account
         return localize("lf-signin-"+provider.id);
       }

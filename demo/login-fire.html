@@ -28,7 +28,22 @@
             auth-domain="convoo-login-demo.firebaseapp.com"
             database-url="https://convoo-login-demo.firebaseio.com">
           </firebase-app>
-          <login-fire app-name="allSocialDemo" providers="google, facebook, twitter, github, anonymous" debug can-sign-out></login-fire>
+          <login-fire app-name="allSocialDemo" providers="google, facebook, twitter, github, anonymous" debug no-sign-out></login-fire>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div>
+      <h3>login-fire Demo that can sign out</h3>
+      <demo-snippet>
+        <template >
+          <firebase-app
+            name="canSignOutDemo"
+            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+            auth-domain="convoo-login-demo.firebaseapp.com"
+            database-url="https://convoo-login-demo.firebaseio.com">
+          </firebase-app>
+          <login-fire app-name="canSignOutDemo" providers="google, facebook, twitter, github, anonymous" debug></login-fire>
         </template>
       </demo-snippet>
     </div>
@@ -43,7 +58,7 @@
             auth-domain="convoo-login-demo.firebaseapp.com"
             database-url="https://convoo-login-demo.firebaseio.com">
           </firebase-app>
-          <login-fire flat show-sign-up="{{showSignUp}}" app-name="allSocialDarkDemo" providers="google, facebook, twitter, github, anonymous" debug can-sign-out mini class="custom"></login-fire>
+          <login-fire flat show-sign-up="{{showSignUp}}" app-name="allSocialDarkDemo" providers="google, facebook, twitter, github, anonymous" debug mini class="custom"></login-fire>
           <style is="custom-style">
           login-fire.custom{
                 --login-fire-background-color: #2a363b;
@@ -112,6 +127,25 @@
             google-scopes="https://www.googleapis.com/auth/drive, https://www.googleapis.com/auth/drive.appdata, https://www.googleapis.com/auth/firebase"
             facebook-scopes="public_profile, email, user_birthday"
             github-scopes="repo, notifications, gist"
+            debug
+            ></login-fire>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div>
+      <h3>login-fire Demo no sign in</h3>
+      <demo-snippet>
+        <template >
+          <firebase-app
+            name="onlySignOutDemo"
+            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+            auth-domain="convoo-login-demo.firebaseapp.com"
+            database-url="https://convoo-login-demo.firebaseio.com">
+          </firebase-app>
+          <login-fire app-name="onlySignOutDemo"
+            providers="google, facebook, twitter, github, anonymous"
+            no-sign-in
             debug
             ></login-fire>
         </template>

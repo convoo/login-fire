@@ -7,6 +7,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="./login-fire-common-behavior.html">
 <link rel="import" href="../iron-media-query/iron-media-query.html">
+<link rel="import" href="../reverse-element/reverse-element.html">
 <link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="./login-fire-form.html">
 <link rel="import" href="./login-fire-social.html">
@@ -50,7 +51,7 @@ The following custom properties and mixins are available for styling:
 ### Localization
 
 You can specify the following codes and language in a json file passed to the localesFile property to update the text used. Here are the defaults:
-
+```
 {
     "en": {
         "lf-email": "Email",
@@ -81,29 +82,24 @@ You can specify the following codes and language in a json file passed to the lo
         "lf-signout": "Sign out"
     }
 }
+```
 
 @demo demo/login-fire.html
 -->
 <dom-module id="login-fire">
   <template>
     <style>
-    :host {
-      background: var(--login-fire-background-color, white);
-      padding-top: 40px;
-      padding-bottom: 40px;
-      @apply(--layout-horizontal);
-      @apply(--layout-wrap);
-      @apply(--layout-center-center);
+    reverse-element {
+        background: var(--login-fire-background-color, white);
+        padding-top: 40px;
+        padding-bottom: 40px;
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-center-center);
     }
-    :host([reverse]) {
-      @apply(--layout-horizontal-reverse);
-    }
-    :host([horizontal]) {
+    :host([horizontal]) reverse-element {
       @apply(--layout-vertical);
       @apply(--layout-center);
-    }
-    :host([horizontal][reverse]) {
-      @apply(--layout-vertical-reverse);
     }
     .div {
       @apply(--layout-center-center);
@@ -144,45 +140,73 @@ You can specify the following codes and language in a json file passed to the lo
     }
     </style>
 
-    <login-fire-form
-      app-name="[[appName]]"
-      user="{{_user}}"
-      signed-in="{{_signedIn}}"
-      status-known="{{_statusKnown}}"
-      auto-sign-up="[[autoSignUp]]"
-      can-sign-out="[[canSignOut]]"
-      show-sign-up="{{showSignUp}}"
-      flat="{{flat}}"
-      locales-file="[[localesFile]]"
-      language="[[language]]"
-      debug="[[debug]]"
-      >
-    </login-fire-form>
+    <template is="dom-if" if="[[_showOneButton]]">
+        <login-fire-button
+            app-name="[[appName]]"
+            user="{{_user}}"
+            status-known="{{_statusKnown}}"
+            signed-in="{{_signedIn}}"
+            mini$="[[mini]]"
+            flat$="[[flat]]"
+            no-sign-in="[[noSignIn]]"
+            no-sign-out="[[noSignOut]]"
+            show-sign-up="{{showSignUp}}"
+            locales-file="[[localesFile]]"
+            language="[[language]]"
+            debug="[[debug]]"
+            >
+        </login-fire-button>
+    </template>
 
-    <div class$="div [[_dividerStyle]]" hidden$="[[noDivider]]">
-      <span class="div__span">or</span>
-    </div>
+    <template is="dom-if" if="[[!_showOneButton]]">
 
-    <login-fire-social
-      app-name="[[appName]]"
-      providers="[[providers]]"
-      user="{{_user}}"
-      signed-in="{{_signedIn}}"
-      status-known="{{_statusKnown}}"
-      can-sign-out="[[canSignOut]]"
-      redirect="[[redirect]]"
-      mini$="[[mini]]"
-      horizontal$="[[horizontal]]"
-      show-sign-up="{{showSignUp}}"
-      flat="{{flat}}"
-      locales-file="[[localesFile]]"
-      language="[[language]]"
-      google-scopes="[[googleScopes]]"
-      facebook-scopes="[[facebookScopes]]"
-      github-scopes="[[githubScopes]]"
-      debug="[[debug]]"
-      >
-    </login-fire-social>
+        <reverse-element reverse="[[reverse]]">
+
+            <login-fire-form
+                app-name="[[appName]]"
+                user="{{_user}}"
+                signed-in="{{_signedIn}}"
+                status-known="{{_statusKnown}}"
+                auto-sign-up="[[autoSignUp]]"
+                can-sign-out="[[canSignOut]]"
+                show-sign-up="{{showSignUp}}"
+                flat="{{flat}}"
+                locales-file="[[localesFile]]"
+                language="[[language]]"
+                debug="[[debug]]"
+                no-toggleable-password="[[noToggleablePassword]]"
+                reenter-password="[[reenterPassword]]"
+                >
+            </login-fire-form>
+
+            <div class$="div [[_dividerStyle]]" hidden$="[[noDivider]]">
+                <span class="div__span">[[localize('lf-or')]]</span>
+            </div>
+
+            <login-fire-social
+                app-name="[[appName]]"
+                providers="[[providers]]"
+                user="{{_user}}"
+                signed-in="{{_signedIn}}"
+                status-known="{{_statusKnown}}"
+                no-sign-in="[[noSignIn]]"
+                no-sign-out="[[noSignOut]]"
+                redirect="[[redirect]]"
+                mini$="[[mini]]"
+                horizontal$="[[horizontal]]"
+                show-sign-up="{{showSignUp}}"
+                flat="{{flat}}"
+                locales-file="[[localesFile]]"
+                language="[[language]]"
+                google-scopes="[[googleScopes]]"
+                facebook-scopes="[[facebookScopes]]"
+                github-scopes="[[githubScopes]]"
+                debug="[[debug]]"
+                >
+            </login-fire-social>
+
+        </reverse-element>
+    </template>
 
     <iron-media-query query="(max-width: 650px)" query-matches="{{isNarrow}}">
     </iron-media-query>

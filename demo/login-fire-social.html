@@ -19,7 +19,7 @@
   <body>
 
     <div class="vertical-section-container centered">
-      <h3>Narrow login-fire-social Demo</h3>
+      <h3>No provider login-fire-social Demo</h3>
       <demo-snippet>
         <template >
           <firebase-app
@@ -34,7 +34,7 @@
     </div>
 
     <div class="vertical-section-container centered">
-      <h3>Wide login-fire-social Demo</h3>
+      <h3>login-fire-social Demo</h3>
       <demo-snippet>
         <template >
           <firebase-app
@@ -44,6 +44,21 @@
             database-url="https://convoo-login-demo.firebaseio.com">
           </firebase-app>
           <login-fire-social app-name="allDemo" providers="google, facebook, twitter, github, anonymous"></login-fire-social>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div class="vertical-section-container centered">
+      <h3>No sign in login-fire-social Demo</h3>
+      <demo-snippet>
+        <template >
+          <firebase-app
+            name="noSignInDemo"
+            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+            auth-domain="convoo-login-demo.firebaseapp.com"
+            database-url="https://convoo-login-demo.firebaseio.com">
+          </firebase-app>
+          <login-fire-social app-name="noSignInDemo" providers="google, facebook, twitter, github, anonymous" no-sign-in></login-fire-social>
         </template>
       </demo-snippet>
     </div>
@@ -94,7 +109,7 @@
     </div>
 
         <div class="horizontal-section-container centered">
-      <h3>Max horizontal login-fire-social Demo</h3>
+      <h3>Max horizontal, no icons login-fire-social Demo</h3>
       <demo-snippet style="max-width: 800px !important">
         <template>
           <firebase-app
