@@ -17,7 +17,6 @@
     </style>
   </head>
   <body>
-
     <div>
       <h3>login-fire Demo with all options</h3>
       <demo-snippet>
@@ -32,6 +31,21 @@
         </template>
       </demo-snippet>
     </div>
+
+    <div>
+      <h3>Localized login-fire Demo with all options</h3>
+      <demo-snippet>
+        <template >
+          <firebase-app
+            name="allSocialDemo"
+            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+            auth-domain="convoo-login-demo.firebaseapp.com"
+            database-url="https://convoo-login-demo.firebaseio.com">
+          </firebase-app>
+          <login-fire app-name="allSocialDemo" providers="google, facebook, twitter, github, anonymous" debug no-sign-out language="de"></login-fire>
+        </template>
+      </demo-snippet>
+    </div>    
 
     <div>
       <h3>login-fire Demo that can sign out</h3>
