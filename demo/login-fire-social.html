@@ -108,7 +108,7 @@
       </demo-snippet>
     </div>
 
-        <div class="horizontal-section-container centered">
+    <div class="horizontal-section-container centered">
       <h3>Max horizontal, no icons login-fire-social Demo</h3>
       <demo-snippet style="max-width: 800px !important">
         <template>
@@ -119,12 +119,9 @@
             database-url="https://convoo-login-demo.firebaseio.com">
           </firebase-app>
           <login-fire-social providers="google, facebook, twitter, github, anonymous" app-name="maxHorizontalDemo" class="custom"></login-fire-social>
-        
         <style is="custom-style">
         login-fire-social.custom{
-            --login-fire-button:{
-                min-width: 100%
-            }
+            width: 100%;
             --login-fire-button-text:{
                 font-size: 12px;
                 font-weight: bold;

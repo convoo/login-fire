@@ -51,7 +51,14 @@
             auth-domain="convoo-login-demo.firebaseapp.com"
             database-url="https://convoo-login-demo.firebaseio.com">
           </firebase-app>
-          <login-fire app-name="allSocialDemoFR" providers="google, facebook, twitter, github, anonymous" debug no-sign-out language="fr"></login-fire>
+          <login-fire app-name="allSocialDemoFR" providers="google, facebook, twitter, github, anonymous" debug no-sign-out language="fr" class="social--large"></login-fire>
+          <style is="custom-style">
+          login-fire.social--large {
+            --login-fire-social: {
+              width: 250px;
+            };
+          }
+          </style>
         </template>
       </demo-snippet>
     </div>
