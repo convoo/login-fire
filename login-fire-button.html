@@ -209,7 +209,6 @@ The following custom properties and mixins are available for styling:
      * user is currently signed in.
      */
     _computeHideIcon: function(noSignIn, noSignOut, signedIn) {
-      console.log('_hideIcon = ' + !((!noSignIn && !signedIn) || noSignOut));
       return !((!noSignIn && !signedIn) || noSignOut);
     },
 
