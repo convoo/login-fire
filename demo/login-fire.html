@@ -36,16 +36,32 @@
       <h3>Localized login-fire Demo with all options</h3>
       <demo-snippet>
         <template >
+          <h4>GERMAN</h4>
           <firebase-app
-            name="allSocialDemo"
+            name="allSocialDemoDE"
             api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
             auth-domain="convoo-login-demo.firebaseapp.com"
             database-url="https://convoo-login-demo.firebaseio.com">
           </firebase-app>
-          <login-fire app-name="allSocialDemo" providers="google, facebook, twitter, github, anonymous" debug no-sign-out language="de"></login-fire>
+          <login-fire app-name="allSocialDemoDE" providers="google, facebook, twitter, github, anonymous" debug no-sign-out language="de"></login-fire>
+          <h4>FRENCH</h4>
+          <firebase-app
+            name="allSocialDemoFR"
+            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+            auth-domain="convoo-login-demo.firebaseapp.com"
+            database-url="https://convoo-login-demo.firebaseio.com">
+          </firebase-app>
+          <login-fire app-name="allSocialDemoFR" providers="google, facebook, twitter, github, anonymous" debug no-sign-out language="fr" class="social--large"></login-fire>
+          <style is="custom-style">
+          login-fire.social--large {
+            --login-fire-social: {
+              width: 250px;
+            };
+          }
+          </style>
         </template>
       </demo-snippet>
-    </div>    
+    </div>
 
     <div>
       <h3>login-fire Demo that can sign out</h3>

@@ -47,8 +47,10 @@ You can specify the following codes and language in a json file passed to the lo
   <template>
     <style>
       :host {
+        width: 210px;
         @apply(--layout-vertical);
         @apply(--layout-center-center);
+        @apply(--login-fire-social);
       }
 
       :host([horizontal]) {
@@ -56,13 +58,18 @@ You can specify the following codes and language in a json file passed to the lo
         @apply(--layout-wrap);
         @apply(--layout-around-justified);
         max-width: inherit;
+        width: initial;
+        @apply(--login-fire-social);
       }
 
       login-fire-button {
+        width: 100%;
         margin-bottom: 10px;
       }
 
       :host([horizontal]) login-fire-button {
+        width: inherit;
+        min-width: 140px;
         margin-bottom: 0;
       }
     </style>
