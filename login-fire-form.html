@@ -28,7 +28,7 @@ Example:
 
 ### Styling
 
-Style the buttons with CSS as you would a normal DOM element. 
+Style the buttons with CSS as you would a normal DOM element.
 
 The following custom properties and mixins are available for styling:
 
@@ -166,7 +166,7 @@ You can specify the following codes and language in a json file passed to the lo
                 on-keydown="_submitOnEnter"
                 required>
                 <template is="dom-if" if="[[!noToggleablePassword]]">
-                    <paper-icon-button 
+                    <paper-icon-button
                         id="passwordIconButton"
                         suffix
                         on-down="_revealPW"
@@ -203,7 +203,7 @@ You can specify the following codes and language in a json file passed to the lo
                 <div class="action">
                     <paper-button raised$="[[!flat]]" type="submit" on-tap="_signIn" class="btn--signin">[[localize('lf-signin-button')]]</paper-button>
                 </div>
-                
+
                 <template is="dom-if" if="[[!noSignUp]]">
                     <p class="signup-toggle">
                         [[localize('lf-no-account')]] <a on-tap="_toggleShowSignUp" tabindex="0" title="[[localize('lf-no-account')]] [[localize('lf-no-account-action')]]" href="#" on-tap="">[[localize('lf-no-account-action')]]</a>
@@ -317,7 +317,7 @@ You can specify the following codes and language in a json file passed to the lo
     /**
      * Tries to sign in a user using the form values.
      */
-    _signIn: function() {
+    signIn: function() {
       this._cleanMessages();
       e = this.$$("#emailInput").validate();
       p = this.$$("#passwordInput").validate();
@@ -376,7 +376,7 @@ You can specify the following codes and language in a json file passed to the lo
      */
     _resetPassword: function() {
       this._cleanMessages();
-      e = this.$$("#resetEmailInput").validate() 
+      e = this.$$("#resetEmailInput").validate()
       if (e){
         this.$$("#auth").auth.sendPasswordResetEmail(this.email).then(function() {
             this.set('_lastMessage', this.localize('lf-resetpw-success-message'));
