@@ -96,6 +96,7 @@ You can specify the following codes and language in a json file passed to the lo
     <template is="dom-if" if="[[!_showOneButton]]">
         <template is="dom-repeat" items="{{_providers}}">
             <login-fire-button
+                id="lfb[[item.id]]"
                 app-name="[[appName]]"
                 provider="[[item.id]]"
                 user="{{_user}}"
@@ -176,6 +177,18 @@ You can specify the following codes and language in a json file passed to the lo
      */
     signOut: function() {
       this.$$('login-fire-button').signOut();
+    },
+
+    /**
+     * Signs the user in using the target provider.
+     *
+     * @param  {String} provider name
+     */
+    signInWith: function(provider) {
+      var btn = this.$$('#lfb' + provider);
+      if (btn) {
+        btn.signIn();
+      }
     },
 
     /**
