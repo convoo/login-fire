@@ -31,7 +31,7 @@ Example:
 
 ### Styling
 
-Style the buttons with CSS as you would a normal DOM element. 
+Style the buttons with CSS as you would a normal DOM element.
 
 The following custom properties and mixins are available for styling:
 
@@ -104,8 +104,6 @@ You can specify the following codes and language in a json file passed to the lo
     .div {
       @apply(--layout-center-center);
       width: 1px;
-      border-top: 1px solid ;
-      border-right: 1px solid ;
       border-color: var(--login-fire-divider-color, lightgray);
     }
     .div__span {
@@ -126,6 +124,7 @@ You can specify the following codes and language in a json file passed to the lo
     }
     .div--vertical {
       @apply(--layout-horizontal);
+      border-right: 1px solid lightgray;
       margin: 0 50px;
       min-height: 200px;
       max-height: 400px;
@@ -133,6 +132,7 @@ You can specify the following codes and language in a json file passed to the lo
     }
     .div--horizontal {
       @apply(--layout-vertical);
+      border-top: 1px solid lightgray;
       height: 1px;
       margin: 50px 0;
       min-width: 300px;
