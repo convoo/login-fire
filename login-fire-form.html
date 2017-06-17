@@ -367,11 +367,7 @@ You can specify the following codes and language in a json file passed to the lo
       } else {
         // Localize firebase error if possible
         var errorMessage = this.localize('lf-error-'+e.detail.code);
-        if(!errorMessage) {
-          this.set('_lastError', e.detail.message);
-        } else {
-          this.set('_lastError', errorMessage);
-        }
+        this.set('_lastError', errorMessage || e.detail.message);
       }
     },
 
