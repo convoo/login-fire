@@ -296,7 +296,8 @@ You can specify the following codes and language in a json file passed to the lo
     },
 
     listeners: {
-      'error': '_handleError'
+      'error': '_handleError',
+      'signedin': '_handleSignIn'
     },
 
     /**
@@ -305,6 +306,21 @@ You can specify the following codes and language in a json file passed to the lo
     _cleanMessages: function() {
       this.set('_lastError', '');
       this.set('_lastMessage', '');
+    },
+
+    /**
+     * Cleans inputs (email + password)
+     */
+    _cleanInputs: function() {
+      this.$$("#emailInput").value = '';
+      this.$$("#passwordInput").value = '';
+    },
+
+    /**
+     * Cleans password input
+     */
+    _cleanPasswordInput: function() {
+      this.$$("#passwordInput").value = '';
     },
 
     /**
@@ -354,6 +370,13 @@ You can specify the following codes and language in a json file passed to the lo
     },
 
     /**
+    * Handler called after a successful signIn to clean inputs
+    */
+    _handleSignIn: function() {
+      this._cleanInputs();
+    },
+
+    /**
      * Displays error message. If the attribute `autoSignUp` is true, before
      * to display the error message, a sign-up process is tried.
      *
@@ -366,6 +389,11 @@ You can specify the following codes and language in a json file passed to the lo
         this.password = null;
       } else {
         this.set('_lastError', e.detail.message);
+
+        if(e.detail.code == 'auth/wrong-password'
+          || e.detail.code == 'auth/user-not-found  ') {
+          this._cleanPasswordInput();
+        }
       }
     },
 
