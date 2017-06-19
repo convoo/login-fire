@@ -6,6 +6,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 -->
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="./locales.html">
 <script>
 (function() {
   'use strict';
@@ -123,17 +124,6 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       language: {
         type: String,
         value: "en"
-      },
-
-      /**
-       * Sets the path to the locales json file 
-       * where the specific text to use is stored
-       *
-       * @type {String}
-       */
-      localesFile: {
-        type: String,
-        value: "locales.json"
       },
 
       /**
@@ -270,13 +260,25 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
        *    and is allowed to sign out. It then shows just one button instead of multiple to sign out.
        */
       _showOneButton: {
-            type: Boolean,
-            computed: "_computeShowOneButton(noSignIn, signedIn, noSignOut)"
-        }
+        type: Boolean,
+        computed: "_computeShowOneButton(noSignIn, signedIn, noSignOut)"
+      },
+
+      /**
+       * The dictionary of localized messages, for each of the languages that
+       * are going to be used.
+       *
+       * @type {Object}
+       * @default `locales.html` content
+       */
+      resources: {
+        type: Object,
+        readOnly: true
+      }
     },
 
-    attached: function(){
-        this.loadResources(this.resolveUrl(this.localesFile));
+    attached: function() {
+      this.set('resources', window.Convoo._locales);
     },
 
     ready: function() {
@@ -425,13 +427,13 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      */
   };
 
-  
+
     /**
     * @polymerBehavior
     */
     Convoo.LoginFireCommonBehavior = [
         Polymer.AppLocalizeBehavior,
         Convoo.LoginFireCommonBehaviorImpl
-    ];  
+    ];
 }());
 </script>

@@ -31,7 +31,7 @@ Example:
 
 ### Styling
 
-Style the buttons with CSS as you would a normal DOM element. 
+Style the buttons with CSS as you would a normal DOM element.
 
 The following custom properties and mixins are available for styling:
 
@@ -103,13 +103,11 @@ You can specify the following codes and language in a json file passed to the lo
     }
     .div {
       @apply(--layout-center-center);
-      width: 1px;
-      border-top: 1px solid ;
-      border-right: 1px solid ;
       border-color: var(--login-fire-divider-color, lightgray);
     }
     .div__span {
-      padding: 10px;
+      line-height: 0px;
+      padding: 16px;
       background: var(--login-fire-background-color, white);
       font-size: 12px;
       font-style: italic;
@@ -126,6 +124,7 @@ You can specify the following codes and language in a json file passed to the lo
     }
     .div--vertical {
       @apply(--layout-horizontal);
+      border-right: 1px solid lightgray;
       margin: 0 50px;
       min-height: 200px;
       max-height: 400px;
@@ -133,6 +132,7 @@ You can specify the following codes and language in a json file passed to the lo
     }
     .div--horizontal {
       @apply(--layout-vertical);
+      border-top: 1px solid lightgray;
       height: 1px;
       margin: 50px 0;
       min-width: 300px;
@@ -168,7 +168,6 @@ You can specify the following codes and language in a json file passed to the lo
                 signed-in="{{_signedIn}}"
                 status-known="{{_statusKnown}}"
                 auto-sign-up="[[autoSignUp]]"
-                can-sign-out="[[canSignOut]]"
                 show-sign-up="{{showSignUp}}"
                 flat="{{flat}}"
                 locales-file="[[localesFile]]"
@@ -313,6 +312,29 @@ You can specify the following codes and language in a json file passed to the lo
      */
     signOut: function() {
       this.$$('login-fire-social').signOut();
+    },
+
+    /**
+     * Signs the user in using the target provider. It's not possible to sign in
+     * using the provider "password" when only one button is displayed. Also,
+     * does nothing if a user is already signed in.
+     *
+     * @param  {String} provider name
+     */
+    signInWith: function(provider) {
+      if (this.signedIn) {
+        return;
+      }
+
+      if (provider === 'password') {
+        if (this._showOneButton) {
+          console.error("Can't sign in using provider \"password\" when only one button is displayed.");
+        } else {
+          this.$$('login-fire-form').signIn();
+        }
+      } else {
+        this.$$('login-fire-social').signInWith(provider);
+      }
     },
 
     /**
