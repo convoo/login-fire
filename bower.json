@@ -23,6 +23,7 @@
     "app-localize-behavior": "PolymerElements/app-localize-behavior#^1.0.0",
     "paper-icon-button": "PolymerElements/paper-icon-button#^1.1.4",
     "iron-icon": "PolymerElements/iron-icon#^1.0.12",
+    "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^1.1.0",
     "reverse-element": "convoo/reverse-element#^0.0.4"
   },
   "devDependencies": {

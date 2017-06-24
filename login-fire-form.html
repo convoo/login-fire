@@ -79,11 +79,11 @@ You can specify the following codes and language in a json file passed to the lo
       @apply(--login-fire-form);
     }
      paper-button.btn--signup {
-         margin: 15px 0;
-        @apply(--login-fire-btn-signup);
+      margin: 15px 0;
+      @apply(--login-fire-btn-signup);
     }
-     paper-button.btn--signin {
-        @apply(--login-fire-btn-signin);
+    paper-button.btn--signin {
+      @apply(--login-fire-btn-signin);
     }
     .btn{
         color: gray;
@@ -109,7 +109,7 @@ You can specify the following codes and language in a json file passed to the lo
       padding: 0;
     }
     .msg--error {
-      color: var(--login-fire-error-msg-color, --error-color);
+      color: var(--login-fire-error-msg-color, var(--error-color));
     }
     .msg--info {
       color: var(--login-fire-info-msg-color, gray);
@@ -119,23 +119,23 @@ You can specify the following codes and language in a json file passed to the lo
       margin: 0 auto;
     }
     .action {
-        text-align: center;
+      text-align: center;
     }
     .action paper-button {
-        width: 100%;
+      width: 100%;
     }
     .signup-toggle {
-        font-size: 12px;
-        color:grey;
-        text-align: center;
-        @apply(--login-fire-form-toggle);
+      font-size: 12px;
+      color:grey;
+      text-align: center;
+      @apply(--login-fire-form-toggle);
     }
     .signup-toggle a {
-        text-decoration: underline;
-        cursor: pointer;
+      text-decoration: underline;
+      cursor: pointer;
     }
     paper-icon-button {
-        color: grey;
+      color: grey;
     }
     </style>
 
@@ -388,10 +388,12 @@ You can specify the following codes and language in a json file passed to the lo
         this.email = null;
         this.password = null;
       } else {
-        this.set('_lastError', e.detail.message);
-
-        if(e.detail.code == 'auth/wrong-password'
-          || e.detail.code == 'auth/user-not-found  ') {
+        // Localize firebase error if possible
+        var errorMessage = this.localize('lf-error-' + e.detail.code);
+        this.set('_lastError', errorMessage || e.detail.message);
+        
+        if(e.detail.code == 'auth/wrong-password' 
+           || e.detail.code == 'auth/user-not-found') {
           this._cleanPasswordInput();
         }
       }
