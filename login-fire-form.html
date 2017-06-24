@@ -313,7 +313,7 @@ You can specify the following codes and language in a json file passed to the lo
      */
     _cleanInputs: function() {
       this.$$("#emailInput").value = '';
-      this.$$("#passwordInput").value = '';
+      this._cleanPasswordInput();
     },
 
     /**
@@ -391,8 +391,9 @@ You can specify the following codes and language in a json file passed to the lo
         // Localize firebase error if possible
         var errorMessage = this.localize('lf-error-' + e.detail.code);
         this.set('_lastError', errorMessage || e.detail.message);
-        
-        if(e.detail.code == 'auth/wrong-password' 
+
+        // Clean password input if wrong password or email
+        if(e.detail.code == 'auth/wrong-password'
            || e.detail.code == 'auth/user-not-found') {
           this._cleanPasswordInput();
         }
