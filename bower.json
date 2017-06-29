@@ -25,7 +25,7 @@
         "paper-icon-button": "PolymerElements/paper-icon-button#1 - 2",
         "iron-icon": "PolymerElements/iron-icon#1 - 2",
         "iron-iconset-svg": "PolymerElements/iron-iconset-svg#1 - 2",
-        "reverse-element": "convoo/reverse-element#^0.0.4"
+        "reverse-element": "convoo/reverse-element#^0.0.6"
     },
     "devDependencies": {
         "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
@@ -46,7 +46,7 @@
                 "paper-icon-button": "PolymerElements/paper-icon-button#^1.1.4",
                 "iron-icon": "PolymerElements/iron-icon#^1.0.12",
                 "iron-iconset-svg": "PolymerElements/iron-iconset-svg#^1.1.0",
-                "reverse-element": "convoo/reverse-element#^0.0.4"
+                "reverse-element": "convoo/reverse-element#^0.0.6"
             },
             "devDependencies": {
                 "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
