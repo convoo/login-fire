@@ -79,7 +79,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
        * @type {String}
        */
       appName: {
-        type: String
+        type: String,
+        value: ""
       },
 
       /**
@@ -277,7 +278,11 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     },
 
     attached: function() {
-      this._setResources(window.Convoo._locales);
+      if (Polymer.Element) {
+        this._setResources(window.Convoo._locales);
+      } else {
+        this.set('resources', window.Convoo._locales);
+      }
     },
 
     ready: function() {

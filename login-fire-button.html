@@ -8,7 +8,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 <link rel="import" href="./login-fire-social-behavior.html">
 <link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="../paper-button/paper-button.html">
-<link rel="import" href="./shared-styles.html">
+<link rel="import" href="./login-fire-styles.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="./icons.html">
 
@@ -50,7 +50,7 @@ The following custom properties and mixins are available for styling:
 -->
 <dom-module id="login-fire-button">
   <template>
-    <style include="shared-styles">
+    <style include="login-fire-styles">
       :host {
         display: inline-block;
         @apply(--login-fire-button);
@@ -114,6 +114,10 @@ The following custom properties and mixins are available for styling:
       .btn__signed-out:hover {
           background-color: lightgray;
           @apply(--login-fire-btn-signout-hover);
+      }
+      
+      [hidden] {
+        display: none !important;
       }
     </style>
 
@@ -185,7 +189,7 @@ The following custom properties and mixins are available for styling:
        */
       _text: {
         type: String,
-        computed: '_computeButtonText(_user, config.provider, localize, showSignUp, noSignIn, noSignOut, signedIn)'
+        computed: '_computeButtonText(config.provider, showSignUp, noSignIn, noSignOut, signedIn, localize, language)'
       }
     },
 
@@ -239,7 +243,7 @@ The following custom properties and mixins are available for styling:
      * @param  {Object} provider used for the authentication
      * @return {String}          the text to be displayed inside the button.
      */
-    _computeButtonText: function(user, provider, localize, showSignUp, noSignIn, noSignOut, signedIn) {
+    _computeButtonText: function(provider, showSignUp, noSignIn, noSignOut, signedIn, localize, language) {
       // User logged in.
       if (noSignIn || (!noSignOut && signedIn)) {
         return localize("lf-signout");
