@@ -78,14 +78,14 @@ You can specify the following codes and language in a json file passed to the lo
       display: block;
       @apply(--login-fire-form);
     }
-     paper-button.btn--signup {
+    paper-button.btn--signup {
       margin: 15px 0;
       @apply(--login-fire-btn-signup);
     }
     paper-button.btn--signin {
       @apply(--login-fire-btn-signin);
     }
-    .btn{
+    .btn {
         color: gray;
     }
     .link--reset-pw {
@@ -96,7 +96,7 @@ You can specify the following codes and language in a json file passed to the lo
       font-weight: lighter;
       cursor: pointer;
     }
-    .link--reset-pw:hover{
+    .link--reset-pw:hover {
       color: var(--login-fire-reset-password-hover-color, gray);
       text-decoration: underline;
     }
@@ -113,10 +113,6 @@ You can specify the following codes and language in a json file passed to the lo
     }
     .msg--info {
       color: var(--login-fire-info-msg-color, gray);
-    }
-    form {
-      min-width: 200px;
-      margin: 0 auto;
     }
     .action {
       text-align: center;
@@ -139,101 +135,91 @@ You can specify the following codes and language in a json file passed to the lo
     }
     </style>
 
-    <div>
-      <div class="msg msg--error" hidden$="[[!_lastError]]">
-        <span>[[_lastError]]</span>
-      </div>
-      <div class="msg msg--info" hidden$="[[!_lastMessage]]">
-        <span>[[_lastMessage]]</span>
-      </div>
+    <div class="msg msg--error" hidden$="[[!_lastError]]">
+      <span>[[_lastError]]</span>
+    </div>
+    <div class="msg msg--info" hidden$="[[!_lastMessage]]">
+      <span>[[_lastMessage]]</span>
     </div>
 
-    <form>
-        <template is="dom-if" if="[[!showResetPW]]">
-            <paper-input id="emailInput"
-                type="email"
-                label="[[localize('lf-email')]]"
-                value="{{email}}"
-                error-message="[[localize('lf-email-invalid')]]"
-                on-keydown="_submitOnEnter"
-                required>
-            </paper-input>
-            <paper-input id="passwordInput"
-                type="password"
-                label="[[localize('lf-password')]]"
-                value="{{password}}"
-                error-message="[[localize('lf-password-invalid')]]"
-                on-keydown="_submitOnEnter"
-                required>
-                <template is="dom-if" if="[[!noToggleablePassword]]">
-                    <paper-icon-button
-                        id="passwordIconButton"
-                        slot="suffix"
-                        on-down="_revealPW"
-                        on-up="_hidePW"
-                        icon="login-fire-icons:visibility"
-                        title="Hold to view password text">
-                    </paper-icon-button>
-                </template>
-            </paper-input>
-            <template is="dom-if" if="[[_showSignUp]]">
-                <template is="dom-if" if="[[reenterPassword]]">
-                    <paper-input id="repeatPasswordInput"
-                        type="password"
-                        label="[[localize('lf-reenter-password')]]"
-                        value="{{passwordAgain}}"
-                        error-message="[[localize('lf-passwords-dont-match')]]"
-                        on-keydown="_submitOnEnter"
-                        required>
-                    </paper-input>
-                </template>
-                <div class="action">
-                    <paper-button raised$="[[!flat]]" type="submit" on-tap="_signUp" class="btn--signup">[[localize('lf-signup-button')]]</paper-button>
-                </div>
-                <p class="signup-toggle">
-                    [[localize('lf-already-have-account')]] <a on-tap="_toggleShowSignUp" tabindex="0" title="[[localize('lf-already-have-account')]] [[localize('lf-already-have-account-action')]]" href="#">[[localize('lf-already-have-account-action')]]</a>
-                </p>
-            </template>
-            <template is="dom-if" if="[[!_showSignUp]]">
-                <p>
-                    <a class="link--reset-pw" on-click="toggleShowResetPW" tabindex="0" href="#">
-                        [[localize('lf-resetpw-link')]]
-                    </a>
-                </p>
-                <div class="action">
-                    <paper-button raised$="[[!flat]]" type="submit" on-tap="_signIn" class="btn--signin">[[localize('lf-signin-button')]]</paper-button>
-                </div>
+    <paper-input id="emailInput"
+      type="email"
+      label="[[localize('lf-email')]]"
+      value="{{email}}"
+      error-message="[[localize('lf-email-invalid')]]"
+      on-keydown="_submitOnEnter"
+      required>
+    </paper-input>
 
-                <template is="dom-if" if="[[!noSignUp]]">
-                    <p class="signup-toggle">
-                        [[localize('lf-no-account')]] <a on-tap="_toggleShowSignUp" tabindex="0" title="[[localize('lf-no-account')]] [[localize('lf-no-account-action')]]" href="#">[[localize('lf-no-account-action')]]</a>
-                    </p>
-                </template>
-            </template>
+    <template is="dom-if" if="[[!showResetPW]]">
+      <paper-input id="passwordInput"
+          type="password"
+          label="[[localize('lf-password')]]"
+          value="{{password}}"
+          error-message="[[localize('lf-password-invalid')]]"
+          on-keydown="_submitOnEnter"
+          required>
+        <template is="dom-if" if="[[!noToggleablePassword]]">
+          <paper-icon-button
+            id="passwordIconButton"
+            slot="suffix"
+            on-down="_revealPW"
+            on-up="_hidePW"
+            icon="login-fire-icons:visibility"
+            title="Hold to view password text">
+          </paper-icon-button>
         </template>
-        <template is="dom-if" if="[[showResetPW]]">
-            <paper-input id="resetEmailInput"
-                type="email"
-                label="Email"
-                value="{{email}}"
-                error-message="Invalid email address"
-                on-keydown="_submitOnEnter"
-                required>
-            </paper-input>
-            <paper-button raised$="[[!flat]]" type="submit" on-tap="_resetPassword" class="btn--resetpw">[[localize('lf-resetpw-button')]]</paper-button>
-            <p>
-                <a class="link--reset-pw" on-click="toggleShowResetPW" tabindex="0" href="#">
-                    [[localize('lf-resetpw-cancel-link')]]
-                </a>
-            </p>
-        </template>
-    </form>
+      </paper-input>
 
-    <firebase-auth id="auth"
-      app-name="[[appName]]"
-      user="{{_user}}"
-      signed-in="{{_signedIn}}"
-      status-known="{{_statusKnown}}">
+      <template is="dom-if" if="[[_showSignUp]]">
+        <paper-input id="repeatPasswordInput"
+          type="password"
+          label="[[localize('lf-reenter-password')]]"
+          value="{{passwordAgain}}"
+          error-message="[[localize('lf-passwords-dont-match')]]"
+          on-keydown="_submitOnEnter"
+          hidden$="[[!reenterPassword]]"
+          required>
+        </paper-input>
+        <div class="action">
+          <paper-button raised$="[[!flat]]" type="submit" on-tap="_signUp"
+            class="btn--signup">[[localize('lf-signup-button')]]</paper-button>
+        </div>
+        <p class="signup-toggle">
+          [[localize('lf-already-have-account')]]
+          <a on-tap="_toggleShowSignUp" tabindex="0"
+            title="[[localize('lf-already-have-account')]] [[localize('lf-already-have-account-action')]]"
+            href="#">[[localize('lf-already-have-account-action')]]</a>
+        </p>
+      </template>
+      <template is="dom-if" if="[[!_showSignUp]]">
+        <p>
+          <a class="link--reset-pw" on-click="toggleShowResetPW" tabindex="0"
+            href="#">[[localize('lf-resetpw-link')]]</a>
+        </p>
+        <div class="action">
+          <paper-button raised$="[[!flat]]" type="submit" on-tap="_signIn"
+            class="btn--signin">[[localize('lf-signin-button')]]</paper-button>
+        </div>
+        <template is="dom-if" if="[[!noSignUp]]">
+          <p class="signup-toggle">
+            [[localize('lf-no-account')]] <a on-tap="_toggleShowSignUp" tabindex="0" title="[[localize('lf-no-account')]] [[localize('lf-no-account-action')]]" href="#">[[localize('lf-no-account-action')]]</a>
+          </p>
+        </template>
+      </template>
+    </template>
+
+    <template is="dom-if" if="[[showResetPW]]">
+      <paper-button raised$="[[!flat]]" type="submit" on-tap="_resetPassword"
+        class="btn--resetpw">[[localize('lf-resetpw-button')]]</paper-button>
+      <p>
+        <a class="link--reset-pw" on-click="toggleShowResetPW" tabindex="0"
+          href="#">[[localize('lf-resetpw-cancel-link')]]</a>
+      </p>
+    </template>
+
+    <firebase-auth id="auth" app-name="[[appName]]" user="{{_user}}"
+      signed-in="{{_signedIn}}" status-known="{{_statusKnown}}">
     </firebase-auth>
   </template>
 
@@ -326,8 +312,8 @@ You can specify the following codes and language in a json file passed to the lo
     /**
      * Calculates whether to show the sign up section
      */
-    _computeShowSignUp: function(showSignUp,noSignUp){
-        return showSignUp && !noSignUp;
+    _computeShowSignUp: function(showSignUp, noSignUp) {
+      return showSignUp && !noSignUp;
     },
 
     /**
@@ -337,7 +323,7 @@ You can specify the following codes and language in a json file passed to the lo
       this._cleanMessages();
       e = this.$$("#emailInput").validate();
       p = this.$$("#passwordInput").validate();
-      if (e && p){
+      if (e && p) {
         this.signIn(this.email, this.password);
       }
     },
@@ -346,27 +332,27 @@ You can specify the following codes and language in a json file passed to the lo
      * Tries to sign-up a user using the form values.
      */
     _signUp: function(e) {
-        this._cleanMessages();
-        e = this.$$("#emailInput").validate()
-        p = this.$$("#passwordInput").validate()
-        if (this.reenterPassword){
-            this.$$("#repeatPasswordInput").invalid=false;
-            pRepeat = this.password == this.passwordAgain && this.$$("#repeatPasswordInput").validate()
-            if (e && p && pRepeat) {
-                this.signUp(this.email, this.password);
-                this.email = null;
-                this.password = null;
-                this.passwordAgain = null;
-            }else if(!pRepeat){
-                this.$$("#repeatPasswordInput").invalid=true;
-            }
-        } else {
-            if (e && p){
-                this.signUp(this.email, this.password);
-                this.email = null;
-                this.password = null;
-            }
+      this._cleanMessages();
+      e = this.$$("#emailInput").validate()
+      p = this.$$("#passwordInput").validate()
+      if (this.reenterPassword) {
+        this.$$("#repeatPasswordInput").invalid = false;
+        pRepeat = this.password == this.passwordAgain &&
+          this.$$("#repeatPasswordInput").validate()
+
+        if (e && p && pRepeat) {
+          this.signUp(this.email, this.password);
+          this.email = null;
+          this.password = null;
+          this.passwordAgain = null;
+        } else if (!pRepeat) {
+          this.$$("#repeatPasswordInput").invalid = true;
         }
+      } else if (e && p) {
+        this.signUp(this.email, this.password);
+        this.email = null;
+        this.password = null;
+      }
     },
 
     /**
@@ -407,47 +393,49 @@ You can specify the following codes and language in a json file passed to the lo
      */
     _resetPassword: function() {
       this._cleanMessages();
-      e = this.$$("#resetEmailInput").validate()
-      if (e){
-        this.$$("#auth").auth.sendPasswordResetEmail(this.email).then(function() {
-            this.set('_lastMessage', this.localize('lf-resetpw-success-message'));
-        }.bind(this), function (error) {
-            this.set('_lastError', error.message);
+      e = this.$$("#emailInput").validate()
+      if (e) {
+        this.$$("#auth").auth.sendPasswordResetEmail(this.email)
+        .then(function() {
+          this.set('_lastMessage', this.localize('lf-resetpw-success-message'));
+        }.bind(this), function(error) {
+          this.set('_lastError', error.message);
         }.bind(this));
       }
     },
+
     /**
      *  Checks for enter being pressed and submits the appropriate form action
      */
-    _submitOnEnter: function(e){
-        if(e.keyCode === 13){
-            if (this._showSignUp){
-                this._signUp();
-            } else if (this.showResetPW){
-                this._resetPassword();
-            } else if (!this._showSignUp){
-                this._signIn()
-            }
+    _submitOnEnter: function(e) {
+      if (e.keyCode === 13) {
+        if (this._showSignUp) {
+          this._signUp();
+        } else if (this.showResetPW) {
+          this._resetPassword();
+        } else if (!this._showSignUp) {
+          this._signIn()
         }
+      }
     },
 
     /*
      *  Reveals the password in the parent by switching the type to text
      */
-     _revealPW: function(e){
-        this.$$("#passwordIconButton").icon = "login-fire-icons:visibility-off";
-        this.$$("#passwordInput").type = "text";
-     },
+    _revealPW: function(e) {
+      this.$$("#passwordIconButton").icon = "login-fire-icons:visibility-off";
+      this.$$("#passwordInput").type = "text";
+    },
 
-     /*
-      * Hides the password in the parent by switching the type to password
-      */
-     _hidePW: function(e){
-        setTimeout(function(){
-            this.$$("#passwordIconButton").icon = "login-fire-icons:visibility";
-            this.$$("#passwordInput").type = "password";
-        }.bind(this), 1000)
-     }
+    /*
+     * Hides the password in the parent by switching the type to password
+     */
+    _hidePW: function(e) {
+      setTimeout(function() {
+        this.$$("#passwordIconButton").icon = "login-fire-icons:visibility";
+        this.$$("#passwordInput").type = "password";
+      }.bind(this), 1000)
+    }
   });
   </script>
 </dom-module>
