@@ -64,6 +64,31 @@
     </div>
 
     <div>
+      <h3>Localized login-fire Demo with external locales</h3>
+      <demo-snippet>
+        <template >
+          <h4>JAPANESE</h4>
+          <firebase-app
+            name="extLocalesDemo"
+            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+            auth-domain="convoo-login-demo.firebaseapp.com"
+            database-url="https://convoo-login-demo.firebaseio.com">
+          </firebase-app>
+          <login-fire app-name="extLocalesDemo" providers="google, facebook"
+            language="jp" locales-file="./demo/locales.json"
+            debug no-sign-out class="social--large"></login-fire>
+          <style is="custom-style">
+          login-fire.social--large {
+            --login-fire-social: {
+              width: 250px;
+            };
+          }
+          </style>
+        </template>
+      </demo-snippet>
+    </div>
+
+    <div>
       <h3>login-fire Demo that can sign out</h3>
       <demo-snippet>
         <template >

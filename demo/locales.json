@@ -1,0 +1,21 @@
+{
+    "jp": {
+        "lf-email": "メールアドレス",
+        "lf-password": "パスワード",
+        "lf-already-have-account": "すでにアカウントをお持ちですか？",
+        "lf-already-have-account-action": "サインイン",
+        "lf-no-account": "アカウントを持っていない？",
+        "lf-no-account-action": "サインアップ",
+        "lf-resetpw-link": "パスワードをお忘れでした",
+        "lf-resetpw-cancel-link": "気にしない、パスワードを覚えている。",
+        "lf-resetpw-button": "パスワードを再設定する。",
+        "lf-signup-button": "サインアップ",
+        "lf-signup-facebook": "Facebookでサインアップ",
+        "lf-signup-google": "Googleでサインアップ",
+        "lf-signin-button": "サインイン",
+        "lf-signin-facebook": "Facebookでサインイン",
+        "lf-signin-google": "Googleでサインイン",
+        "lf-signout": "サインアウト。",
+        "lf-or": "or"
+    }
+}

@@ -222,6 +222,22 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         },
 
       /**
+       * Path to an external file containing locales. If the value is set, the
+       * target file will be used instead of the default one ("locales.html").
+       *
+       * The target file must be in JSON format. Be careful the file is kept
+       * during the build of your project. By default, the Polymer build pipe
+       * loses JSON files during the optimization.
+       *
+       * For more detail about the file format, please read the <a href="https://www.webcomponents.org/element/PolymerElements/app-localize-behavior/behaviors/Polymer.AppLocalizeBehavior">AppLocalizeBehavior documentation</a>.
+       *
+       * @type {String}
+       */
+      localesFile: {
+        type: String
+      },
+
+      /**
        * True if the client is authenticated, and false if the client is not
        * authenticated. Updated by Firebase Auth.
        *
@@ -278,7 +294,9 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     },
 
     attached: function() {
-      if (Polymer.Element) {
+      if (this.localesFile && typeof this.localesFile !== 'undefined') {
+        this.loadResources(this.resolveUrl(this.localesFile));
+      } else if (Polymer.Element) {
         this._setResources(window.Convoo._locales);
       } else {
         this.set('resources', window.Convoo._locales);
