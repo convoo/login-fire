@@ -84,9 +84,11 @@ You can specify the following codes and language in a json file passed to the lo
     }
     paper-button.btn--signup {
       margin: 15px 0;
+      width: 100%;
       @apply(--login-fire-btn-signup);
     }
     paper-button.btn--signin {
+      width: 100%;
       @apply(--login-fire-btn-signin);
     }
     .btn {
@@ -95,10 +97,13 @@ You can specify the following codes and language in a json file passed to the lo
     .link--reset-pw {
       color: var(--login-fire-reset-password-color, gray);
       text-decoration: none;
+      text-transform: none;
       font-size: 12px;
       font-style: italic;
       font-weight: lighter;
       cursor: pointer;
+      margin: 0;
+      padding: 0;
     }
     .link--reset-pw:hover {
       color: var(--login-fire-reset-password-hover-color, gray);
@@ -118,21 +123,20 @@ You can specify the following codes and language in a json file passed to the lo
     .msg--info {
       color: var(--login-fire-info-msg-color, gray);
     }
-    .action {
-      text-align: center;
-    }
-    .action paper-button {
-      width: 100%;
-    }
     .signup-toggle {
       font-size: 12px;
-      color:grey;
+      color: grey;
       text-align: center;
       @apply(--login-fire-form-toggle);
     }
-    .signup-toggle a {
+    .signup-toggle paper-button {
       text-decoration: underline;
+      text-transform: none;
+      color: blue;
       cursor: pointer;
+      margin: 0;
+      padding: 0;
+      min-width: 0;
     }
     paper-icon-button {
       color: grey;
@@ -185,29 +189,30 @@ You can specify the following codes and language in a json file passed to the lo
           hidden$="[[!reenterPassword]]"
           required>
         </paper-input>
-        <div class="action">
-          <paper-button raised$="[[!flat]]" type="submit" on-tap="_signUp"
-            class="btn--signup">[[localize('lf-signup-button')]]</paper-button>
-        </div>
+        <paper-button raised$="[[!flat]]" type="submit" on-tap="_signUp"
+          class="btn--signup">[[localize('lf-signup-button')]]</paper-button>
         <p class="signup-toggle">
-          [[localize('lf-already-have-account')]]
-          <a on-tap="_toggleShowSignUp" tabindex="0"
-            title="[[localize('lf-already-have-account')]] [[localize('lf-already-have-account-action')]]"
-            href="#">[[localize('lf-already-have-account-action')]]</a>
+          <span>[[localize('lf-already-have-account')]]</span>
+          <paper-button on-tap="_toggleShowSignUp" tabindex="0"
+            title="[[localize('lf-already-have-account')]] [[localize('lf-already-have-account-action')]]" noink>
+            [[localize('lf-already-have-account-action')]]
+          </paper-button>
         </p>
       </template>
       <template is="dom-if" if="[[!_showSignUp]]">
         <p>
-          <a class="link--reset-pw" on-click="toggleShowResetPW" tabindex="0"
-            href="#">[[localize('lf-resetpw-link')]]</a>
+          <paper-button class="link--reset-pw"
+            on-tap="toggleShowResetPW" tabindex="0" noink>
+            [[localize('lf-resetpw-link')]]</paper-button>
         </p>
-        <div class="action">
-          <paper-button raised$="[[!flat]]" type="submit" on-tap="_signIn"
-            class="btn--signin">[[localize('lf-signin-button')]]</paper-button>
-        </div>
+        <paper-button raised$="[[!flat]]" type="submit" on-tap="_signIn"
+          class="btn--signin">[[localize('lf-signin-button')]]</paper-button>
         <template is="dom-if" if="[[!noSignUp]]">
           <p class="signup-toggle">
-            [[localize('lf-no-account')]] <a on-tap="_toggleShowSignUp" tabindex="0" title="[[localize('lf-no-account')]] [[localize('lf-no-account-action')]]" href="#">[[localize('lf-no-account-action')]]</a>
+            <span>[[localize('lf-no-account')]]</span>
+            <paper-button on-tap="_toggleShowSignUp" tabindex="0"
+              title="[[localize('lf-no-account')]] [[localize('lf-no-account-action')]]" noink>
+              [[localize('lf-no-account-action')]]</paper-button>
           </p>
         </template>
       </template>
@@ -217,8 +222,9 @@ You can specify the following codes and language in a json file passed to the lo
       <paper-button raised$="[[!flat]]" type="submit" on-tap="_resetPassword"
         class="btn--resetpw">[[localize('lf-resetpw-button')]]</paper-button>
       <p>
-        <a class="link--reset-pw" on-click="toggleShowResetPW" tabindex="0"
-          href="#">[[localize('lf-resetpw-cancel-link')]]</a>
+        <paper-button class="link--reset-pw" on-tap="toggleShowResetPW"
+          tabindex="0" noink>[[localize('lf-resetpw-cancel-link')]]
+        </paper-button>
       </p>
     </template>
 
