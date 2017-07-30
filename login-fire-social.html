@@ -28,16 +28,16 @@ You can specify the following codes and language in a json file passed to the lo
 
 ```
 "en": {
-    "lf-signup-facebook": "Sign up with Facebook",
-    "lf-signup-google": "Sign up with Google",
-    "lf-signup-twitter": "Sign up with Twitter",
-    "lf-signup-github": "Sign up with GitHub",
-    "lf-signup-anonymous": "Sign up anonymously",
-    "lf-signin-facebook": "Sign in with Facebook",
-    "lf-signin-google": "Sign in with Google",
-    "lf-signin-twitter": "Sign in with Twitter",
-    "lf-signin-github": "Sign in with GitHub",
-    "lf-signin-anonymous": "Sign in anonymously",
+  "lf-signup-facebook": "Sign up with Facebook",
+  "lf-signup-google": "Sign up with Google",
+  "lf-signup-twitter": "Sign up with Twitter",
+  "lf-signup-github": "Sign up with GitHub",
+  "lf-signup-anonymous": "Sign up anonymously",
+  "lf-signin-facebook": "Sign in with Facebook",
+  "lf-signin-google": "Sign in with Google",
+  "lf-signin-twitter": "Sign in with Twitter",
+  "lf-signin-github": "Sign in with GitHub",
+  "lf-signin-anonymous": "Sign in anonymously"
 }
 ```
 
@@ -74,49 +74,46 @@ You can specify the following codes and language in a json file passed to the lo
       }
     </style>
 
-
-
     <template is="dom-if" if="[[_showOneButton]]">
-        <login-fire-button
-            app-name="[[appName]]"
-            user="{{_user}}"
-            status-known="{{_statusKnown}}"
-            signed-in="{{_signedIn}}"
-            mini$="[[mini]]"
-            flat$="[[flat]]"
-            no-sign-in="[[noSignIn]]"
-            no-sign-out="[[noSignOut]]"
-            show-sign-up="{{showSignUp}}"
-            locales-file="[[localesFile]]"
-            language="[[language]]"
-            debug="[[debug]]"
-            >
-        </login-fire-button>
+      <login-fire-button
+        app-name="[[appName]]"
+        user="{{_user}}"
+        status-known="{{_statusKnown}}"
+        signed-in="{{_signedIn}}"
+        mini$="[[mini]]"
+        flat$="[[flat]]"
+        no-sign-in="[[noSignIn]]"
+        no-sign-out="[[noSignOut]]"
+        show-sign-up="{{showSignUp}}"
+        locales-file="[[localesFile]]"
+        language="[[language]]"
+        debug="[[debug]]">
+      </login-fire-button>
     </template>
+
     <template is="dom-if" if="[[!_showOneButton]]">
-        <template is="dom-repeat" items="{{_providers}}">
-            <login-fire-button
-                id="lfb[[item.id]]"
-                app-name="[[appName]]"
-                provider="[[item.id]]"
-                user="{{_user}}"
-                status-known="{{_statusKnown}}"
-                signed-in="{{_signedIn}}"
-                mini$="[[mini]]"
-                flat$="[[flat]]"
-                redirect="[[redirect]]"
-                no-sign-in="[[noSignIn]]"
-                no-sign-out="[[noSignOut]]"
-                show-sign-up="{{showSignUp}}"
-                locales-file="[[localesFile]]"
-                language="[[language]]"
-                google-scopes="[[googleScopes]]"
-                facebook-scopes="[[facebookScopes]]"
-                github-scopes="[[githubScopes]]"
-                debug="[[debug]]"
-                >
-            </login-fire-button>
-        </template>
+      <template is="dom-repeat" items="{{_providers}}">
+        <login-fire-button
+          id="lfb[[item.id]]"
+          app-name="[[appName]]"
+          provider="[[item.id]]"
+          user="{{_user}}"
+          status-known="{{_statusKnown}}"
+          signed-in="{{_signedIn}}"
+          mini$="[[mini]]"
+          flat$="[[flat]]"
+          redirect="[[redirect]]"
+          no-sign-in="[[noSignIn]]"
+          no-sign-out="[[noSignOut]]"
+          show-sign-up="{{showSignUp}}"
+          locales-file="[[localesFile]]"
+          language="[[language]]"
+          google-scopes="[[googleScopes]]"
+          facebook-scopes="[[facebookScopes]]"
+          github-scopes="[[githubScopes]]"
+          debug="[[debug]]">
+        </login-fire-button>
+      </template>
     </template>
 
   </template>
@@ -153,10 +150,44 @@ You can specify the following codes and language in a json file passed to the lo
        * ```
        *
        * @type {String}
+       * @default 'anonymous'
        */
       providers: {
         type: String,
         value: 'anonymous'
+      },
+
+      /**
+       * GitHub scopes.
+       *
+       * @type {String}
+       * @default ''
+       */
+      githubScopes: {
+        type: String,
+        value: ''
+      },
+
+      /**
+       * Google scopes.
+       *
+       * @type {String}
+       * @default ''
+       */
+      googleScopes: {
+        type: String,
+        value: ''
+      },
+
+      /**
+       * Facebook scopes.
+       *
+       * @type {String}
+       * @default ''
+       */
+      facebookScopes: {
+        type: String,
+        value: ''
       },
 
       /**

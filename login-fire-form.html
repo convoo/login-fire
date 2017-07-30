@@ -50,23 +50,23 @@ The following custom properties and mixins are available for styling:
 You can specify the following codes and language in a json file passed to the localesFile property to update the text used. Here are the defaults:
 ```
 "en": {
-        "lf-email": "Email",
-        "lf-email-invalid": "Invalid email address",
-        "lf-password": "Password",
-        "lf-reenter-password": "Re-enter Password",
-        "lf-passwords-dont-match": "Passwords do not match",
-        "lf-already-have-account": "Already have an account?",
-        "lf-already-have-account-action": "Sign in",
-        "lf-no-account": "Don' have an account?",
-        "lf-no-account-action": "Sign up",
-        "lf-resetpw-link": "Forgot password",
-        "lf-resetpw-cancel-link": "Nevermind, I remembered my password.",
-        "lf-resetpw-button": "Reset password",
-        "lf-resetpw-success-message": "Password reset email has been sent. Please check your inbox.",
-        "lf-signup-button": "Sign Up",
-        "lf-signin-button": "Sign In"
-        "lf-signout": "Sign out"
-    }
+  "lf-email": "Email",
+  "lf-email-invalid": "Invalid email address",
+  "lf-password": "Password",
+  "lf-reenter-password": "Re-enter Password",
+  "lf-passwords-dont-match": "Passwords do not match",
+  "lf-already-have-account": "Already have an account?",
+  "lf-already-have-account-action": "Sign in",
+  "lf-no-account": "Don' have an account?",
+  "lf-no-account-action": "Sign up",
+  "lf-resetpw-link": "Forgot password",
+  "lf-resetpw-cancel-link": "Nevermind, I remembered my password.",
+  "lf-resetpw-button": "Reset password",
+  "lf-resetpw-success-message": "Password reset email has been sent. Please check your inbox.",
+  "lf-signup-button": "Sign Up",
+  "lf-signin-button": "Sign In",
+  "lf-signout": "Sign out"
+}
 ```
 
 @demo demo/login-fire-form.html
@@ -161,12 +161,12 @@ You can specify the following codes and language in a json file passed to the lo
 
     <template is="dom-if" if="[[!showResetPW]]">
       <paper-input id="passwordInput"
-          type="password"
-          label="[[localize('lf-password')]]"
-          value="{{password}}"
-          error-message="[[localize('lf-password-invalid')]]"
-          on-keydown="_submitOnEnter"
-          required>
+        type="password"
+        label="[[localize('lf-password')]]"
+        value="{{password}}"
+        error-message="[[localize('lf-password-invalid')]]"
+        on-keydown="_submitOnEnter"
+        required>
         <template is="dom-if" if="[[!noToggleablePassword]]">
           <paper-icon-button
             id="passwordIconButton"
@@ -183,7 +183,7 @@ You can specify the following codes and language in a json file passed to the lo
         <paper-input id="repeatPasswordInput"
           type="password"
           label="[[localize('lf-reenter-password')]]"
-          value="{{passwordAgain}}"
+          value="{{_passwordAgain}}"
           error-message="[[localize('lf-passwords-dont-match')]]"
           on-keydown="_submitOnEnter"
           hidden$="[[!reenterPassword]]"
@@ -263,6 +263,33 @@ You can specify the following codes and language in a json file passed to the lo
       },
 
       /**
+       * Current value of the email field.
+       *
+       * @type {String}
+       */
+      email: {
+        type: String
+      },
+
+      /**
+       * Current calue of the password field.
+       *
+       * @type {String}
+       */
+      password: {
+        type: String
+      },
+
+      /**
+       * Password confirmation.
+       *
+       * @type {String}
+       */
+      _passwordAgain: {
+        type: String
+      },
+
+      /**
        * Computed property to show sign up form.
        *
        * @type {Boolean}
@@ -308,7 +335,7 @@ You can specify the following codes and language in a json file passed to the lo
      * Cleans inputs (email + password)
      */
     _cleanInputs: function() {
-      this.$$("#emailInput").value = '';
+      this.$$('#emailInput').value = '';
       this._cleanPasswordInput();
     },
 
@@ -316,7 +343,7 @@ You can specify the following codes and language in a json file passed to the lo
      * Cleans password input
      */
     _cleanPasswordInput: function() {
-      this.$$("#passwordInput").value = '';
+      this.$$('#passwordInput').value = '';
     },
 
     /**
@@ -331,8 +358,8 @@ You can specify the following codes and language in a json file passed to the lo
      */
     _signIn: function() {
       this._cleanMessages();
-      e = this.$$("#emailInput").validate();
-      p = this.$$("#passwordInput").validate();
+      e = this.$$('#emailInput').validate();
+      p = this.$$('#passwordInput').validate();
       if (e && p) {
         this.signIn(this.email, this.password);
       }
@@ -343,20 +370,20 @@ You can specify the following codes and language in a json file passed to the lo
      */
     _signUp: function(e) {
       this._cleanMessages();
-      e = this.$$("#emailInput").validate()
-      p = this.$$("#passwordInput").validate()
+      e = this.$$('#emailInput').validate()
+      p = this.$$('#passwordInput').validate()
       if (this.reenterPassword) {
-        this.$$("#repeatPasswordInput").invalid = false;
-        pRepeat = this.password == this.passwordAgain &&
-          this.$$("#repeatPasswordInput").validate()
+        this.$$('#repeatPasswordInput').invalid = false;
+        pRepeat = this.password == this._passwordAgain &&
+          this.$$('#repeatPasswordInput').validate()
 
         if (e && p && pRepeat) {
           this.signUp(this.email, this.password);
           this.email = null;
           this.password = null;
-          this.passwordAgain = null;
+          this._passwordAgain = null;
         } else if (!pRepeat) {
-          this.$$("#repeatPasswordInput").invalid = true;
+          this.$$('#repeatPasswordInput').invalid = true;
         }
       } else if (e && p) {
         this.signUp(this.email, this.password);
@@ -366,8 +393,8 @@ You can specify the following codes and language in a json file passed to the lo
     },
 
     /**
-    * Handler called after a successful signIn to clean inputs
-    */
+     * Handler called after a successful signIn to clean inputs
+     */
     _handleSignIn: function() {
       this._cleanInputs();
     },
@@ -389,8 +416,8 @@ You can specify the following codes and language in a json file passed to the lo
         this.set('_lastError', errorMessage || e.detail.message);
 
         // Clean password input if wrong password or email
-        if(e.detail.code == 'auth/wrong-password'
-           || e.detail.code == 'auth/user-not-found') {
+        if (e.detail.code == 'auth/wrong-password' ||
+          e.detail.code == 'auth/user-not-found') {
           this._cleanPasswordInput();
         }
       }
@@ -403,14 +430,15 @@ You can specify the following codes and language in a json file passed to the lo
      */
     _resetPassword: function() {
       this._cleanMessages();
-      e = this.$$("#emailInput").validate()
+      e = this.$$('#emailInput').validate()
       if (e) {
-        this.$$("#auth").auth.sendPasswordResetEmail(this.email)
-        .then(function() {
-          this.set('_lastMessage', this.localize('lf-resetpw-success-message'));
-        }.bind(this), function(error) {
-          this.set('_lastError', error.message);
-        }.bind(this));
+        this.$$('#auth').auth.sendPasswordResetEmail(this.email)
+          .then(function() {
+            this.set('_lastMessage',
+              this.localize('lf-resetpw-success-message'));
+          }.bind(this), function(error) {
+            this.set('_lastError', error.message);
+          }.bind(this));
       }
     },
 
@@ -433,8 +461,8 @@ You can specify the following codes and language in a json file passed to the lo
      *  Reveals the password in the parent by switching the type to text
      */
     _revealPW: function(e) {
-      this.$$("#passwordIconButton").icon = "login-fire-icons:visibility-off";
-      this.$$("#passwordInput").type = "text";
+      this.$$('#passwordIconButton').icon = 'login-fire-icons:visibility-off';
+      this.$$('#passwordInput').type = 'text';
     },
 
     /*
@@ -442,8 +470,8 @@ You can specify the following codes and language in a json file passed to the lo
      */
     _hidePW: function(e) {
       setTimeout(function() {
-        this.$$("#passwordIconButton").icon = "login-fire-icons:visibility";
-        this.$$("#passwordInput").type = "password";
+        this.$$('#passwordIconButton').icon = 'login-fire-icons:visibility';
+        this.$$('#passwordInput').type = 'password';
       }.bind(this), 1000)
     }
   });

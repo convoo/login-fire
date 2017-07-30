@@ -6,287 +6,290 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 -->
 <!doctype html>
 <html>
-  <head>
-    <title>login-fire demo</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 
-    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+<head>
+  <title>login-fire demo</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 
-    <link rel="import" href="../login-fire.html">
-    <link rel="import" href="../../polymerfire/firebase-app.html">
-    <link rel="import" href="../../paper-dialog/paper-dialog.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
 
-    <style is="custom-style" include="demo-pages-shared-styles">
-    </style>
-  </head>
-  <body>
-    <div>
-      <h3>login-fire Demo with all options</h3>
-      <demo-snippet>
-        <template >
-          <firebase-app
-            name="allSocialDemo"
-            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
-            auth-domain="convoo-login-demo.firebaseapp.com"
-            database-url="https://convoo-login-demo.firebaseio.com">
-          </firebase-app>
-          <login-fire app-name="allSocialDemo" providers="google, facebook, twitter, github, anonymous" debug no-sign-out></login-fire>
-        </template>
-      </demo-snippet>
-    </div>
+  <link rel="import" href="../login-fire.html">
+  <link rel="import" href="../../polymerfire/firebase-app.html">
+  <link rel="import" href="../../paper-dialog/paper-dialog.html">
+  <link rel="import" href="../../paper-dialog-scrollable/paper-dialog-scrollable.html">
 
-    <div>
-      <h3>Localized login-fire Demo with all options</h3>
-      <demo-snippet>
-        <template >
-          <h4>GERMAN</h4>
-          <firebase-app
-            name="allSocialDemoDE"
-            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
-            auth-domain="convoo-login-demo.firebaseapp.com"
-            database-url="https://convoo-login-demo.firebaseio.com">
-          </firebase-app>
-          <login-fire app-name="allSocialDemoDE" providers="google, facebook, twitter, github, anonymous" debug no-sign-out language="de"></login-fire>
-          <h4>FRENCH</h4>
-          <firebase-app
-            name="allSocialDemoFR"
-            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
-            auth-domain="convoo-login-demo.firebaseapp.com"
-            database-url="https://convoo-login-demo.firebaseio.com">
-          </firebase-app>
-          <login-fire app-name="allSocialDemoFR" providers="google, facebook, twitter, github, anonymous" debug no-sign-out language="fr" class="social--large"></login-fire>
-          <style is="custom-style">
-          login-fire.social--large {
-            --login-fire-social: {
-              width: 250px;
-            };
-          }
-          </style>
-        </template>
-      </demo-snippet>
-    </div>
+  <style is="custom-style" include="demo-pages-shared-styles"></style>
+</head>
 
-    <div>
-      <h3>Localized login-fire Demo with external locales</h3>
-      <demo-snippet>
-        <template >
-          <h4>JAPANESE</h4>
-          <firebase-app
-            name="extLocalesDemo"
-            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
-            auth-domain="convoo-login-demo.firebaseapp.com"
-            database-url="https://convoo-login-demo.firebaseio.com">
-          </firebase-app>
-          <login-fire app-name="extLocalesDemo" providers="google, facebook"
-            language="jp" locales-file="./demo/locales.json"
-            debug no-sign-out class="social--large"></login-fire>
-          <style is="custom-style">
-          login-fire.social--large {
-            --login-fire-social: {
-              width: 250px;
-            };
-          }
-          </style>
-        </template>
-      </demo-snippet>
-    </div>
-
-    <div>
-      <h3>login-fire Demo that can sign out</h3>
-      <demo-snippet>
-        <template >
-          <firebase-app
-            name="canSignOutDemo"
-            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
-            auth-domain="convoo-login-demo.firebaseapp.com"
-            database-url="https://convoo-login-demo.firebaseio.com">
-          </firebase-app>
-          <login-fire app-name="canSignOutDemo" providers="google, facebook, twitter, github, anonymous" debug></login-fire>
-        </template>
-      </demo-snippet>
-    </div>
-
-        <div>
-      <h3>login-fire Demo with all options in dark style</h3>
-      <demo-snippet>
-        <template>
-          <firebase-app
-            name="allSocialDarkDemo"
-            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
-            auth-domain="convoo-login-demo.firebaseapp.com"
-            database-url="https://convoo-login-demo.firebaseio.com">
-          </firebase-app>
-          <login-fire flat show-sign-up="{{showSignUp}}" app-name="allSocialDarkDemo" providers="google, facebook, twitter, github, anonymous" debug mini class="custom"></login-fire>
-          <style is="custom-style">
-          login-fire.custom{
-                --login-fire-background-color: #2a363b;
-                --login-fire-divider-color: #a58e7a;
-                --login-fire-error-msg-color:#e84a5f;
-                --login-fire-reset-password-color: #a58e7a;
-                --login-fire-reset-password-hover-color: #fecea8;
-                --paper-input-container-color: #a58e7a;
-                --paper-input-container-focus-color: #fecea8;
-                --paper-input-container-input-color: white;
-                --login-fire-form: {
-                    width: 400px;
-                }
-                --login-fire-form-toggle: {
-                    color: #a58e7a;
-                    text-align: left;
-                }
-                --login-fire-button: {
-                    min-width: 150px;
-                }
-                --login-fire-btn-signup: {
-                    color: white;
-                    background: #ff847c;
-                    padding-left: 25px;
-                    padding-right: 25px;
-                    margin-top: 10px;
-                    margin-left: 0px;
-                    height: 40px;
-                    position: relative;
-                    top:15px;
-                }
-                --login-fire-btn-signin: {
-                    color: white;
-                    background: #99b898;
-                    padding-left: 25px;
-                    padding-right: 25px;
-                    margin-top: 10px;
-                    margin-left: 0px;
-                    height: 40px;
-                    position: relative;
-                    top:-5px;
-                }
-                --login-fire-btn-signout:{
-                    color: white;
-                    background: #e84a5f;
-                    height: 40px;
-                }
-          }
-          </style>
+<body>
+  <div>
+    <h3>login-fire Demo with all options</h3>
+    <demo-snippet>
+      <template>
+        <firebase-app
+          name="allSocialDemo"
+          api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+          auth-domain="convoo-login-demo.firebaseapp.com"
+          database-url="https://convoo-login-demo.firebaseio.com">
+        </firebase-app>
+        <login-fire app-name="allSocialDemo" providers="google, facebook, twitter, github, anonymous" debug no-sign-out></login-fire>
       </template>
-      </demo-snippet>
-    </div>
+    </demo-snippet>
+  </div>
 
-    <div>
-      <h3>login-fire Demo specifying scopes</h3>
-      <demo-snippet>
-        <template >
-          <firebase-app
-            name="scopesDemo"
-            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
-            auth-domain="convoo-login-demo.firebaseapp.com"
-            database-url="https://convoo-login-demo.firebaseio.com">
-          </firebase-app>
-          <login-fire app-name="scopesDemo"
-            providers="google, facebook, twitter, github, anonymous"
-            google-scopes="https://www.googleapis.com/auth/drive, https://www.googleapis.com/auth/drive.appdata, https://www.googleapis.com/auth/firebase"
-            facebook-scopes="public_profile, email, user_birthday"
-            github-scopes="repo, notifications, gist"
-            debug
-            ></login-fire>
-        </template>
-      </demo-snippet>
-    </div>
-
-    <div>
-      <h3>login-fire Demo no sign in</h3>
-      <demo-snippet>
-        <template >
-          <firebase-app
-            name="onlySignOutDemo"
-            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
-            auth-domain="convoo-login-demo.firebaseapp.com"
-            database-url="https://convoo-login-demo.firebaseio.com">
-          </firebase-app>
-          <login-fire app-name="onlySignOutDemo"
-            providers="google, facebook, twitter, github, anonymous"
-            no-sign-in
-            debug
-            ></login-fire>
-        </template>
-      </demo-snippet>
-    </div>
-
-    <div>
-      <h3>Mini horizontal login-fire Demo with all options</h3>
-      <demo-snippet>
-        <template >
-          <firebase-app
-            name="miniHorizontalWideDemo"
-            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
-            auth-domain="convoo-login-demo.firebaseapp.com"
-            database-url="https://convoo-login-demo.firebaseio.com">
-          </firebase-app>
-          <login-fire app-name="miniHorizontalWideDemo" providers="google, facebook, twitter, github, anonymous" horizontal mini></login-fire>
-        </template>
-      </demo-snippet>
-    </div>
-
-    <div>
-      <h3>Reversed login-fire Demo with all options</h3>
-      <demo-snippet>
-        <template >
-          <firebase-app
-            name="reverseNarrowDemo"
-            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
-            auth-domain="convoo-login-demo.firebaseapp.com"
-            database-url="https://convoo-login-demo.firebaseio.com">
-          </firebase-app>
-          <login-fire app-name="reverseNarrowDemo" providers="google, facebook, twitter, github, anonymous" reverse></login-fire>
-        </template>
-      </demo-snippet>
-    </div>
-
-     <div>
-      <h3>Reverse mini horizontal login-fire Demo with all options</h3>
-      <demo-snippet>
-        <template >
-          <firebase-app
-            name="reverseMiniHorizontalWideDemo"
-            api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
-            auth-domain="convoo-login-demo.firebaseapp.com"
-            database-url="https://convoo-login-demo.firebaseio.com">
-          </firebase-app>
-          <h2 style="text-align: center;">Sign In</h2>
-          <login-fire app-name="reverseMiniHorizontalWideDemo" providers="google, facebook, twitter, github, anonymous" horizontal mini reverse></login-fire>
-        </template>
-      </demo-snippet>
-    </div>
-
-    <div>
-      <h3>login-fire in modal demo </h3>
-      <demo-snippet>
-
-        <paper-button raised onclick="dialog.open()">login-fire in modal</paper-button>
-
-        <style>
-        paper-dialog {
-          min-width: 310px;
-          width: 80%;
-          height: 400px;
-          overflow: auto;
+  <div>
+    <h3>Localized login-fire Demo with all options</h3>
+    <demo-snippet>
+      <template>
+        <h4>GERMAN</h4>
+        <firebase-app
+          name="allSocialDemoDE"
+          api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+          auth-domain="convoo-login-demo.firebaseapp.com"
+          database-url="https://convoo-login-demo.firebaseio.com">
+        </firebase-app>
+        <login-fire app-name="allSocialDemoDE" providers="google, facebook, twitter, github, anonymous" debug no-sign-out language="de"></login-fire>
+        <h4>FRENCH</h4>
+        <firebase-app
+          name="allSocialDemoFR"
+          api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+          auth-domain="convoo-login-demo.firebaseapp.com"
+          database-url="https://convoo-login-demo.firebaseio.com">
+        </firebase-app>
+        <login-fire app-name="allSocialDemoFR" providers="google, facebook, twitter, github, anonymous" debug no-sign-out language="fr" class="social--large"></login-fire>
+        <style is="custom-style">
+        login-fire.social--large {
+          --login-fire-social: {
+            width: 250px;
+          };
         }
         </style>
-        <template>
-          <paper-dialog id="dialog" with-backdrop center>
-            <paper-dialog-scrollable>
-              <firebase-app name="modalDemo"
-                api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
-                auth-domain="convoo-login-demo.firebaseapp.com"
-                database-url="https://convoo-login-demo.firebaseio.com">
-              </firebase-app>
-              <login-fire app-name="modalDemo" providers="google, facebook, twitter, github, anonymous"></login-fire>
-            </paper-dialog-scrollable>
-          </paper-dialog>
-        </template>
-      </demo-snippet>
-    </div>
+      </template>
+    </demo-snippet>
+  </div>
 
-  </body>
+  <div>
+    <h3>Localized login-fire Demo with external locales</h3>
+    <demo-snippet>
+      <template>
+        <h4>JAPANESE</h4>
+        <firebase-app
+          name="extLocalesDemo"
+          api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+          auth-domain="convoo-login-demo.firebaseapp.com"
+          database-url="https://convoo-login-demo.firebaseio.com">
+        </firebase-app>
+        <login-fire app-name="extLocalesDemo" providers="google, facebook"
+          language="jp" locales-file="./demo/locales.json"
+          debug no-sign-out class="social--large"></login-fire>
+        <style is="custom-style">
+        login-fire.social--large {
+          --login-fire-social: {
+            width: 250px;
+          };
+        }
+        </style>
+      </template>
+    </demo-snippet>
+  </div>
+
+  <div>
+    <h3>login-fire Demo that can sign out</h3>
+    <demo-snippet>
+      <template>
+        <firebase-app
+          name="canSignOutDemo"
+          api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+          auth-domain="convoo-login-demo.firebaseapp.com"
+          database-url="https://convoo-login-demo.firebaseio.com">
+        </firebase-app>
+        <login-fire app-name="canSignOutDemo" providers="google, facebook, twitter, github, anonymous" debug></login-fire>
+      </template>
+    </demo-snippet>
+  </div>
+
+  <div>
+    <h3>login-fire Demo with all options in dark style</h3>
+    <demo-snippet>
+      <template>
+        <firebase-app
+          name="allSocialDarkDemo"
+          api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+          auth-domain="convoo-login-demo.firebaseapp.com"
+          database-url="https://convoo-login-demo.firebaseio.com">
+        </firebase-app>
+        <login-fire flat show-sign-up="{{showSignUp}}" app-name="allSocialDarkDemo" providers="google, facebook, twitter, github, anonymous" debug mini class="custom"></login-fire>
+        <style is="custom-style">
+        login-fire.custom {
+          --login-fire-background-color: #2a363b;
+          --login-fire-divider-color: #a58e7a;
+          --login-fire-error-msg-color:#e84a5f;
+          --login-fire-reset-password-color: #a58e7a;
+          --login-fire-reset-password-hover-color: #fecea8;
+          --paper-input-container-color: #a58e7a;
+          --paper-input-container-focus-color: #fecea8;
+          --paper-input-container-input-color: white;
+          --login-fire-form: {
+            width: 400px;
+          };
+          --login-fire-form-toggle: {
+            color: #a58e7a;
+            text-align: left;
+          };
+          --login-fire-button: {
+            min-width: 150px;
+          };
+          --login-fire-btn-signup: {
+            color: white;
+            background: #ff847c;
+            padding-left: 25px;
+            padding-right: 25px;
+            margin-top: 10px;
+            margin-left: 0px;
+            height: 40px;
+            position: relative;
+            top:15px;
+          };
+          --login-fire-btn-signin: {
+            color: white;
+            background: #99b898;
+            padding-left: 25px;
+            padding-right: 25px;
+            margin-top: 10px;
+            margin-left: 0px;
+            height: 40px;
+            position: relative;
+            top:-5px;
+          };
+          --login-fire-btn-signout: {
+            color: white;
+            background: #e84a5f;
+            height: 40px;
+          };
+        }
+        </style>
+      </template>
+    </demo-snippet>
+  </div>
+
+  <div>
+    <h3>login-fire Demo specifying scopes</h3>
+    <demo-snippet>
+      <template>
+        <firebase-app
+          name="scopesDemo"
+          api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+          auth-domain="convoo-login-demo.firebaseapp.com"
+          database-url="https://convoo-login-demo.firebaseio.com">
+        </firebase-app>
+        <login-fire app-name="scopesDemo"
+          providers="google, facebook, twitter, github, anonymous"
+          google-scopes="https://www.googleapis.com/auth/drive, https://www.googleapis.com/auth/drive.appdata, https://www.googleapis.com/auth/firebase"
+          facebook-scopes="public_profile, email, user_birthday"
+          github-scopes="repo, notifications, gist"
+          debug>
+        </login-fire>
+      </template>
+    </demo-snippet>
+  </div>
+
+  <div>
+    <h3>login-fire Demo no sign in</h3>
+    <demo-snippet>
+      <template>
+        <firebase-app
+          name="onlySignOutDemo"
+          api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+          auth-domain="convoo-login-demo.firebaseapp.com"
+          database-url="https://convoo-login-demo.firebaseio.com">
+        </firebase-app>
+        <login-fire app-name="onlySignOutDemo"
+          providers="google, facebook, twitter, github, anonymous"
+          no-sign-in
+          debug>
+        </login-fire>
+      </template>
+    </demo-snippet>
+  </div>
+
+  <div>
+    <h3>Mini horizontal login-fire Demo with all options</h3>
+    <demo-snippet>
+      <template>
+        <firebase-app
+          name="miniHorizontalWideDemo"
+          api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+          auth-domain="convoo-login-demo.firebaseapp.com"
+          database-url="https://convoo-login-demo.firebaseio.com">
+        </firebase-app>
+        <login-fire app-name="miniHorizontalWideDemo" providers="google, facebook, twitter, github, anonymous" horizontal mini></login-fire>
+      </template>
+    </demo-snippet>
+  </div>
+
+  <div>
+    <h3>Reversed login-fire Demo with all options</h3>
+    <demo-snippet>
+      <template>
+        <firebase-app
+          name="reverseNarrowDemo"
+          api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+          auth-domain="convoo-login-demo.firebaseapp.com"
+          database-url="https://convoo-login-demo.firebaseio.com">
+        </firebase-app>
+        <login-fire app-name="reverseNarrowDemo" providers="google, facebook, twitter, github, anonymous" reverse></login-fire>
+      </template>
+    </demo-snippet>
+  </div>
+
+  <div>
+    <h3>Reverse mini horizontal login-fire Demo with all options</h3>
+    <demo-snippet>
+      <template>
+        <firebase-app
+          name="reverseMiniHorizontalWideDemo"
+          api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+          auth-domain="convoo-login-demo.firebaseapp.com"
+          database-url="https://convoo-login-demo.firebaseio.com">
+        </firebase-app>
+        <h2 style="text-align: center;">Sign In</h2>
+        <login-fire app-name="reverseMiniHorizontalWideDemo" providers="google, facebook, twitter, github, anonymous" horizontal mini reverse></login-fire>
+      </template>
+    </demo-snippet>
+  </div>
+
+  <div>
+    <h3>login-fire in modal demo </h3>
+    <demo-snippet>
+
+      <paper-button raised onclick="dialog.open()">login-fire in modal</paper-button>
+
+      <style>
+      paper-dialog {
+        min-width: 310px;
+        width: 80%;
+        height: 400px;
+        overflow: auto;
+      }
+      </style>
+      <template>
+        <paper-dialog id="dialog" with-backdrop center>
+          <paper-dialog-scrollable>
+            <firebase-app name="modalDemo"
+              api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+              auth-domain="convoo-login-demo.firebaseapp.com"
+              database-url="https://convoo-login-demo.firebaseio.com">
+            </firebase-app>
+            <login-fire app-name="modalDemo" providers="google, facebook, twitter, github, anonymous"></login-fire>
+          </paper-dialog-scrollable>
+        </paper-dialog>
+      </template>
+    </demo-snippet>
+  </div>
+
+</body>
+
 </html>

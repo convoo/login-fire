@@ -23,34 +23,34 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
   Convoo.LoginFireFormBehaviorImpl = {
 
     properties: {
-        /**
-         *  Toggles the view for the reset password button
-         */
-        showResetPW: {
-            type: Boolean,
-            value: false
-        },
-        /**
-         *  Removes the view button on the password input
-         */
-        noToggleablePassword: {
-            type: Boolean,
-            value: false
-        },
-        /**
-         *  Adds another input to re-enter password in the sign up view
-         */
-        reenterPassword: {
-            type: Boolean,
-            value: false
-        },
-        /**
-         *  Prevents new users from signing up
-         */
-        noSignUp: {
-            type: Boolean,
-            value: false
-        }
+      /**
+       * Toggles the view for the reset password button
+       */
+      showResetPW: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * Removes the view button on the password input
+       */
+      noToggleablePassword: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * Adds another input to re-enter password in the sign up view
+       */
+      reenterPassword: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * Prevents new users from signing up
+       */
+      noSignUp: {
+        type: Boolean,
+        value: false
+      }
     },
 
     /**
@@ -106,12 +106,12 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      * Toggles showing reset password view
      */
     toggleShowResetPW: function() {
-        if(this.showResetPW){
-            this.showResetPW = false;
-            this.showSignUp = false
-        }else{
-            this.showResetPW = true;
-        }
+      if (this.showResetPW) {
+        this.showResetPW = false;
+        this.showSignUp = false
+      } else {
+        this.showResetPW = true;
+      }
     }
   };
 

@@ -80,7 +80,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
        */
       appName: {
         type: String,
-        value: ""
+        value: ''
       },
 
       /**
@@ -123,7 +123,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
        */
       language: {
         type: String,
-        value: "en"
+        value: 'en'
       },
 
       /**
@@ -164,15 +164,15 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       },
 
       /**
-        * Whether to show the view at sign up or sign in
-        *
-        * @type {Boolean}
-        */
-        showSignUp: {
-            type: Boolean,
-            value: false,
-            notify: true
-        },
+       * Whether to show the view at sign up or sign in
+       *
+       * @type {Boolean}
+       */
+      showSignUp: {
+        type: Boolean,
+        value: false,
+        notify: true
+      },
 
       /**
        * When true, login status can be determined by checking user property.
@@ -198,28 +198,28 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         notify: true
       },
 
-        /**
-         * Prevents the element from signing out. It means, if this attribute is `true`,
-         * the element can not use the method `signOut`. Otherwise, when the value is
-         * `false`, the method has no effect.
-         *
-         * @type {Boolean}
-         */
-        noSignOut: {
-            type: Boolean,
-            value: false
-        },
+      /**
+       * Prevents the element from signing out. It means, if this attribute is
+       * `true`, the element can not use the method `signOut`. Otherwise, when
+       * the value is `false`, the method has no effect.
+       *
+       * @type {Boolean}
+       */
+      noSignOut: {
+        type: Boolean,
+        value: false
+      },
 
-        /**
-         * Prevents element from signing in. It means, if this attribute is `true`,
-         * the element can not sign in.
-         *
-         * @type {Boolean}
-         */
-        noSignIn: {
-            type: Boolean,
-            value: false
-        },
+      /**
+       * Prevents element from signing in. It means, if this attribute is
+       * `true`, the element can not sign in.
+       *
+       * @type {Boolean}
+       */
+      noSignIn: {
+        type: Boolean,
+        value: false
+      },
 
       /**
        * Path to an external file containing locales. If the value is set, the
@@ -272,12 +272,13 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       },
 
       /**
-       *    This property is used in login-fire and login-fire-social when the user is signed in
-       *    and is allowed to sign out. It then shows just one button instead of multiple to sign out.
+       * This property is used in login-fire and login-fire-social when the
+       * user is signed in and is allowed to sign out. It then shows just one
+       * button instead of multiple to sign out.
        */
       _showOneButton: {
         type: Boolean,
-        computed: "_computeShowOneButton(noSignIn, signedIn, noSignOut)"
+        computed: '_computeShowOneButton(noSignIn, signedIn, noSignOut)'
       },
 
       /**
@@ -339,9 +340,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       };
     },
 
-
-    _computeShowOneButton: function(noSignIn, signedIn, noSignOut){
-        return noSignIn || (signedIn && !noSignOut);
+    _computeShowOneButton: function(noSignIn, signedIn, noSignOut) {
+      return noSignIn || (signedIn && !noSignOut);
     },
 
     /**
@@ -350,10 +350,10 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      * @param  {Object} error get from Firebase Auth API
      */
     _fireError: function(error) {
-        if (this.debug){
-            console.debug("Firing error");
-            console.debug(error);
-        }
+      if (this.debug) {
+        console.debug('Firing error');
+        console.debug(error);
+      }
       this.fire('error', error);
     },
 
@@ -363,16 +363,22 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      * @param  {Object} response from Firebase Auth
      */
     _fireEvent: function(response) {
-        if (this.debug){
-            console.debug("Firing event");
-        }
+      if (this.debug) {
+        console.debug('Firing event');
+      }
       if (response) {
         var user = response.user || response;
         var credential = response.credential;
-        this.fire('signedin', {user: user, credential: credential});
+        this.fire('signedin', {
+          user: user,
+          credential: credential
+        });
         if (this.debug) {
           console.debug('User signed in with', this.config.provider.name);
-          console.debug({user: user, credential: credential})
+          console.debug({
+            user: user,
+            credential: credential
+          });
         }
       } else {
         this.fire('signedout');
@@ -411,8 +417,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     /**
      * Toggles signUp property
      */
-    _toggleShowSignUp: function(){
-        this.showSignUp = !this.showSignUp;
+    _toggleShowSignUp: function() {
+      this.showSignUp = !this.showSignUp;
     },
 
     /**
@@ -449,13 +455,12 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      */
   };
 
-
-    /**
-    * @polymerBehavior
-    */
-    Convoo.LoginFireCommonBehavior = [
-        Polymer.AppLocalizeBehavior,
-        Convoo.LoginFireCommonBehaviorImpl
-    ];
+  /**
+   * @polymerBehavior
+   */
+  Convoo.LoginFireCommonBehavior = [
+    Polymer.AppLocalizeBehavior,
+    Convoo.LoginFireCommonBehaviorImpl
+  ];
 }());
 </script>

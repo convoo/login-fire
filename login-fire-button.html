@@ -63,34 +63,34 @@ The following custom properties and mixins are available for styling:
         @apply(--login-fire-button);
       }
       .btn--google{
-          @apply(--login-fire-button-google);
+        @apply(--login-fire-button-google);
       }
       .btn--google:hover{
-          @apply(--login-fire-button-google-hover);
+        @apply(--login-fire-button-google-hover);
       }
       .btn--twitter{
-          @apply(--login-fire-button-twitter);
+        @apply(--login-fire-button-twitter);
       }
       .btn--twitter:hover{
-          @apply(--login-fire-button-twitter-hover);
+        @apply(--login-fire-button-twitter-hover);
       }
       .btn--facebook{
-          @apply(--login-fire-button-facebook);
+        @apply(--login-fire-button-facebook);
       }
       .btn--facebook:hover{
-          @apply(--login-fire-button-facebook-hover);
+        @apply(--login-fire-button-facebook-hover);
       }
       .btn--github{
-          @apply(--login-fire-button-github);
+        @apply(--login-fire-button-github);
       }
       .btn--github:hover{
-          @apply(--login-fire-button-github-hover);
+        @apply(--login-fire-button-github-hover);
       }
       .btn--anonymous{
-          @apply(--login-fire-button-anonymous);
+        @apply(--login-fire-button-anonymous);
       }
       .btn--anonymous:hover{
-          @apply(--login-fire-button-anonymous-hover);
+        @apply(--login-fire-button-anonymous-hover);
       }
       .btn__icon {
         padding-left: 8px;
@@ -104,16 +104,16 @@ The following custom properties and mixins are available for styling:
         @apply(--login-fire-button-text);
       }
       .btn__signed-out{
-          background-color: transparent;
-          color: grey;
-          text-align: center;
-          width: 170px;
-          @apply(--login-fire-btn-signout);
+        background-color: transparent;
+        color: grey;
+        text-align: center;
+        width: 170px;
+        @apply(--login-fire-btn-signout);
       }
 
       .btn__signed-out:hover {
-          background-color: lightgray;
-          @apply(--login-fire-btn-signout-hover);
+        background-color: lightgray;
+        @apply(--login-fire-btn-signout-hover);
       }
 
       [hidden] {
@@ -231,8 +231,8 @@ The following custom properties and mixins are available for styling:
      * @return {String}            a CSS class name to add when element can sign out
      */
     _computeSignOutClass: function(noSignIn, noSignOut, signedIn) {
-      if (noSignIn || (!noSignOut && signedIn)){
-          return 'btn__signed-out';
+      if (noSignIn || (!noSignOut && signedIn)) {
+        return 'btn__signed-out';
       };
     },
 
@@ -246,7 +246,7 @@ The following custom properties and mixins are available for styling:
     _computeButtonText: function(provider, showSignUp, noSignIn, noSignOut, signedIn, localize, language) {
       // User logged in.
       if (noSignIn || (!noSignOut && signedIn)) {
-        return localize("lf-signout");
+        return localize('lf-signout');
       }
 
       // User not logged in and mini format.
@@ -254,12 +254,12 @@ The following custom properties and mixins are available for styling:
         return provider.name;
       }
 
-      if (showSignUp && !noSignIn){
+      if (showSignUp && !noSignIn) {
         // User doesn't have account
-        return localize("lf-signup-"+provider.id);
-      } else if (!noSignIn){
+        return localize('lf-signup-' + provider.id);
+      } else if (!noSignIn) {
         // User has account
-        return localize("lf-signin-"+provider.id);
+        return localize('lf-signin-' + provider.id);
       }
 
     }

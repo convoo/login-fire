@@ -53,34 +53,34 @@ The following custom properties and mixins are available for styling:
 You can specify the following codes and language in a json file passed to the localesFile property to update the text used. Here are the defaults:
 ```
 {
-    "en": {
-        "lf-email": "Email",
-        "lf-email-invalid": "Invalid email address",
-        "lf-password": "Password",
-        "lf-reenter-password": "Re-enter Password",
-        "lf-passwords-dont-match": "Passwords do not match",
-        "lf-already-have-account": "Already have an account?",
-        "lf-already-have-account-action": "Sign in",
-        "lf-no-account": "Don' have an account?",
-        "lf-no-account-action": "Sign up",
-        "lf-resetpw-link": "Forgot password",
-        "lf-resetpw-cancel-link": "Nevermind, I remembered my password.",
-        "lf-resetpw-button": "Reset password",
-        "lf-resetpw-success-message": "Password reset email has been sent. Please check your inbox.",
-        "lf-signup-button": "Sign Up",
-        "lf-signup-facebook": "Sign up with Facebook",
-        "lf-signup-google": "Sign up with Google",
-        "lf-signup-twitter": "Sign up with Twitter",
-        "lf-signup-github": "Sign up with GitHub",
-        "lf-signup-anonymous": "Sign up anonymously",
-        "lf-signin-button": "Sign In",
-        "lf-signin-facebook": "Sign in with Facebook",
-        "lf-signin-google": "Sign in with Google",
-        "lf-signin-twitter": "Sign in with Twitter",
-        "lf-signin-github": "Sign in with GitHub",
-        "lf-signin-anonymous": "Sign in anonymously",
-        "lf-signout": "Sign out"
-    }
+  "en": {
+    "lf-email": "Email",
+    "lf-email-invalid": "Invalid email address",
+    "lf-password": "Password",
+    "lf-reenter-password": "Re-enter Password",
+    "lf-passwords-dont-match": "Passwords do not match",
+    "lf-already-have-account": "Already have an account?",
+    "lf-already-have-account-action": "Sign in",
+    "lf-no-account": "Don' have an account?",
+    "lf-no-account-action": "Sign up",
+    "lf-resetpw-link": "Forgot password",
+    "lf-resetpw-cancel-link": "Nevermind, I remembered my password.",
+    "lf-resetpw-button": "Reset password",
+    "lf-resetpw-success-message": "Password reset email has been sent. Please check your inbox.",
+    "lf-signup-button": "Sign Up",
+    "lf-signup-facebook": "Sign up with Facebook",
+    "lf-signup-google": "Sign up with Google",
+    "lf-signup-twitter": "Sign up with Twitter",
+    "lf-signup-github": "Sign up with GitHub",
+    "lf-signup-anonymous": "Sign up anonymously",
+    "lf-signin-button": "Sign In",
+    "lf-signin-facebook": "Sign in with Facebook",
+    "lf-signin-google": "Sign in with Google",
+    "lf-signin-twitter": "Sign in with Twitter",
+    "lf-signin-github": "Sign in with GitHub",
+    "lf-signin-anonymous": "Sign in anonymously",
+    "lf-signout": "Sign out"
+  }
 }
 ```
 
@@ -90,12 +90,12 @@ You can specify the following codes and language in a json file passed to the lo
   <template>
     <style>
     reverse-element {
-        background: var(--login-fire-background-color, white);
-        padding-top: 40px;
-        padding-bottom: 40px;
-        @apply(--layout-horizontal);
-        @apply(--layout-wrap);
-        @apply(--layout-center-center);
+      background: var(--login-fire-background-color, white);
+      padding-top: 40px;
+      padding-bottom: 40px;
+      @apply(--layout-horizontal);
+      @apply(--layout-wrap);
+      @apply(--layout-center-center);
     }
     :host([horizontal]) reverse-element {
       @apply(--layout-vertical);
@@ -141,73 +141,67 @@ You can specify the following codes and language in a json file passed to the lo
     </style>
 
     <template is="dom-if" if="[[_showOneButton]]">
-        <login-fire-button
-            app-name="[[appName]]"
-            user="{{_user}}"
-            status-known="{{_statusKnown}}"
-            signed-in="{{_signedIn}}"
-            mini$="[[mini]]"
-            flat$="[[flat]]"
-            no-sign-in="[[noSignIn]]"
-            no-sign-out="[[noSignOut]]"
-            show-sign-up="{{showSignUp}}"
-            locales-file="[[localesFile]]"
-            language="[[language]]"
-            debug="[[debug]]"
-            >
-        </login-fire-button>
+      <login-fire-button
+        app-name="[[appName]]"
+        user="{{_user}}"
+        status-known="{{_statusKnown}}"
+        signed-in="{{_signedIn}}"
+        mini$="[[mini]]"
+        flat$="[[flat]]"
+        no-sign-in="[[noSignIn]]"
+        no-sign-out="[[noSignOut]]"
+        show-sign-up="{{showSignUp}}"
+        locales-file="[[localesFile]]"
+        language="[[language]]"
+        debug="[[debug]]">
+      </login-fire-button>
     </template>
 
     <template is="dom-if" if="[[!_showOneButton]]">
+      <reverse-element reverse="[[reverse]]">
+        <login-fire-form
+          app-name="[[appName]]"
+          user="{{_user}}"
+          signed-in="{{_signedIn}}"
+          status-known="{{_statusKnown}}"
+          auto-sign-up="[[autoSignUp]]"
+          show-sign-up="{{showSignUp}}"
+          flat="{{flat}}"
+          locales-file="[[localesFile]]"
+          language="[[language]]"
+          debug="[[debug]]"
+          no-toggleable-password="[[noToggleablePassword]]"
+          reenter-password="[[reenterPassword]]">
+        </login-fire-form>
 
-        <reverse-element reverse="[[reverse]]">
+        <div class$="div [[_dividerStyle]]" hidden$="[[noDivider]]">
+          <span class="div__span">[[localize('lf-or')]]</span>
+        </div>
 
-            <login-fire-form
-                app-name="[[appName]]"
-                user="{{_user}}"
-                signed-in="{{_signedIn}}"
-                status-known="{{_statusKnown}}"
-                auto-sign-up="[[autoSignUp]]"
-                show-sign-up="{{showSignUp}}"
-                flat="{{flat}}"
-                locales-file="[[localesFile]]"
-                language="[[language]]"
-                debug="[[debug]]"
-                no-toggleable-password="[[noToggleablePassword]]"
-                reenter-password="[[reenterPassword]]"
-                >
-            </login-fire-form>
-
-            <div class$="div [[_dividerStyle]]" hidden$="[[noDivider]]">
-                <span class="div__span">[[localize('lf-or')]]</span>
-            </div>
-
-            <login-fire-social
-                app-name="[[appName]]"
-                providers="[[providers]]"
-                user="{{_user}}"
-                signed-in="{{_signedIn}}"
-                status-known="{{_statusKnown}}"
-                no-sign-in="[[noSignIn]]"
-                no-sign-out="[[noSignOut]]"
-                redirect="[[redirect]]"
-                mini$="[[mini]]"
-                horizontal$="[[horizontal]]"
-                show-sign-up="{{showSignUp}}"
-                flat="{{flat}}"
-                locales-file="[[localesFile]]"
-                language="[[language]]"
-                google-scopes="[[googleScopes]]"
-                facebook-scopes="[[facebookScopes]]"
-                github-scopes="[[githubScopes]]"
-                debug="[[debug]]"
-                >
-            </login-fire-social>
-
-        </reverse-element>
+        <login-fire-social
+          app-name="[[appName]]"
+          providers="[[providers]]"
+          user="{{_user}}"
+          signed-in="{{_signedIn}}"
+          status-known="{{_statusKnown}}"
+          no-sign-in="[[noSignIn]]"
+          no-sign-out="[[noSignOut]]"
+          redirect="[[redirect]]"
+          mini$="[[mini]]"
+          horizontal$="[[horizontal]]"
+          show-sign-up="{{showSignUp}}"
+          flat="{{flat}}"
+          locales-file="[[localesFile]]"
+          language="[[language]]"
+          google-scopes="[[googleScopes]]"
+          facebook-scopes="[[facebookScopes]]"
+          github-scopes="[[githubScopes]]"
+          debug="[[debug]]">
+        </login-fire-social>
+      </reverse-element>
     </template>
 
-    <iron-media-query query="(max-width: 650px)" query-matches="{{isNarrow}}">
+    <iron-media-query query="(max-width: 650px)" query-matches="{{_isNarrow}}">
     </iron-media-query>
   </template>
 
@@ -228,10 +222,10 @@ You can specify the following codes and language in a json file passed to the lo
       },
 
       /**
-      * Prefers a horizontally structured social login.
-      *
-      * @type{Boolean}
-      */
+       * Prefers a horizontally structured social login.
+       *
+       * @type{Boolean}
+       */
       horizontal: {
         type: Boolean,
         value: false
@@ -247,21 +241,21 @@ You can specify the following codes and language in a json file passed to the lo
       },
 
       /**
-      * Providers names. A list of the providers names, seperated by comma, to
-      * use for authentication. A button is displayed for each provider.
-      *
-      * Current accepted providers are:
-      *
-      * ```
-      * 'anonymous' (for signin anonymously)
-      * 'facebook'
-      * 'github'
-      * 'google'
-      * 'twitter'
-      * ```
-      *
-      * @type {String}
-      */
+       * Providers names. A list of the providers names, seperated by comma, to
+       * use for authentication. A button is displayed for each provider.
+       *
+       * Current accepted providers are:
+       *
+       * ```
+       * 'anonymous' (for signin anonymously)
+       * 'facebook'
+       * 'github'
+       * 'google'
+       * 'twitter'
+       * ```
+       *
+       * @type {String}
+       */
       providers: {
         type: String,
         value: 'anonymous'
@@ -286,14 +280,66 @@ You can specify the following codes and language in a json file passed to the lo
       },
 
       /**
-      * Displays social buttons first instead of the form. By default, the form
-      * is displayed first.
-      *
-      * @type{Boolean}
-      */
+       * Displays social buttons first instead of the form. By default, the form
+       * is displayed first.
+       *
+       * @type{Boolean}
+       */
       reverse: {
         type: Boolean,
         value: false
+      },
+
+      /**
+       * Removes the view button on the password input
+       */
+      noToggleablePassword: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Adds another input to re-enter password in the sign up view
+       */
+      reenterPassword: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * GitHub scopes.
+       *
+       * @type {String}
+       */
+      githubScopes: {
+        type: String
+      },
+
+      /**
+       * Google scopes.
+       *
+       * @type {String}
+       */
+      googleScopes: {
+        type: String
+      },
+
+      /**
+       * Facebook scopes.
+       *
+       * @type {String}
+       */
+      facebookScopes: {
+        type: String
+      },
+
+      /**
+       * True if the element is too much narrow to be display horizontally.
+       *
+       * @type {Boolean}
+       */
+      _isNarrow: {
+        type: Boolean
       },
 
       /**
@@ -303,7 +349,7 @@ You can specify the following codes and language in a json file passed to the lo
        */
       _dividerStyle: {
         type: String,
-        computed: '_computeDividerStyle(isNarrow, horizontal)'
+        computed: '_computeDividerStyle(_isNarrow, horizontal)'
       }
     },
 
