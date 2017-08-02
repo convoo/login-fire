@@ -254,12 +254,13 @@ You can specify the following codes and language in a json file passed to the lo
        * Provider ID to use for Firebase Auth.
        *
        * @type {String}
+       * @default 'email'
        */
       provider: {
         type: String,
         readOnly: true,
         notify: false,
-        value: 'password'
+        value: 'email'
       },
 
       /**

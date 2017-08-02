@@ -19,27 +19,37 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
   Convoo._firebaseProviders = {
     anonymous: {
       id: 'anonymous',
+      isSocialNetwork: false,
       name: 'Anonymous'
     },
     facebook: {
       id: 'facebook',
-      name: 'Facebook'
+      isSocialNetwork: true,
+      name: 'Facebook',
+      scopes: ''
     },
     github: {
       id: 'github',
-      name: 'GitHub'
+      isSocialNetwork: true,
+      name: 'Github',
+      scopes: ''
     },
     google: {
       id: 'google',
-      name: 'Google'
+      isSocialNetwork: true,
+      name: 'Google',
+      scopes: ''
     },
-    password: {
-      id: 'password',
-      name: 'Email & Password'
+    email: {
+      id: 'email',
+      isSocialNetwork: false,
+      name: 'Email'
     },
     twitter: {
       id: 'twitter',
-      name: 'Twitter'
+      isSocialNetwork: true,
+      name: 'Twitter',
+      scopes: ''
     }
   };
 
@@ -54,7 +64,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
    * 'facebook'
    * 'github'
    * 'google'
-   * 'password' (email & password)
+   * 'email' (email & password)
    * 'twitter'
    * ```
    *
@@ -64,7 +74,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
    *
    * If your element has to authenticate a user by email address and password,
    * it has to implement the `LoginFireFormBehavior` behavior and use
-   * the provider 'password'.
+   * the provider 'email'.
    *
    * @polymerBehavior Convoo.LoginFireCommonBehavior
    */

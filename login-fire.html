@@ -362,8 +362,8 @@ You can specify the following codes and language in a json file passed to the lo
 
     /**
      * Signs the user in using the target provider. It's not possible to sign in
-     * using the provider "password" when only one button is displayed. Also,
-     * does nothing if a user is already signed in.
+     * using the provider "email" when only one button is displayed. Also, does
+     * nothing if a user is already signed in.
      *
      * @param  {String} provider name
      */
@@ -372,9 +372,9 @@ You can specify the following codes and language in a json file passed to the lo
         return;
       }
 
-      if (provider === 'password') {
+      if (provider === 'email') {
         if (this._showOneButton) {
-          console.error("Can't sign in using provider \"password\" when only one button is displayed.");
+          console.error("Can't sign in using provider \"email\" when only one button is displayed.");
         } else {
           this.$$('login-fire-form').signIn();
         }

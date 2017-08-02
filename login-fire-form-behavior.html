@@ -83,7 +83,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     },
 
     /**
-     * Starts the sign-up process. It requires a provider "password" and the two
+     * Starts the sign-up process. It requires a provider "email" and the two
      * parameters `email` and `password`. The password must follow the format
      * defined by Firebase Auth.
      *
@@ -91,13 +91,13 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      * @param  {String} password of the new account
      */
     signUp: function(email, password) {
-      if (this.provider === 'password' && !this.noSignUp) {
+      if (this.provider === 'email' && !this.noSignUp) {
         this.$.auth
           .createUserWithEmailAndPassword(email, password)
           .then(this._fireEvent.bind(this))
           .catch(this._fireError.bind(this));
       } else {
-        console.error('The provider "password" is required for sign up with ' +
+        console.error('The provider "email" is required for sign up with ' +
           'email address and password.');
       }
     },

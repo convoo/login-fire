@@ -24,35 +24,30 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 
     properties: {
       /**
-       * The scopes that you want to access from Google sign in. Available
-       * scopes at https://developers.google.com/identity/protocols/googlescopes
-       * Make sure to enter full url.
+       * The scopes that you want to access.
+       *
+       * Available scopes:
+       * Facebook -> https://developers.facebook.com/docs/facebook-login/permissions
+       * GitHub -> https://developer.github.com/v3/oauth/#scopes
+       * Google -> https://developers.google.com/identity/protocols/googlescopes
        */
-      googleScopes: {
+      scopes: {
         type: String,
         value: ''
       },
+
       /**
-       * The scopes that you want to access from Facebook sign in. Available
-       * scopes at https://developers.facebook.com/docs/facebook-login/permissions
+       * OAuth provider instance provided by Firebase. It uses the defined
+       * `scopes`.
+       *
+       * @type {Object}
        */
-      facebookScopes: {
-        type: String,
-        value: ''
-      },
-      /**
-       * The scopes that you want to access from GitHub sign in. Available
-       * scopes at https://developer.github.com/v3/oauth/#scopes
-       */
-      githubScopes: {
-        type: String,
-        value: ''
-      },
-      _computedProvider: {
+      _oauthProvider: {
         type: Object,
-        computed: '_computeProvider(provider, googleScopes, facebookScopes, githubScopes)'
+        computed: '_computeOAuthProvider(provider, scopes)'
       }
     },
+
     /**
      * Starts the sign-in process using a social provider authetication.
      */
@@ -64,11 +59,11 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
             .then(this._fireEvent.bind(this))
             .catch(this._fireError.bind(this));
         } else if (this.redirect) {
-          this.$.auth.signInWithRedirect(this._computedProvider)
+          this.$.auth.signInWithRedirect(this._oauthProvider)
             .then(this._fireEvent.bind(this))
             .catch(this._fireError.bind(this));
         } else {
-          this.$.auth.signInWithPopup(this._computedProvider)
+          this.$.auth.signInWithPopup(this._oauthProvider)
             .then(this._fireEvent.bind(this))
             .catch(this._fireError.bind(this));
         }
@@ -88,22 +83,24 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       }
     },
 
-    _computeProvider: function(provider, googleScopes, facebookScopes, githubScopes) {
-      provider = provider.toLowerCase();
-      var compProvider;
-      if (provider === 'google') {
-        compProvider = new firebase.auth.GoogleAuthProvider();
-        compProvider.addScope(googleScopes)
-      } else if (provider === 'facebook') {
-        compProvider = new firebase.auth.FacebookAuthProvider();
-        compProvider.addScope(facebookScopes)
-      } else if (provider === 'twitter') {
-        compProvider = new firebase.auth.TwitterAuthProvider();
-      } else if (provider === 'github') {
-        compProvider = new firebase.auth.GithubAuthProvider();
-        compProvider.addScope(githubScopes)
+    /**
+     * Creates a new OAuth provider according to the given provider's ID.
+     *
+     * @param  {String} providerId of social network
+     * @param  {String} scopes     to be set
+     * @return {Object}            OAuth's provider of the chosen social
+     * network.
+     */
+    _computeOAuthProvider: function(providerId, scopes) {
+      var provider = Convoo._firebaseProviders[providerId.toLowerCase()];
+      var oauthProvider;
+      if (provider.isSocialNetwork) {
+        oauthProvider = new firebase.auth[provider.name + 'AuthProvider']();
+        if (provider.scopes) {
+          oauthProvider.addScope(provider.scopes);
+        }
       }
-      return compProvider;
+      return oauthProvider;
     }
   };
 

@@ -97,6 +97,7 @@ You can specify the following codes and language in a json file passed to the lo
           id="lfb[[item.id]]"
           app-name="[[appName]]"
           provider="[[item.id]]"
+          scopes="[[item.scopes]]"
           user="{{_user}}"
           status-known="{{_statusKnown}}"
           signed-in="{{_signedIn}}"
@@ -108,9 +109,6 @@ You can specify the following codes and language in a json file passed to the lo
           show-sign-up="{{showSignUp}}"
           locales-file="[[localesFile]]"
           language="[[language]]"
-          google-scopes="[[googleScopes]]"
-          facebook-scopes="[[facebookScopes]]"
-          github-scopes="[[githubScopes]]"
           debug="[[debug]]">
         </login-fire-button>
       </template>
@@ -158,36 +156,34 @@ You can specify the following codes and language in a json file passed to the lo
       },
 
       /**
-       * GitHub scopes.
+       * The scopes that you want to access from GitHub sign in. Available
+       * scopes at https://developer.github.com/v3/oauth/#scopes
        *
        * @type {String}
-       * @default ''
        */
       githubScopes: {
-        type: String,
-        value: ''
+        type: String
       },
 
       /**
-       * Google scopes.
+       * The scopes that you want to access from Google sign in. Available
+       * scopes at https://developers.google.com/identity/protocols/googlescopes
+       * Make sure to enter full url.
        *
        * @type {String}
-       * @default ''
        */
       googleScopes: {
-        type: String,
-        value: ''
+        type: String
       },
 
       /**
-       * Facebook scopes.
+       * The scopes that you want to access from Facebook sign in. Available
+       * scopes at https://developers.facebook.com/docs/facebook-login/permissions
        *
        * @type {String}
-       * @default ''
        */
       facebookScopes: {
-        type: String,
-        value: ''
+        type: String
       },
 
       /**
@@ -202,6 +198,10 @@ You can specify the following codes and language in a json file passed to the lo
         computed: '_computeProviders(providers)'
       }
     },
+
+    observers: [
+      '_scopesChanged(facebookScopes, githubScopes, googleScopes)'
+    ],
 
     /**
      * Signs the user out regardless the provider used for the sign-in.
@@ -246,6 +246,27 @@ You can specify the following codes and language in a json file passed to the lo
         }
       }
       return providers;
+    },
+
+    /**
+     * Resets the OAuth provider when its scopes changed.
+     *
+     * @param  {String} facebookScopes to be set to the Facebook provider
+     * @param  {String} githubScopes   to be set to the GitHub provider
+     * @param  {String} googleScopes   to be set to the Google provider
+     */
+    _scopesChanged: function(facebookScopes, githubScopes, googleScopes) {
+      var scopes = {
+        'facebook': facebookScopes,
+        'github': githubScopes,
+        'google': googleScopes
+      };
+      this._providers.forEach(function(provider, index) {
+        if (provider.isSocialNetwork) {
+          provider.scopes = scopes[provider.id];
+          this.notifyPath('_providers.' + index + '.scopes');
+        }
+      }.bind(this));
     }
   });
   </script>
