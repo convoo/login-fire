@@ -103,10 +103,10 @@ You can specify the following codes and language in a json file passed to the lo
     }
     .div {
       @apply(--layout-center-center);
-      border-color: var(--login-fire-divider-color, lightgray);
+      background-color: var(--login-fire-divider-color, lightgray);
     }
     .div__span {
-      line-height: 0px;
+      line-height: 15px;
       padding: 16px;
       background: var(--login-fire-background-color, white);
       font-size: 12px;
@@ -124,7 +124,6 @@ You can specify the following codes and language in a json file passed to the lo
     }
     .div--vertical {
       @apply(--layout-horizontal);
-      border-right: 1px solid lightgray;
       margin: 0 50px;
       min-height: 200px;
       max-height: 400px;
@@ -132,7 +131,6 @@ You can specify the following codes and language in a json file passed to the lo
     }
     .div--horizontal {
       @apply(--layout-vertical);
-      border-top: 1px solid lightgray;
       height: 1px;
       margin: 50px 0;
       min-width: 300px;
