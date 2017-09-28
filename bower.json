@@ -19,7 +19,7 @@
     "polymerfire": "firebase/polymerfire#1 - 2",
     "paper-input": "PolymerElements/paper-input#1 - 2",
     "paper-button": "PolymerElements/paper-button#^1 - 2",
-    "iron-media-query": "PolymerElements/iron-media-query#^1 - 2"
+    "iron-media-query": "PolymerElements/iron-media-query#^2.0.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
