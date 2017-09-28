@@ -18,7 +18,7 @@
     "polymer": "Polymer/polymer#1.9 - 2",
     "polymerfire": "firebase/polymerfire#1 - 2",
     "paper-input": "PolymerElements/paper-input#1 - 2",
-    "paper-button": "PolymerElements/paper-button#^1 - 2",
+    "paper-button": "PolymerElements/paper-button#^2.0.0",
     "iron-media-query": "PolymerElements/iron-media-query#^2.0.0"
   },
   "devDependencies": {
