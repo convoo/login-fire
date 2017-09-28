@@ -336,7 +336,12 @@
         }
     },
     _signIn: function(e) {
-        var authId = e.target.getAttribute("data-auth");
+        var currentNode = e.target;
+        var authId = currentNode.getAttribute("data-auth");
+        while (authId == undefined || authId == null){
+            currentNode = currentNode.parentNode;
+            authId = currentNode.getAttribute("data-auth");
+        }
         if(authId == "#anonymous"){
         this.$$(authId).signInAnonymously();
         } else if(this.redirect){

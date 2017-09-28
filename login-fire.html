@@ -101,6 +101,7 @@
       password-reset-message="{{passwordResetMessage}}"
       auto-sign-up="{{autoSignUp}}"
       status-known="{{emailStatusKnown}}"
+      no-sign-up="[[noSignUp]]"
     ></email-login-fire>
   </template>
 
@@ -298,6 +299,13 @@
           type: Boolean,
           value: false,
           observer: '_horizontalChanged'
+        },
+        /**
+         * If true, SignUp will be hidden.
+         */
+        noSignUp: {
+          type: Boolean,
+          value: false
         },
         _showDivider: {
           type: Boolean,
