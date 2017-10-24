@@ -324,6 +324,55 @@ You can specify the following codes and language in a json file passed to the lo
       'signedin': '_handleSignIn'
     },
 
+    observers: [
+      '_onAuthReady(_statusKnown)',
+    ],
+
+    _onAuthReady: function(ready) {
+
+      if (ready && navigator.credentials && navigator.credentials.preventSilentAccess && this.autoLogin) {
+        var that = this;
+
+        // The new Credential Management API is available
+        if(that.debug) {
+          console.log('Credential Management API available');
+        }
+
+        // User already signedIn, no need to retrieve credentials
+        if (that.signedIn) {
+          return;
+        }
+
+        navigator.credentials.get({
+          password: true,
+          mediation: 'silent'
+        }).then(function (cred) {
+
+          if(that.debug) {
+            console.log('Cred found');
+            console.log(cred);
+          }
+
+          // Ensure they're not empty
+          if (!cred) {
+            return Promise.resolve();
+          }
+
+          if (that.signedIn) {
+            return Promise.resolve();
+          }
+
+          if (cred.type === 'password') {
+            that.signIn(cred.id, cred.password);
+          } else if (cred.type === 'federated') {
+            // that.$$('login-fire-social').signInWith('facebook');
+          }
+        }, function() {
+          console.log('No Credentials found')
+        })
+      }
+    },
+
     /**
      * Cleans message and error sections.
      */
