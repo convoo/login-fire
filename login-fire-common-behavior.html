@@ -200,6 +200,17 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       },
 
       /**
+       * Automatically sign in the user with credentials stored in
+       * Credentials API
+       *
+       * @type {Boolean}
+       */
+      autoLogin: {
+        type: Boolean,
+        value: true
+      },
+
+      /**
        * Prevents the element from signing out. It means, if this attribute is
        * `true`, the `signOut` method has no effect.
        *
@@ -321,6 +332,11 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       if (!this.noSignOut && this.signedIn) {
         this.$.auth.signOut().then(this._fireEvent.bind(this));
       }
+
+      // Ensure the auto sign-in won’t happen until next time the user enables auto sign-in
+      if (navigator.credentials) {
+        navigator.credentials.preventSilentAccess();
+      }
     },
 
     /**
@@ -384,6 +400,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
             credential: credential
           });
         }
+        return response;
       } else {
         this.fire('signedout');
         if (this.debug) {

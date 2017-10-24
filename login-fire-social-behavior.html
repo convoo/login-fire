@@ -63,10 +63,12 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         } else if (this.redirect) {
           this.$.auth.signInWithRedirect(this._oauthProvider)
             .then(this._fireEvent.bind(this))
+            // .then((response) => this.storeCredentials(response))
             .catch(this._fireError.bind(this));
         } else {
           this.$.auth.signInWithPopup(this._oauthProvider)
             .then(this._fireEvent.bind(this))
+            // .then((response) => this.storeCredentials(response))
             .catch(this._fireError.bind(this));
         }
       }
@@ -86,8 +88,40 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     },
 
     /**
-     * Creates a new federated identity provider instance according to the given
-     * ID.
+     * Store Crendtials in Credentials API
+     */
+    storeCredentials: function(response) {
+      if (navigator.credentials) {
+
+        var providerUrl;
+        switch (response.credential.providerId) {
+          case 'google.com':
+            providerUrl = 'https://accounts.google.com';
+            break;
+          case 'facebook.com':
+            providerUrl = 'https://www.facebook.com';
+            break;
+        }
+
+        if(this.debug) {
+          console.log('Storing credentials in Credentials API');
+          console.log(providerUrl);
+        }
+
+        var cred = new FederatedCredential({
+          id:       response.user.email,                    // id in IdP
+          provider: providerUrl,                            // A string representing IdP
+          name:     response.user.displayName,              // name in IdP
+          iconURL:   response.user.photoURL                  // Profile image url
+        });
+        return navigator.credentials.store(cred);
+      } else {
+        return Promise.resolve();
+      }
+    },
+
+    /**
+     * Creates a new OAuth provider according to the given provider's ID.
      *
      * @param  {String} id      of federated identity provider to be created
      * @param  {String} scopes  to be set
