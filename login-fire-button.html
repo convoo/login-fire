@@ -13,13 +13,21 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 <link rel="import" href="./icons.html">
 
 <!--
-`login-fire-button` is a button to authenticate a user with the [firebase-auth](https://elements.polymer-project.org/elements/polymerfire?active=firebase-auth)
-element.
+A button to authenticate an user with a federated identity provider such Google,
+Facebook and Twitter.
 
-It can be used with the same providers as the [Firebase Auth API](https://firebase.google.com/docs/auth/).
-The provider logo is displayed. It may be flat or raised. A raised button
-is styled with a shadow. It can be mini or not. A mini button displays only
-the provider logo and the text "Sign-in" / "Sign-out".
+Based on a [paper-button](https://github.com/PolymerElements/paper-button) and
+the [firebase-auth](https://github.com/firebase/polymerfire#firebase-auth) element,
+this button uses the [Firebase Auth API](https://firebase.google.com/docs/auth/)
+for the authentication. This element provides a direct access to an entity that
+represents the authenticated user.
+
+By default the button has a CSS style according to the chosen social network,
+logo included. You have all features of the paper-button and can use same
+providers as Firebase Auth allows. The internationalization is also supported
+and usable through a simple attribute. If you want to use a language that is not
+available, you can select a translation file embedded in your app or contribute
+to the project by adding it.
 
 Example:
 ```
@@ -30,22 +38,29 @@ Example:
 
 ### Styling
 
-Style the buttons with CSS as you would a normal DOM element.
+Style the buttons with CSS as you would a normal DOM element. The following
+custom properties and mixins are available:
 
-The following custom properties and mixins are available for styling:
+| Custom property | Description | Default
+| -- | -- | --
+| `--login-fire-button` | Mixin applied on the button | `{}`
+| `--login-fire-button-anonymous` | Mixin applied on the anonymous button | `{}`
+| `--login-fire-button-anonymous-hover` | Mixin applied on the anonymous button when mouve hovers it | `{}`
+| `--login-fire-button-facebook` | Mixin applied on the Facebook button | `{}`
+| `--login-fire-button-facebook-hover` | Mixin applied on the Facebook button when mouve hovers it | `{}`
+| `--login-fire-button-github` | Mixin applied on the GitHub button | `{}`
+| `--login-fire-button-github-hover` | Mixin applied on the GitHub button when mouve hovers it | `{}`
+| `--login-fire-button-google` | Mixin applied on the Google button | `{}`
+| `--login-fire-button-google-hover` | Mixin applied on the Google button when mouve hovers it | `{}`
+| `--login-fire-button-icon` | Mixin applied on the icon of the button | `{}`
+| `--login-fire-button-text` | Mixin applied on the text of the button | `{}`
+| `--login-fire-button-twitter` | Mixin applied on the Twitter button | `{}`
+| `--login-fire-button-twitter-hover` | Mixin applied on the Twitter button when mouve hovers it | `{}`
+| `--login-fire-btn-signout` | Mixin applied to the sign-out button | `{}`
+| `--login-fire-btn-signout-hover` | Mixin applied to the sign-out button when mouve hovers it | `{}`
 
-| Custom property | Description | Default |
-| --- | --- | --- |
-| `--login-fire-reset-password-color` | The color of reset password text | `gray` |
-| `--login-fire-reset-password-hover-color` | The color of reset password text when hovered | `gray` |
-| `--login-fire-error-msg-color` | The color for the error message  | `--error-color` |
-| `--login-fire-info-msg-color` | The color for the info message | `gray` |
-| `--login-fire-divider-color` | The color for the divider bar | `gray` |
-| `--login-fire-background-color` | The color for the divider bar | `white` |
-| `--login-fire-btn-signup` | Mixin applied to the signup button | `{}` |
-| `--login-fire-btn-signin` | Mixin applied to the signin button | `{}` |
-| `--login-fire-btn-signout` | Mixin applied to the signin button | `{}` |
-
+@customElement
+@polymer
 @demo demo/login-fire-button.html
 -->
 <dom-module id="login-fire-button">
@@ -198,11 +213,11 @@ The following custom properties and mixins are available for styling:
     },
 
     /**
-     * The provider logo is shown when the user can sign in and is not signed in
-     * Or when they can not sign out. It is hidden otherwise.
+     * The provider logo is shown when the user can sign in and is not yet signed
+     * in or when they can not sign out. It is hidden otherwise.
      *
      * @param  {Boolean} noSignIn   is `false` if a user can sign in
-     * @param  {Boolean} noSignOut is `false` if the element can sign out
+     * @param  {Boolean} noSignOut  is `false` if the element can sign out
      * @param  {Boolean} signedIn   is `true` if a user is actually signed in
      * @return {Boolean}            `true` if the element can sign out and a
      * user is currently signed in.
@@ -215,7 +230,7 @@ The following custom properties and mixins are available for styling:
      * Computes the CSS class to add according to the mini format of the
      * element.
      *
-     * @param  {Boolean} isMini
+     * @param  {Boolean} isMini `true` if the button is in mini format
      * @return {String}         a CSS class name to add when `isMini` is true,
      * else returns an empty string.
      */
@@ -224,16 +239,16 @@ The following custom properties and mixins are available for styling:
     },
 
     /**
-     * Compute the CSS class to add when the user is currently signed in.
+     * Computes the CSS class to add when the user is currently signed in.
      *
      * @param  {Boolean} noSignOut is `false` if the element can sign out
-     * @param  {Boolean} signedIn   is `true` if a user is actually signed in
+     * @param  {Boolean} signedIn  is `true` if a user is actually signed in
      * @return {String}            a CSS class name to add when element can sign out
      */
     _computeSignOutClass: function(noSignIn, noSignOut, signedIn) {
       if (noSignIn || (!noSignOut && signedIn)) {
         return 'btn__signed-out';
-      };
+      }
     },
 
     /**
