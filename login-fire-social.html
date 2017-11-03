@@ -48,18 +48,18 @@ You can specify the following codes and language in a json file passed to the lo
     <style>
       :host {
         width: 210px;
-        @apply(--layout-vertical);
-        @apply(--layout-center-center);
-        @apply(--login-fire-social);
+        @apply --layout-vertical;
+        @apply --layout-center-center;
+        @apply --login-fire-social;
       }
 
       :host([horizontal]) {
-        @apply(--layout-horizontal);
-        @apply(--layout-wrap);
-        @apply(--layout-around-justified);
+        @apply --layout-horizontal;
+        @apply --layout-wrap;
+        @apply --layout-around-justified;
         max-width: inherit;
         width: initial;
-        @apply(--login-fire-social);
+        @apply --login-fire-social;
       }
 
       login-fire-button {

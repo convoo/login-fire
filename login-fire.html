@@ -93,16 +93,16 @@ You can specify the following codes and language in a json file passed to the lo
       background: var(--login-fire-background-color, white);
       padding-top: 40px;
       padding-bottom: 40px;
-      @apply(--layout-horizontal);
-      @apply(--layout-wrap);
-      @apply(--layout-center-center);
+      @apply --layout-horizontal;
+      @apply --layout-wrap;
+      @apply --layout-center-center;
     }
     :host([horizontal]) reverse-element {
-      @apply(--layout-vertical);
-      @apply(--layout-center);
+      @apply --layout-vertical;
+      @apply --layout-center;
     }
     .div {
-      @apply(--layout-center-center);
+      @apply --layout-center-center;
       background-color: var(--login-fire-divider-color, lightgray);
     }
     .div__span {
@@ -123,14 +123,14 @@ You can specify the following codes and language in a json file passed to the lo
       display: none;
     }
     .div--vertical {
-      @apply(--layout-horizontal);
+      @apply --layout-horizontal;
       margin: 0 50px;
       min-height: 200px;
       max-height: 400px;
       width: 1px;
     }
     .div--horizontal {
-      @apply(--layout-vertical);
+      @apply --layout-vertical;
       height: 1px;
       margin: 50px 0;
       min-width: 300px;
