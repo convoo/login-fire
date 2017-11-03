@@ -100,6 +100,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         this.$.auth
           .createUserWithEmailAndPassword(email, password)
           .then(this._fireEvent.bind(this))
+          .then(() => this.storeCredentials(email, password))
           .catch(this._fireError.bind(this));
       } else {
         console.error('The provider "email" is required for sign up with ' +
@@ -109,6 +110,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 
     /**
      * Store Crendtials in Credentials API
+     * @param  {String} email    address
+     * @param  {String} password
      */
     storeCredentials: function(email, password) {
       if (navigator.credentials) {
@@ -123,7 +126,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     },
 
     /**
-     * Toggles showing reset password view
+     * Toggles the form views from the sign-in view to the sign-up view and vise
+     * versa.
      */
     toggleShowResetPW: function() {
       if (this.showResetPW) {

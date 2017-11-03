@@ -205,7 +205,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
        *
        * @type {Boolean}
        */
-      autoLogin: {
+      auto: {
         type: Boolean,
         value: true
       },
@@ -400,7 +400,6 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
             credential: credential
           });
         }
-        return response;
       } else {
         this.fire('signedout');
         if (this.debug) {

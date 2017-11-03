@@ -336,7 +336,7 @@ Example of a valid locales file:
 
     _onAuthReady: function(ready) {
 
-      if (ready && navigator.credentials && navigator.credentials.preventSilentAccess && this.autoLogin) {
+      if (ready && navigator.credentials && navigator.credentials.preventSilentAccess && this.auto) {
         var that = this;
 
         // The new Credential Management API is available
@@ -359,20 +359,14 @@ Example of a valid locales file:
             console.log(cred);
           }
 
-          // Ensure they're not empty
-          if (!cred) {
-            return Promise.resolve();
-          }
-
-          if (that.signedIn) {
+          // Ensure they're not empty or user already signedIn while fetching credentials
+          if (!cred || that.signedIn) {
             return Promise.resolve();
           }
 
           if (cred.type === 'password') {
             that.signIn(cred.id, cred.password);
-          } else if (cred.type === 'federated') {
-            // that.$$('login-fire-social').signInWith('facebook');
-          }
+          } 
         }, function() {
           console.log('No Credentials found')
         })
