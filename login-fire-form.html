@@ -13,7 +13,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 <link rel="import" href="./icons.html">
 
 <!--
-An element that allows simple configuration of email and password authentication with Firebase.
+A pre-built login form to authenticate an user with email and password using the
+[Firebase Auth API](https://firebase.google.com/docs/auth/).
 
 Example:
 ```
@@ -32,22 +33,25 @@ Style the buttons with CSS as you would a normal DOM element.
 
 The following custom properties and mixins are available for styling:
 
-| Custom property | Description | Default |
-| --- | --- | --- |
-| `--login-fire-reset-password-color` | The color of reset password text | `gray` |
-| `--login-fire-reset-password-hover-color` | The color of reset password text when hovered | `gray` |
-| `--login-fire-error-msg-color` | The color for the error message  | `--error-color` |
-| `--login-fire-info-msg-color` | The color for the info message | `gray` |
-| `--login-fire-divider-color` | The color for the divider bar | `gray` |
-| `--login-fire-background-color` | The color for the divider bar | `white` |
-| `--login-fire-btn-signup` | Mixin applied to the signup button | `{}` |
-| `--login-fire-btn-signin` | Mixin applied to the signin button | `{}` |
-| `--login-fire-btn-signout` | Mixin applied to the signin button | `{}` |
+Custom property | Description | Default
+--------------- | ----------- | -------
+`--login-fire-btn-signin` | Mixin applied to the signin button | `{}`
+`--login-fire-btn-signout` | Mixin applied to the signin button | `{}`
+`--login-fire-btn-signup` | Mixin applied to the signup button | `{}`
+`--login-fire-error-msg-color` | The color for the error message  | `--error-color`
+`--login-fire-form` | Mixin applied on the entire element | `{}`
+`--login-fire-form-toggle` | Mixin applied on the div that contains the text asking if the user already has an account | `{}`
+`--login-fire-info-msg-color` | The color for the info message | `gray`
+`--login-fire-reset-password-color` | The color of reset password text | `gray`
+`--login-fire-reset-password-hover-color` | The color of reset password text when hovered | `gray`
 
 
 ### Localization
 
-You can specify the following codes and language in a json file passed to the localesFile property to update the text used. Here are the defaults:
+You can specify the following codes and language in a JSON file passed to the
+`localesFile` property to update the text used by the form. A few languages are
+already supported and you can even contribute to the project adding yours.
+Example of a valid locales file:
 ```
 "en": {
   "lf-email": "Email",
@@ -69,6 +73,8 @@ You can specify the following codes and language in a json file passed to the lo
 }
 ```
 
+@customElement
+@polymer
 @demo demo/login-fire-form.html
 -->
 <dom-module id="login-fire-form">
@@ -240,7 +246,7 @@ You can specify the following codes and language in a json file passed to the lo
 
     properties: {
       /**
-       * If true, will sign up a user who attempts to sign in with an account
+       * When `true`, signs up a user who attempts to sign in with an account
        * that doesn't already exist.
        *
        * @type {Boolean}
@@ -251,7 +257,7 @@ You can specify the following codes and language in a json file passed to the lo
       },
 
       /**
-       * Provider ID to use for Firebase Auth.
+       * Federated identity provider ID to use for Firebase Authentication.
        *
        * @type {String}
        * @default 'email'
@@ -264,7 +270,7 @@ You can specify the following codes and language in a json file passed to the lo
       },
 
       /**
-       * Current value of the email field.
+       * Email field value.
        *
        * @type {String}
        */
@@ -273,7 +279,7 @@ You can specify the following codes and language in a json file passed to the lo
       },
 
       /**
-       * Current calue of the password field.
+       * Password field value.
        *
        * @type {String}
        */
@@ -282,7 +288,7 @@ You can specify the following codes and language in a json file passed to the lo
       },
 
       /**
-       * Password confirmation.
+       * Password confirmation field value.
        *
        * @type {String}
        */
@@ -310,7 +316,7 @@ You can specify the following codes and language in a json file passed to the lo
       },
 
       /**
-       * Last message info.
+       * Last info message.
        *
        * @type {String}
        */
@@ -333,7 +339,7 @@ You can specify the following codes and language in a json file passed to the lo
     },
 
     /**
-     * Cleans inputs (email + password)
+     * Cleans email and password inputs.
      */
     _cleanInputs: function() {
       this.$$('#emailInput').value = '';
@@ -348,7 +354,9 @@ You can specify the following codes and language in a json file passed to the lo
     },
 
     /**
-     * Calculates whether to show the sign up section
+     * Calculates whether to show the sign up section. Returns `true` if the
+     * form allows signing up and the element is asked to display the according
+     * section.
      */
     _computeShowSignUp: function(showSignUp, noSignUp) {
       return showSignUp && !noSignUp;
@@ -367,7 +375,7 @@ You can specify the following codes and language in a json file passed to the lo
     },
 
     /**
-     * Tries to sign-up a user using the form values.
+     * Tries to sign up a user using the form values.
      */
     _signUp: function(e) {
       this._cleanMessages();
@@ -394,15 +402,15 @@ You can specify the following codes and language in a json file passed to the lo
     },
 
     /**
-     * Handler called after a successful signIn to clean inputs
+     * Handler called after a successful `signIn` to clean form inputs.
      */
     _handleSignIn: function() {
       this._cleanInputs();
     },
 
     /**
-     * Displays error message. If the attribute `autoSignUp` is true, before
-     * to display the error message, a sign-up process is tried.
+     * Displays error message. If the attribute `autoSignUp` is `true`, before
+     * to display the error message, a sign up process is tried.
      *
      * @param  {Object} e the event caught that contains the error message
      */
@@ -412,7 +420,7 @@ You can specify the following codes and language in a json file passed to the lo
         this.email = null;
         this.password = null;
       } else {
-        // Localize firebase error if possible
+        // Localize Firebase error if possible
         var errorMessage = this.localize('lf-error-' + e.detail.code);
         this.set('_lastError', errorMessage || e.detail.message);
 
@@ -458,7 +466,7 @@ You can specify the following codes and language in a json file passed to the lo
       }
     },
 
-    /*
+    /**
      *  Reveals the password in the parent by switching the type to text
      */
     _revealPW: function(e) {
@@ -466,7 +474,7 @@ You can specify the following codes and language in a json file passed to the lo
       this.$$('#passwordInput').type = 'text';
     },
 
-    /*
+    /**
      * Hides the password in the parent by switching the type to password
      */
     _hidePW: function(e) {
