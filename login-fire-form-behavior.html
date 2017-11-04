@@ -13,10 +13,10 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
   window.Convoo = window.Convoo || {};
 
   /**
-   * Behaviour that allows an element using Firebase Auth to sign-in, sign-up
-   * and sign-out with email address and password. If your element must be able
-   * to use social provider authentication only, you can implement the
-   * `LoginFireSocialBehavior`.
+   * Behavior that allows an element using Firebase Auth to sign-in and sign-up
+   * a user with email address and password. If your element must be able to use
+   * federated identity providers only, you must implement the
+   * `LoginFireSocialBehavior` instead.
    *
    * @polymerBehavior Convoo.LoginFireFormBehavior
    */
@@ -24,28 +24,32 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 
     properties: {
       /**
-       * Toggles the view for the reset password button
+       * Toggles the form views. If `true`, the displayed view should be the
+       * sign-up view. Otherwise the sign-in view.
        */
       showResetPW: {
         type: Boolean,
         value: false
       },
       /**
-       * Removes the view button on the password input
+       * Removes the "show" button on the password input. When this attribute is
+       * `true`, the user is not able to show the password that they wrote into
+       * the input.
        */
       noToggleablePassword: {
         type: Boolean,
         value: false
       },
       /**
-       * Adds another input to re-enter password in the sign up view
+       * Adds an input to the sign-up view for asking password confirmation.
        */
       reenterPassword: {
         type: Boolean,
         value: false
       },
       /**
-       * Prevents new users from signing up
+       * Prevents new users from signing up. When `true` the element can't signs
+       * up a new user.
        */
       noSignUp: {
         type: Boolean,
@@ -67,9 +71,9 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     },
 
     /**
-     * Starts sign in or sign out a user. If there is currently a user logged
-     * in the `signOut` method is called. If there is no user logged in, the
-     * `signIn` method is called.
+     * Signs in or signs out a user. When a user is currently logged in the
+     * `signOut` method is called. When there is no user logged in, the `signIn`
+     * method is called.
      *
      * @param  {String} email    address
      * @param  {String} password
@@ -83,7 +87,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     },
 
     /**
-     * Starts the sign-up process. It requires a provider "email" and the two
+     * Starts the sign-up process. It requires the provider "email" and the two
      * parameters `email` and `password`. The password must follow the format
      * defined by Firebase Auth.
      *
@@ -103,7 +107,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     },
 
     /**
-     * Toggles showing reset password view
+     * Toggles the form views from the sign-in view to the sign-up view and vise
+     * versa.
      */
     toggleShowResetPW: function() {
       if (this.showResetPW) {
