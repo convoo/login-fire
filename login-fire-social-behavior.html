@@ -13,10 +13,10 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
   window.Convoo = window.Convoo || {};
 
   /**
-   * Behaviour that allows an element using Firebase Auth to sign-in, sign-up
-   * and sign-out with social provider authentication. If your element must be
-   * able to use email address and password authentication only, you can
-   * implement the `LoginFireFormBehavior`.
+   * Behavior that allows an element using Firebase Auth to sign-in and sign-up
+   * an user with federated identity providers such Google, Facebook, and so on.
+   * If your element must be able to use email address and password authentication
+   * only, you must implement the `LoginFireFormBehavior` instead.
    *
    * @polymerBehavior Convoo.LoginFireSocialBehavior
    */
@@ -37,7 +37,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       },
 
       /**
-       * OAuth provider instance provided by Firebase. It uses the defined
+       * OAuth provider instance created by Firebase. It uses the defined
        * `scopes`.
        *
        * @type {Object}
@@ -49,7 +49,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     },
 
     /**
-     * Starts the sign-in process using a social provider authetication.
+     * Starts the sign-in process using a federated identity provider.
      */
     signIn: function() {
       if (!this.noSignIn) {
@@ -73,9 +73,9 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     },
 
     /**
-     * Starts sign in or sign out a user. If there is currently a user logged
-     * in the `signOut` method is called. If there is no user logged in, the
-     * `signIn` method is called.
+     * Signs in or signs out a user. When a user is currently logged in the
+     * `signOut` method is called. When there is no user logged in, the `signIn`
+     * method is called.
      */
     signInOrOut: function() {
       if (typeof this.user === 'undefined' || this.user == null) {
@@ -86,15 +86,16 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     },
 
     /**
-     * Creates a new OAuth provider according to the given provider's ID.
+     * Creates a new federated identity provider instance according to the given
+     * ID.
      *
-     * @param  {String} providerId of social network
-     * @param  {String} scopes     to be set
-     * @return {Object}            OAuth's provider of the chosen social
-     * network.
+     * @param  {String} id      of federated identity provider to be created
+     * @param  {String} scopes  to be set
+     * @return {Object}         federated identity provider instance according
+     * to the given ID.
      */
-    _computeOAuthProvider: function(providerId, scopes) {
-      var provider = Convoo._firebaseProviders[providerId.toLowerCase()];
+    _computeOAuthProvider: function(id, scopes) {
+      var provider = Convoo._firebaseProviders[id.toLowerCase()];
       var oauthProvider;
       if (provider.isSocialNetwork) {
         oauthProvider = new firebase.auth[provider.name + 'AuthProvider']();
