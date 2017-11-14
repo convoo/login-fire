@@ -5,12 +5,16 @@ Use of this source code is governed by a MIT license that can be found in the
 LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 -->
 <link rel="import" href="../polymer/polymer.html">
-<!--<link rel="import" href="./login-fire-common-behavior.html">-->
+<link rel="import" href="./login-fire-common-behavior.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="./login-fire-button.html">
 
 <!--
-An element that allows simple configuration of multiple social provider login with firebase. This web component is split in smaller elements that can be used for email or social only authentication.
+A panel of buttons to authenticate an user with federated identity providers such
+Google, Facebook and Twitter.
+
+Basically a list of `login-fire-button`. Please see the smaller component that is
+in this collection.
 
 Example:
 ```
@@ -24,7 +28,8 @@ Example:
 
 ### Localization
 
-You can specify the following codes and language in a json file passed to the localesFile property to update the text used. Here are the defaults:
+You can specify the following codes and language in a JSON file passed to the
+`localesFile` property to update the text used. Here are the defaults:
 
 ```
 "en": {
@@ -41,6 +46,17 @@ You can specify the following codes and language in a json file passed to the lo
 }
 ```
 
+### Styling
+
+Style the buttons with CSS as you would a normal DOM element. The following
+custom properties and mixins are available:
+
+Custom property | Description | Default
+-- | -- | --
+`--login-fire-social` | Mixin applied on the panel | `{}`
+
+@customElement
+@polymer
 @demo demo/login-fire-social.html
 -->
 <dom-module id="login-fire-social">
@@ -119,6 +135,7 @@ You can specify the following codes and language in a json file passed to the lo
   <script>
   Polymer({
     is: 'login-fire-social',
+
     behaviors: [Convoo.LoginFireCommonBehavior],
 
     properties: {
@@ -204,7 +221,7 @@ You can specify the following codes and language in a json file passed to the lo
     ],
 
     /**
-     * Signs the user out regardless the provider used for the sign-in.
+     * Signs the user out. The provider used for the sign-in has no incidence.
      */
     signOut: function() {
       this.$$('login-fire-button').signOut();
