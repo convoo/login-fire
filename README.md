@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-Simple way to add authentication to your app using firebase.
+Simple way to add authentication to your app using <a href="https://firebase.google.com/docs/auth/">Firebase Auth</a>.
 </p>
 
 <p align="center">
@@ -16,6 +16,9 @@ Simple way to add authentication to your app using firebase.
 
 ---
 
+## Demo
+Available on [webcomponents.org](https://www.webcomponents.org/element/convoo/login-fire/demo/demo/index.html).
+
 ## Install
 
 ```
@@ -25,9 +28,7 @@ bower install login-fire --save
 
 ## \<login-fire\>
 
-Add email and password authentication as well as social provider authentication to your app.
-If you want to only add social authentication or only email authentication please use \<login-fire-social\> or \<login-fire-form\> instead
-until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed.
+Add authentication with email and password as well as federated identity providers (Google, Facebook, Twitter, etc...) to your app. If you want to only add social authentication or only email authentication please use \<login-fire-social\> or \<login-fire-form\> instead (until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed).
 
 ```html
 <link rel="import" href="/bower_components/login-fire/login-fire.html">
@@ -55,12 +56,18 @@ until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed.
   auth-domain="convoo-login-demo.firebaseapp.com"
   database-url="https://convoo-login-demo.firebaseio.com">
 </firebase-app>
-<login-fire providers="google, facebook, twitter, github, anonymous" app-name="login" user="{{user}}" signed-in="{{signedIn}}"></login-fire>
+
+<login-fire
+  app-name="login"
+  providers="google, facebook, twitter, github, anonymous" 
+  user="{{user}}"
+  signed-in="{{signedIn}}">
+</login-fire>
 ```
 
 ## \<login-fire-social\>
 
-Add social provider authentication to your app with firebase.
+Add federated identity providers authentication to your app with [Firebase Auth API](https://firebase.google.com/docs/auth/).
 
 ```html
 <link rel="import" href="/bower_components/login-fire/login-fire-social.html">
@@ -88,13 +95,19 @@ Add social provider authentication to your app with firebase.
   auth-domain="convoo-login-demo.firebaseapp.com"
   database-url="https://convoo-login-demo.firebaseio.com">
 </firebase-app>
-<login-fire-social providers="google, facebook, twitter, github, anonymous" app-name="social" user="{{user}}" signed-in="{{signedIn}}"></login-fire-social>
+
+<login-fire-social
+  app-name="social"
+  providers="google, facebook, twitter, github, anonymous" 
+  user="{{user}}"
+  signed-in="{{signedIn}}">
+</login-fire-social>
 ```
 
 
 ## \<login-fire-form\>
 
-Add email authentication to your app with firebase.
+Add email-password authentication to your app with [Firebase Auth API](https://firebase.google.com/docs/auth/).
 
 ```html
 <link rel="import" href="/bower_components/login-fire/login-fire-form.html">
@@ -122,12 +135,17 @@ Add email authentication to your app with firebase.
   auth-domain="convoo-login-demo.firebaseapp.com"
   database-url="https://convoo-login-demo.firebaseio.com">
 </firebase-app>
-<login-fire-form app-name="email" user="{{user}}" signed-in="{{signedIn}}"></login-fire-form>
+
+<login-fire-form
+  app-name="email"
+  user="{{user}}"
+  signed-in="{{signedIn}}">
+</login-fire-form>
 ```
 
 ## \<login-fire-button\>
 
-It's a button with a social provider authentication to your app with Firebase. This button allows your users to sign-in and sign-out.
+It's a button of a federated identity provider (Google, Facebook, Twitter, etc...) that allows users to sign-in to and sign-out from your app. As all others elements, it's using [Firebase Auth API](https://firebase.google.com/docs/auth/).
 
 ```html
 <link rel="import" href="/bower_components/login-fire/login-fire-button.html">
@@ -154,6 +172,7 @@ It's a button with a social provider authentication to your app with Firebase. T
   auth-domain="convoo-login-demo.firebaseapp.com"
   database-url="https://convoo-login-demo.firebaseio.com">
 </firebase-app>
+
 <login-fire-button app-name="button" provider="google" user="{{user}}"></login-fire-button>
 <login-fire-button app-name="button" provider="facebook" user="{{user}}"></login-fire-button>
 <login-fire-button app-name="button" user="{{user}}"></login-fire-button>
@@ -161,7 +180,8 @@ It's a button with a social provider authentication to your app with Firebase. T
 
 ## Signing Out
 
-To sign out, access the login-fire element and call its signOut function.
+To sign out, access a `login-fire` element and call its `signOut` function.
+
 Example:
 
 ```html
@@ -182,35 +202,22 @@ _signOut: function(e){
 
 ## Debugging
 
-To make it easier to debug, we've added the `debug` attribute. Simply add "debug" to the element to see more details about its variables' values.
+To make it easier to debug, we've added the `debug` attribute. Set the "debug" attribute of the element to `true` to see more details about its variables' values.
+
 Example:
 
 ```html
-<login-fire-form debug app-name="email" user="{{user}}" signed-in="{{signedIn}}"></login-fire-form>
+<login-fire-form app-name="email" debug></login-fire-form>
 ```
 
 
-Note: login-fire is not associated with [firebase](https://firebase.google.com/). [polymerfire](https://github.com/firebase/polymerfire) components are used with login-fire.
+Note: login-fire is not associated with [Firebase](https://firebase.google.com/). This collection of components is based on [polymerfire](https://github.com/firebase/polymerfire).
 
 
 
 ### Styling
 
-Style the buttons with CSS as you would a normal DOM element. 
-
-The following custom properties and mixins are available for styling:
-
-| Custom property | Description | Default |
-| --- | --- | --- |
-| `--login-fire-reset-password-color` | The color of reset password text | `gray` |
-| `--login-fire-reset-password-hover-color` | The color of reset password text when hovered | `gray` |
-| `--login-fire-error-msg-color` | The color for the error message  | `--error-color` |
-| `--login-fire-info-msg-color` | The color for the info message | `gray` |
-| `--login-fire-divider-color` | The color for the divider bar | `gray` |
-| `--login-fire-background-color` | The color for the divider bar | `white` |
-| `--login-fire-btn-signup` | Mixin applied to the signup button | `{}` |
-| `--login-fire-btn-signin` | Mixin applied to the signin button | `{}` |
-| `--login-fire-btn-signout` | Mixin applied to the signin button | `{}` |
+Style the buttons with CSS as you would a normal DOM element. A few custom properties and mixins are available. The detailed lists are on each element's documentation page.
 
 
 ## Contributing
@@ -249,3 +256,15 @@ $ polymer test
 ```
 
 Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
+
+### Workflow
+
+1. Fork it!
+2. Create your feature branch: `git checkout -b my-new-feature`
+3. Commit your changes: `git commit -m 'Add some feature'`
+4. Push to the branch: `git push origin my-new-feature`
+5. Submit a pull request. :D
+
+## License
+
+[MIT](https://github.com/convoo/login-fire/blob/master/LICENSE)
