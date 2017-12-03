@@ -13,11 +13,16 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 <link rel="import" href="./login-fire-social.html">
 
 <!--
-An element that allows simple configuration of email and social provider login with Firebase.
+An element allowing to authenticate an user with email and password or federated
+identity providers like Google, Facebook and Twitter using the
+[Firebase Auth API](https://firebase.google.com/docs/auth/).
 
-For email authentication only, use login-fire-form.
-For social provider authentication only, use login-fire-social.
-For both email and social provider authentication, use login-fire.
+Displaying a login form and a list of button (Google, Facebook, Twitter, etc...)
+for user authentication. You can can easily choose which buttons to display and how
+organize them with the form. See the demo page for more details.
+
+For email-password authentication only, use login-fire-form.
+For authenticating with federated identity provider only, use login-fire-social.
 
 Example:
 ```
@@ -26,31 +31,24 @@ Example:
  api-key="API_KEY"
  auth-domain="AUTH_DOMAIN"
  database-url="DATABASE_URL"></firebase-app>
-<login-fire app-name="demo" email-password twitter google facebook></login-fire>
+<login-fire app-name="demo" providers="google, facebook, twitter, github, anonymous"></login-fire>
 ```
 
 ### Styling
 
-Style the buttons with CSS as you would a normal DOM element.
+Style the buttons with CSS as you would a normal DOM element. The following custom
+properties and mixins are available for styling:
 
-The following custom properties and mixins are available for styling:
-
-| Custom property | Description | Default |
-| --- | --- | --- |
-| `--login-fire-reset-password-color` | The color of reset password text | `gray` |
-| `--login-fire-reset-password-hover-color` | The color of reset password text when hovered | `gray` |
-| `--login-fire-error-msg-color` | The color for the error message  | `--error-color` |
-| `--login-fire-info-msg-color` | The color for the info message | `gray` |
-| `--login-fire-divider-color` | The color for the divider bar | `gray` |
-| `--login-fire-background-color` | The color for the divider bar | `white` |
-| `--login-fire-btn-signup` | Mixin applied to the signup button | `{}` |
-| `--login-fire-btn-signin` | Mixin applied to the signin button | `{}` |
-| `--login-fire-btn-signout` | Mixin applied to the signin button | `{}` |
+Custom property | Description | Default
+--- | --- | ---
+`--login-fire-divider-color` | The color for the divider bar | `gray`
+`--login-fire-background-color` | The color for the divider bar | `white`
 
 
 ### Localization
 
-You can specify the following codes and language in a json file passed to the localesFile property to update the text used. Here are the defaults:
+You can specify the following codes and language in a json file passed to the
+localesFile property to update the text used. Here are the defaults:
 ```
 {
   "en": {
@@ -84,6 +82,8 @@ You can specify the following codes and language in a json file passed to the lo
 }
 ```
 
+@customElement
+@polymer
 @demo demo/login-fire.html
 -->
 <dom-module id="login-fire">
