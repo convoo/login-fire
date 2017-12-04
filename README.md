@@ -165,7 +165,7 @@ To sign out, access the login-fire element and call its signOut function.
 Example:
 
 ```html
-<a on-tap="_signOut">Sign Out</a>
+<a on-click="_signOut">Sign Out</a>
 ```
 
 ```javascript
