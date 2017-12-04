@@ -189,11 +189,11 @@ You can specify the following codes and language in a json file passed to the lo
           hidden$="[[!reenterPassword]]"
           required>
         </paper-input>
-        <paper-button raised$="[[!flat]]" type="submit" on-tap="_signUp"
+        <paper-button raised$="[[!flat]]" type="submit" on-click="_signUp"
           class="btn--signup">[[localize('lf-signup-button')]]</paper-button>
         <p class="signup-toggle">
           <span>[[localize('lf-already-have-account')]]</span>
-          <paper-button on-tap="_toggleShowSignUp" tabindex="0"
+          <paper-button on-click="_toggleShowSignUp" tabindex="0"
             title="[[localize('lf-already-have-account')]] [[localize('lf-already-have-account-action')]]" noink>
             [[localize('lf-already-have-account-action')]]
           </paper-button>
@@ -202,15 +202,15 @@ You can specify the following codes and language in a json file passed to the lo
       <template is="dom-if" if="[[!_showSignUp]]">
         <p>
           <paper-button class="link--reset-pw"
-            on-tap="toggleShowResetPW" tabindex="0" noink>
+            on-click="toggleShowResetPW" tabindex="0" noink>
             [[localize('lf-resetpw-link')]]</paper-button>
         </p>
-        <paper-button raised$="[[!flat]]" type="submit" on-tap="_signIn"
+        <paper-button raised$="[[!flat]]" type="submit" on-click="_signIn"
           class="btn--signin">[[localize('lf-signin-button')]]</paper-button>
         <template is="dom-if" if="[[!noSignUp]]">
           <p class="signup-toggle">
             <span>[[localize('lf-no-account')]]</span>
-            <paper-button on-tap="_toggleShowSignUp" tabindex="0"
+            <paper-button on-click="_toggleShowSignUp" tabindex="0"
               title="[[localize('lf-no-account')]] [[localize('lf-no-account-action')]]" noink>
               [[localize('lf-no-account-action')]]</paper-button>
           </p>
@@ -219,10 +219,10 @@ You can specify the following codes and language in a json file passed to the lo
     </template>
 
     <template is="dom-if" if="[[showResetPW]]">
-      <paper-button raised$="[[!flat]]" type="submit" on-tap="_resetPassword"
+      <paper-button raised$="[[!flat]]" type="submit" on-click="_resetPassword"
         class="btn--resetpw">[[localize('lf-resetpw-button')]]</paper-button>
       <p>
-        <paper-button class="link--reset-pw" on-tap="toggleShowResetPW"
+        <paper-button class="link--reset-pw" on-click="toggleShowResetPW"
           tabindex="0" noink>[[localize('lf-resetpw-cancel-link')]]
         </paper-button>
       </p>
