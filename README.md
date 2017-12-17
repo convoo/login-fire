@@ -1,7 +1,7 @@
 # Login-Fire
 
 <p align="center">
-  <img alt="login-fire" src="LoginFire400.png" width="200">
+  <img alt="login-fire" src="Login-Fire@4x.png" width="200">
 </p>
 
 <p align="center">
@@ -16,8 +16,19 @@ Simple way to add authentication to your app using <a href="https://firebase.goo
 
 ---
 
-## Demo
-Available on [webcomponents.org](https://www.webcomponents.org/element/convoo/login-fire/demo/demo/index.html).
+## Overview & Demo
+
+The following elements are available:
+* `<login-fire-button>` for single provider authentication
+* `<login-fire-social>` for multiple provider authentication
+* `<login-fire-form>` for email and password authentication 
+* `<login-fire>` for all of the above.
+
+The goal of the \<login-fire\> elements is to provide a simple to setup, elegant UI for authentication using [Firebase Auth](https://firebase.google.com/docs/auth/).
+
+Our demo is available on [webcomponents.org](https://www.webcomponents.org/element/convoo/login-fire/demo/demo/index.html).
+
+Note: login-fire is **not** associated with [Firebase](https://firebase.google.com/). This collection of components is based on [polymerfire](https://github.com/firebase/polymerfire).
 
 ## Install
 
@@ -28,7 +39,7 @@ bower install login-fire --save
 
 ## \<login-fire\>
 
-Add authentication with email and password as well as federated identity providers (Google, Facebook, Twitter, etc...) to your app. If you want to only add social authentication or only email authentication please use \<login-fire-social\> or \<login-fire-form\> instead (until [issue 27](https://github.com/convoo/login-fire/issues/27) is closed).
+Add authentication with email and password as well as federated identity providers (Google, Facebook, Twitter, GitHub, Anonymous) to your app. 
 
 ```html
 <link rel="import" href="/bower_components/login-fire/login-fire.html">
@@ -67,7 +78,7 @@ Add authentication with email and password as well as federated identity provide
 
 ## \<login-fire-social\>
 
-Add federated identity providers authentication to your app with [Firebase Auth API](https://firebase.google.com/docs/auth/).
+Add multiple federated identity providers authentication to your app with [Firebase Auth API](https://firebase.google.com/docs/auth/).
 
 ```html
 <link rel="import" href="/bower_components/login-fire/login-fire-social.html">
@@ -145,7 +156,7 @@ Add email-password authentication to your app with [Firebase Auth API](https://f
 
 ## \<login-fire-button\>
 
-It's a button of a federated identity provider (Google, Facebook, Twitter, etc...) that allows users to sign-in to and sign-out from your app. As all others elements, it's using [Firebase Auth API](https://firebase.google.com/docs/auth/).
+A button for a single federated identity provider (Google, Facebook, Twitter, GitHub, Anonymous) that allows users to sign-in to and sign-out from your app using [Firebase Auth API](https://firebase.google.com/docs/auth/).
 
 ```html
 <link rel="import" href="/bower_components/login-fire/login-fire-button.html">
@@ -210,11 +221,6 @@ Example:
 <login-fire-form app-name="email" debug></login-fire-form>
 ```
 
-
-Note: login-fire is not associated with [Firebase](https://firebase.google.com/). This collection of components is based on [polymerfire](https://github.com/firebase/polymerfire).
-
-
-
 ### Styling
 
 Style the buttons with CSS as you would a normal DOM element. A few custom properties and mixins are available. The detailed lists are on each element's documentation page.
@@ -268,3 +274,7 @@ Your application is already set up to be tested via [web-component-tester](https
 ## License
 
 [MIT](https://github.com/convoo/login-fire/blob/master/LICENSE)
+
+## Credits
+
+Logo: Fingerprint by Gregor Cresnar from the Noun Project
