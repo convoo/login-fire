@@ -13,16 +13,16 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 <link rel="import" href="./login-fire-social.html">
 
 <!--
-An element allowing to authenticate an user with email and password or federated
-identity providers like Google, Facebook and Twitter using the
+An element allowing user authentication with email and password or federated
+identity providers (Google, Facebook, Twitter and GitHub) using the
 [Firebase Auth API](https://firebase.google.com/docs/auth/).
 
-Displaying a login form and a list of button (Google, Facebook, Twitter, etc...)
-for user authentication. You can can easily choose which buttons to display and how
+Displaying a login form and a list of button (Google, Facebook, Twitter, GitHub)
+for user authentication. You can can easily choose which buttons to display and how to
 organize them with the form. See the demo page for more details.
 
-For email-password authentication only, use login-fire-form.
-For authenticating with federated identity provider only, use login-fire-social.
+For email-password authentication only, use `<login-fire-form>`.
+For authenticating with multiple federated identity providers only, use `<login-fire-social>` and for a single provider, use `<login-fire-button>`.
 
 Example:
 ```
