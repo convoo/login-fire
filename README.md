@@ -18,8 +18,14 @@ Simple way to add authentication to your app using firebase.
 
 ## Install
 
-```
+```bash
 bower install login-fire --save
+```
+
+or
+
+```bash
+yarn add @convoo/login-fire --flat
 ```
 
 
