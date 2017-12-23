@@ -281,3 +281,9 @@ Optional but highly encouraged: Follow [this commit guide](https://conventionalc
 ## Credits
 
 Logo: Fingerprint by Gregor Cresnar from the Noun Project
+
+### Browser Testing
+
+[![BrowserStack](http://i.imgur.com/Pg0utrk.png)](http://browserstack.com/)
+
+Thanks to the support of [BrowserStack](http://browserstack.com/) we can do real cross browser testing on multiple desktop and mobile platforms.
