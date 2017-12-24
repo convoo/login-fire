@@ -1,0 +1,488 @@
+<!--
+@license
+Copyright (c) 2016 Convoo All Rights Reserved.
+Use of this source code is governed by a MIT license that can be found in the
+LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymerfire/firebase-auth.html">
+<link rel="import" href="./login-fire-form-behavior.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="./icons.html">
+
+<!--
+A pre-built login form to authenticate a user with email and password using the
+[Firebase Auth API](https://firebase.google.com/docs/auth/).
+
+Example:
+```
+<firebase-app
+  name="myApp"
+  api-key="API_KEY"
+  auth-domain="AUTH_DOMAIN"
+  database-url="DATABASE_URL">
+</firebase-app>
+<login-fire-form app-name="myApp"></login-fire-form>
+```
+
+### Styling
+
+Style the buttons with CSS as you would a normal DOM element.
+
+The following custom properties and mixins are available for styling:
+
+Custom property | Description | Default
+--------------- | ----------- | -------
+`--login-fire-btn-signin` | Mixin applied to the signin button | `{}`
+`--login-fire-btn-signout` | Mixin applied to the signin button | `{}`
+`--login-fire-btn-signup` | Mixin applied to the signup button | `{}`
+`--login-fire-error-msg-color` | The color for the error message  | `--error-color`
+`--login-fire-form` | Mixin applied on the entire element | `{}`
+`--login-fire-form-toggle` | Mixin applied on the div that contains the text asking if the user already has an account | `{}`
+`--login-fire-info-msg-color` | The color for the info message | `gray`
+`--login-fire-reset-password-color` | The color of reset password text | `gray`
+`--login-fire-reset-password-hover-color` | The color of reset password text when hovered | `gray`
+
+
+### Localization
+
+You can specify the following codes and language in a JSON file passed to the
+`localesFile` property to update the text used by the form. A few languages are
+already supported and you can even contribute to the project adding yours.
+Example of a valid locales file:
+```
+"en": {
+  "lf-email": "Email",
+  "lf-email-invalid": "Invalid email address",
+  "lf-password": "Password",
+  "lf-reenter-password": "Re-enter Password",
+  "lf-passwords-dont-match": "Passwords do not match",
+  "lf-already-have-account": "Already have an account?",
+  "lf-already-have-account-action": "Sign in",
+  "lf-no-account": "Don' have an account?",
+  "lf-no-account-action": "Sign up",
+  "lf-resetpw-link": "Forgot password",
+  "lf-resetpw-cancel-link": "Nevermind, I remembered my password.",
+  "lf-resetpw-button": "Reset password",
+  "lf-resetpw-success-message": "Password reset email has been sent. Please check your inbox.",
+  "lf-signup-button": "Sign Up",
+  "lf-signin-button": "Sign In",
+  "lf-signout": "Sign out"
+}
+```
+
+@customElement
+@polymer
+@demo demo/login-fire-form.html
+-->
+<dom-module id="login-fire-form">
+  <template>
+    <style>
+    :host {
+      display: block;
+      width: 210px;
+      @apply --login-fire-form;
+    }
+    :host([wide]) {
+      width: 100%;
+    }
+    paper-button.btn--signup {
+      margin: 15px 0;
+      width: 100%;
+      @apply --login-fire-btn-signup;
+    }
+    paper-button.btn--signin {
+      width: 100%;
+      @apply --login-fire-btn-signin;
+    }
+    .btn {
+        color: gray;
+    }
+    .link--reset-pw {
+      color: var(--login-fire-reset-password-color, gray);
+      text-decoration: none;
+      text-transform: none;
+      font-size: 12px;
+      font-style: italic;
+      font-weight: lighter;
+      cursor: pointer;
+      margin: 0;
+      padding: 0;
+    }
+    .link--reset-pw:hover {
+      color: var(--login-fire-reset-password-hover-color, gray);
+      text-decoration: underline;
+    }
+    .msg {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 24px;
+      margin: 0;
+      padding: 0;
+    }
+    .msg--error {
+      color: var(--login-fire-error-msg-color, var(--error-color));
+    }
+    .msg--info {
+      color: var(--login-fire-info-msg-color, gray);
+    }
+    .signup-toggle {
+      font-size: 12px;
+      color: grey;
+      text-align: center;
+      @apply --login-fire-form-toggle;
+    }
+    .signup-toggle paper-button {
+      text-decoration: underline;
+      text-transform: none;
+      color: blue;
+      cursor: pointer;
+      margin: 0;
+      padding: 0;
+      min-width: 0;
+    }
+    paper-icon-button {
+      color: grey;
+    }
+    </style>
+
+    <div class="msg msg--error" hidden$="[[!_lastError]]">
+      <span>[[_lastError]]</span>
+    </div>
+    <div class="msg msg--info" hidden$="[[!_lastMessage]]">
+      <span>[[_lastMessage]]</span>
+    </div>
+
+    <paper-input id="emailInput"
+      type="email"
+      label="[[localize('lf-email')]]"
+      value="{{email}}"
+      error-message="[[localize('lf-email-invalid')]]"
+      on-keydown="_submitOnEnter"
+      required>
+    </paper-input>
+
+    <template is="dom-if" if="[[!showResetPW]]">
+      <paper-input id="passwordInput"
+        type="password"
+        label="[[localize('lf-password')]]"
+        value="{{password}}"
+        error-message="[[localize('lf-password-invalid')]]"
+        on-keydown="_submitOnEnter"
+        required>
+        <template is="dom-if" if="[[!noToggleablePassword]]">
+          <paper-icon-button
+            id="passwordIconButton"
+            slot="suffix"
+            on-down="_revealPW"
+            on-up="_hidePW"
+            icon="login-fire-icons:visibility"
+            title="[[localize('lf-reveal-password')]]">
+          </paper-icon-button>
+        </template>
+      </paper-input>
+
+      <template is="dom-if" if="[[_showSignUp]]">
+        <paper-input id="repeatPasswordInput"
+          type="password"
+          label="[[localize('lf-reenter-password')]]"
+          value="{{_passwordAgain}}"
+          error-message="[[localize('lf-passwords-dont-match')]]"
+          on-keydown="_submitOnEnter"
+          hidden$="[[!reenterPassword]]"
+          required>
+        </paper-input>
+        <paper-button raised$="[[!flat]]" type="submit" on-click="_signUp"
+          class="btn--signup">[[localize('lf-signup-button')]]</paper-button>
+        <p class="signup-toggle">
+          <span>[[localize('lf-already-have-account')]]</span>
+          <paper-button on-click="_toggleShowSignUp" tabindex="0"
+            title="[[localize('lf-already-have-account')]] [[localize('lf-already-have-account-action')]]" noink>
+            [[localize('lf-already-have-account-action')]]
+          </paper-button>
+        </p>
+      </template>
+      <template is="dom-if" if="[[!_showSignUp]]">
+        <p>
+          <paper-button class="link--reset-pw"
+            on-click="toggleShowResetPW" tabindex="0" noink>
+            [[localize('lf-resetpw-link')]]</paper-button>
+        </p>
+        <paper-button raised$="[[!flat]]" type="submit" on-click="_signIn"
+          class="btn--signin">[[localize('lf-signin-button')]]</paper-button>
+        <template is="dom-if" if="[[!noSignUp]]">
+          <p class="signup-toggle">
+            <span>[[localize('lf-no-account')]]</span>
+            <paper-button on-click="_toggleShowSignUp" tabindex="0"
+              title="[[localize('lf-no-account')]] [[localize('lf-no-account-action')]]" noink>
+              [[localize('lf-no-account-action')]]</paper-button>
+          </p>
+        </template>
+      </template>
+    </template>
+
+    <template is="dom-if" if="[[showResetPW]]">
+      <paper-button raised$="[[!flat]]" type="submit" on-click="_resetPassword"
+        class="btn--resetpw">[[localize('lf-resetpw-button')]]</paper-button>
+      <p>
+        <paper-button class="link--reset-pw" on-click="toggleShowResetPW"
+          tabindex="0" noink>[[localize('lf-resetpw-cancel-link')]]
+        </paper-button>
+      </p>
+    </template>
+
+    <firebase-auth id="auth" app-name="[[appName]]" user="{{_user}}"
+      signed-in="{{_signedIn}}" status-known="{{_statusKnown}}">
+    </firebase-auth>
+  </template>
+
+  <script>
+  Polymer({
+    is: 'login-fire-form',
+    behaviors: [Convoo.LoginFireFormBehavior],
+
+    properties: {
+      /**
+       * When `true`, signs up a user who attempts to sign in with an account
+       * that doesn't already exist.
+       *
+       * @type {Boolean}
+       */
+      autoSignUp: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Federated identity provider ID to use for Firebase Authentication.
+       *
+       * @type {String}
+       * @default 'email'
+       */
+      provider: {
+        type: String,
+        readOnly: true,
+        notify: false,
+        value: 'email'
+      },
+
+      /**
+       * Email field value.
+       *
+       * @type {String}
+       */
+      email: {
+        type: String
+      },
+
+      /**
+       * Password field value.
+       *
+       * @type {String}
+       */
+      password: {
+        type: String
+      },
+
+      /**
+       * Password confirmation field value.
+       *
+       * @type {String}
+       */
+      _passwordAgain: {
+        type: String
+      },
+
+      /**
+       * Computed property to show sign up form.
+       *
+       * @type {Boolean}
+       */
+      _showSignUp: {
+        type: Boolean,
+        computed: '_computeShowSignUp(showSignUp,noSignUp)'
+      },
+
+      /**
+       * Last error message.
+       *
+       * @type {String}
+       */
+      _lastError: {
+        type: String
+      },
+
+      /**
+       * Last info message.
+       *
+       * @type {String}
+       */
+      _lastMessage: {
+        type: String
+      }
+    },
+
+    listeners: {
+      'error': '_handleError',
+      'signedin': '_handleSignIn'
+    },
+
+    /**
+     * Cleans message and error sections.
+     */
+    _cleanMessages: function() {
+      this.set('_lastError', '');
+      this.set('_lastMessage', '');
+    },
+
+    /**
+     * Cleans email and password inputs.
+     */
+    _cleanInputs: function() {
+      this.$$('#emailInput').value = '';
+      this._cleanPasswordInput();
+    },
+
+    /**
+     * Cleans password input
+     */
+    _cleanPasswordInput: function() {
+      this.$$('#passwordInput').value = '';
+    },
+
+    /**
+     * Calculates whether to show the sign up section. Returns `true` if the
+     * form allows signing up and the element is asked to display the according
+     * section.
+     */
+    _computeShowSignUp: function(showSignUp, noSignUp) {
+      return showSignUp && !noSignUp;
+    },
+
+    /**
+     * Tries to sign in a user using the form values.
+     */
+    _signIn: function() {
+      this._cleanMessages();
+      e = this.$$('#emailInput').validate();
+      p = this.$$('#passwordInput').validate();
+      if (e && p) {
+        this.signIn(this.email, this.password);
+      }
+    },
+
+    /**
+     * Tries to sign up a user using the form values.
+     */
+    _signUp: function(e) {
+      this._cleanMessages();
+      e = this.$$('#emailInput').validate()
+      p = this.$$('#passwordInput').validate()
+      if (this.reenterPassword) {
+        this.$$('#repeatPasswordInput').invalid = false;
+        pRepeat = this.password == this._passwordAgain &&
+          this.$$('#repeatPasswordInput').validate()
+
+        if (e && p && pRepeat) {
+          this.signUp(this.email, this.password);
+          this.email = null;
+          this.password = null;
+          this._passwordAgain = null;
+        } else if (!pRepeat) {
+          this.$$('#repeatPasswordInput').invalid = true;
+        }
+      } else if (e && p) {
+        this.signUp(this.email, this.password);
+        this.email = null;
+        this.password = null;
+      }
+    },
+
+    /**
+     * Handler called after a successful `signIn` to clean form inputs.
+     */
+    _handleSignIn: function() {
+      this._cleanInputs();
+    },
+
+    /**
+     * Displays error message. If the attribute `autoSignUp` is `true`, before
+     * to display the error message, a sign up process is tried.
+     *
+     * @param  {Object} e the event caught that contains the error message
+     */
+    _handleError: function(e) {
+      if (this.autoSignUp && e.detail.code === 'auth/user-not-found') {
+        this.signUp(this.email, this.password);
+        this.email = null;
+        this.password = null;
+      } else {
+        // Localize Firebase error if possible
+        var errorMessage = this.localize('lf-error-' + e.detail.code);
+        this.set('_lastError', errorMessage || e.detail.message);
+
+        // Clean password input if wrong password or email
+        if (e.detail.code == 'auth/wrong-password' ||
+          e.detail.code == 'auth/user-not-found') {
+          this._cleanPasswordInput();
+        }
+      }
+    },
+
+    /**
+     * Sends an email for resetting the account password. The email is sent to
+     * the address entered in the form when the user clicks on the link to reset
+     * its password.
+     */
+    _resetPassword: function() {
+      this._cleanMessages();
+      e = this.$$('#emailInput').validate()
+      if (e) {
+        this.$$('#auth').auth.sendPasswordResetEmail(this.email)
+          .then(function() {
+            this.set('_lastMessage',
+              this.localize('lf-resetpw-success-message'));
+          }.bind(this), function(error) {
+            this.set('_lastError', error.message);
+          }.bind(this));
+      }
+    },
+
+    /**
+     *  Checks for enter being pressed and submits the appropriate form action
+     */
+    _submitOnEnter: function(e) {
+      if (e.keyCode === 13) {
+        if (this._showSignUp) {
+          this._signUp();
+        } else if (this.showResetPW) {
+          this._resetPassword();
+        } else if (!this._showSignUp) {
+          this._signIn()
+        }
+      }
+    },
+
+    /**
+     *  Reveals the password in the parent by switching the type to text
+     */
+    _revealPW: function(e) {
+      this.$$('#passwordIconButton').icon = 'login-fire-icons:visibility-off';
+      this.$$('#passwordInput').type = 'text';
+    },
+
+    /**
+     * Hides the password in the parent by switching the type to password
+     */
+    _hidePW: function(e) {
+      setTimeout(function() {
+        this.$$('#passwordIconButton').icon = 'login-fire-icons:visibility';
+        this.$$('#passwordInput').type = 'password';
+      }.bind(this), 1000)
+    }
+  });
+  </script>
+</dom-module>

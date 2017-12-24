@@ -1,381 +1,396 @@
+<!--
+@license
+Copyright (c) 2016 Convoo All Rights Reserved.
+Use of this source code is governed by a MIT license that can be found in the
+LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
+-->
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./login-fire-common-behavior.html">
 <link rel="import" href="../iron-media-query/iron-media-query.html">
+<link rel="import" href="../reverse-element/reverse-element.html">
 <link rel="import" href="../polymerfire/firebase-auth.html">
-<link rel="import" href="email-login-fire.html">
-<link rel="import" href="social-login-fire.html">
+<link rel="import" href="./login-fire-form.html">
+<link rel="import" href="./login-fire-social.html">
+
+<!--
+An element allowing user authentication with email and password or federated
+identity providers (Google, Facebook, Twitter and GitHub) using the
+[Firebase Auth API](https://firebase.google.com/docs/auth/).
+
+Displaying a login form and a list of button (Google, Facebook, Twitter, GitHub)
+for user authentication. You can can easily choose which buttons to display and how to
+organize them with the form. See the demo page for more details.
+
+For email-password authentication only, use `<login-fire-form>`.
+For authenticating with multiple federated identity providers only, use `<login-fire-social>` and for a single provider, use `<login-fire-button>`.
+
+Example:
+```
+<firebase-app
+ name="demo"
+ api-key="API_KEY"
+ auth-domain="AUTH_DOMAIN"
+ database-url="DATABASE_URL"></firebase-app>
+<login-fire app-name="demo" providers="google, facebook, twitter, github, anonymous"></login-fire>
+```
+
+### Styling
+
+Style the buttons with CSS as you would a normal DOM element. The following custom
+properties and mixins are available for styling:
+
+Custom property | Description | Default
+--- | --- | ---
+`--login-fire-divider-color` | The color for the divider bar | `gray`
+`--login-fire-background-color` | The color for the divider bar | `white`
 
 
+### Localization
+
+You can specify the following codes and language in a json file passed to the
+localesFile property to update the text used. Here are the defaults:
+```
+{
+  "en": {
+    "lf-email": "Email",
+    "lf-email-invalid": "Invalid email address",
+    "lf-password": "Password",
+    "lf-reenter-password": "Re-enter Password",
+    "lf-passwords-dont-match": "Passwords do not match",
+    "lf-already-have-account": "Already have an account?",
+    "lf-already-have-account-action": "Sign in",
+    "lf-no-account": "Don' have an account?",
+    "lf-no-account-action": "Sign up",
+    "lf-resetpw-link": "Forgot password",
+    "lf-resetpw-cancel-link": "Nevermind, I remembered my password.",
+    "lf-resetpw-button": "Reset password",
+    "lf-resetpw-success-message": "Password reset email has been sent. Please check your inbox.",
+    "lf-signup-button": "Sign Up",
+    "lf-signup-facebook": "Sign up with Facebook",
+    "lf-signup-google": "Sign up with Google",
+    "lf-signup-twitter": "Sign up with Twitter",
+    "lf-signup-github": "Sign up with GitHub",
+    "lf-signup-anonymous": "Sign up anonymously",
+    "lf-signin-button": "Sign In",
+    "lf-signin-facebook": "Sign in with Facebook",
+    "lf-signin-google": "Sign in with Google",
+    "lf-signin-twitter": "Sign in with Twitter",
+    "lf-signin-github": "Sign in with GitHub",
+    "lf-signin-anonymous": "Sign in anonymously",
+    "lf-signout": "Sign out"
+  }
+}
+```
+
+@customElement
+@polymer
+@demo demo/login-fire.html
+-->
 <dom-module id="login-fire">
-<template>
-  <style>
-    :host {
-      @apply(--layout-horizontal);
-      @apply(--layout-wrap);
-      @apply(--layout-around-justified);
-      max-width: 801px;
-      margin: 0 auto;
+  <template>
+    <style>
+    reverse-element {
+      background: var(--login-fire-background-color, white);
+      padding-top: 40px;
+      padding-bottom: 40px;
+      @apply --layout-horizontal;
+      @apply --layout-wrap;
+      @apply --layout-center-center;
     }
-
-    :host(.reverse) {
-      @apply(--layout-horizontal-reverse);
-      @apply(--layout-wrap-reverse);
+    :host([horizontal]) reverse-element {
+      @apply --layout-vertical;
+      @apply --layout-center;
     }
-
-    :host(.vertical) {
-      @apply(--layout-vertical);
-      @apply(--layout-center);
+    .div {
+      @apply --layout-center-center;
+      background-color: var(--login-fire-divider-color, lightgray);
     }
-
-    :host(.vertical-reversed) {
-      @apply(--layout-vertical-reverse);
-    }
-
-    .verticalDivider{
-      border-right: 1px solid #e0e0e0;
-      margin: 0 auto;
-      height: 100%;
-      min-height: 300px;
-
-    }
-
-    .verticalDivider div{
-      position: relative;
-      top: 100px;
-      background-color: white;
-      font-style: italic;
-      color: grey;
-      font-weight: lighter;
-      height: 16px;
-      width: 11px;
-      left: 5px;
+    .div__span {
+      line-height: 15px;
+      padding: 16px;
+      background: var(--login-fire-background-color, white);
       font-size: 12px;
-      padding: 10px 0 10px 0;
+      font-style: italic;
+      color: var(--login-fire-divider-color, gray);
+      font-weight: lighter;
+      -moz-user-select: -moz-none;
+      -khtml-user-select: none;
+      -webkit-user-select: none;
+      -o-user-select: none;
+      user-select: none;
     }
-
-    .horizontalDivider{
-      border-top: 1px solid #e0e0e0;
-      text-align: center;
-      margin: 50px 35px 50px 35px;
+    .div--hidden {
+      display: none;
+    }
+    .div--vertical {
+      @apply --layout-horizontal;
+      margin: 0 50px;
+      min-height: 200px;
+      max-height: 400px;
+      width: 1px;
+    }
+    .div--horizontal {
+      @apply --layout-vertical;
       height: 1px;
-      max-width: 400px;
+      margin: 50px 0;
       min-width: 300px;
+      max-width: 400px;
     }
+    </style>
 
-    .horizontalDivider div{
-      background-color: white;
-      position: relative;
-      top: -8px;
-      width: 50px;
-      margin: 0 auto;
-      height: 20px;
-      font-style: italic;
-      color: grey;
-      font-weight: lighter;
-      font-size: 12px;
-    }
-  </style>
-
-
-  <template is="dom-if" if={{debug}}>
-    <div class="debug">
-      <div> user.id = {{user.uid}}</div>
-      <div> signedIn = {{signedIn}}</div>
-      <div> statusKnown = {{statusKnown}}</div>
-      <div> user.displayName = {{user.displayName}}</div>
-      <div> user.email = {{user.email}}</div>
-      <div> user.emailVerified = {{user.emailVerified}}</div>
-      <div> user.isAnonymous = {{user.isAnonymous}}</div>
-      <div> user.photoURL = {{user.photoURL}} <img src$="{{user.photoURL}}" hidden="{{!user.photoURL}}" width="100px" height="100px"> </div>
-      <div> user.providerId = {{user.providerId}}</div>
-      <paper-button on-tap="signOut">Log Out</paper-button>
-    </div>
-  </template>
-
-  <template is="dom-if" if={{emailPassword}}>
-    <email-login-fire
-      id="emailLogin"
-      class="flex"
-      app-name="{{appName}}"
-      user="{{emailUser}}"
-      signed-in="{{emailSignedIn}}"
-      password-reset-message="{{passwordResetMessage}}"
-      auto-sign-up="{{autoSignUp}}"
-      status-known="{{emailStatusKnown}}"
-      no-sign-up="[[noSignUp]]"
-    ></email-login-fire>
-  </template>
-
-  <iron-media-query query="(max-width: 650px)" query-matches="{{isNarrow}}"></iron-media-query>
-
-  <template is="dom-if" if={{_showDivider}}>
-
-    <template is="dom-if" if={{_showHorizontalDivider}}>
-      <div id="divider" class="horizontalDivider">
-        <div>or</div>
-      </div>
+    <template is="dom-if" if="[[_showOneButton]]">
+      <login-fire-button
+        app-name="[[appName]]"
+        user="{{_user}}"
+        status-known="{{_statusKnown}}"
+        signed-in="{{_signedIn}}"
+        mini$="[[mini]]"
+        flat$="[[flat]]"
+        no-sign-in="[[noSignIn]]"
+        no-sign-out="[[noSignOut]]"
+        show-sign-up="{{showSignUp}}"
+        locales-file="[[localesFile]]"
+        language="[[language]]"
+        debug="[[debug]]">
+      </login-fire-button>
     </template>
 
+    <template is="dom-if" if="[[!_showOneButton]]">
+      <reverse-element reverse="[[reverse]]">
+        <login-fire-form
+          app-name="[[appName]]"
+          user="{{_user}}"
+          signed-in="{{_signedIn}}"
+          status-known="{{_statusKnown}}"
+          auto-sign-up="[[autoSignUp]]"
+          show-sign-up="{{showSignUp}}"
+          flat="{{flat}}"
+          locales-file="[[localesFile]]"
+          language="[[language]]"
+          debug="[[debug]]"
+          no-toggleable-password="[[noToggleablePassword]]"
+          reenter-password="[[reenterPassword]]">
+        </login-fire-form>
 
-    <template is="dom-if" if={{!_showHorizontalDivider}}>
-      <div id="divider" class="verticalDivider">
-        <div>or</div>
-      </div>
+        <div class$="div [[_dividerStyle]]" hidden$="[[noDivider]]">
+          <span class="div__span">[[localize('lf-or')]]</span>
+        </div>
+
+        <login-fire-social
+          app-name="[[appName]]"
+          providers="[[providers]]"
+          user="{{_user}}"
+          signed-in="{{_signedIn}}"
+          status-known="{{_statusKnown}}"
+          no-sign-in="[[noSignIn]]"
+          no-sign-out="[[noSignOut]]"
+          redirect="[[redirect]]"
+          mini$="[[mini]]"
+          horizontal$="[[horizontal]]"
+          show-sign-up="{{showSignUp}}"
+          flat="{{flat}}"
+          locales-file="[[localesFile]]"
+          language="[[language]]"
+          google-scopes="[[googleScopes]]"
+          facebook-scopes="[[facebookScopes]]"
+          github-scopes="[[githubScopes]]"
+          debug="[[debug]]">
+        </login-fire-social>
+      </reverse-element>
     </template>
 
+    <iron-media-query query="(max-width: 650px)" query-matches="{{_isNarrow}}">
+    </iron-media-query>
   </template>
 
-  <template is="dom-if" if={{_showButtons}}>
-    <social-login-fire
-      id="socialLogin"
-      class="flex"
-      app-name="{{appName}}"
-      user="{{socialUser}}"
-      signed-in="{{socialSignedIn}}"
-      redirect="{{redirect}}"
-      anonymous="{{anonymous}}"
-      google="{{google}}"
-      facebook="{{facebook}}"
-      twitter="{{twitter}}"
-      github="{{github}}"
-      mini="{{mini}}"
-      horizontal="{{horizontal}}"
-      status-known="{{socialStatusKnown}}"
-    ></social-login-fire>
-  </template>
-
-</template>
-
-<script>
-    /**
-     * An element that allows simple configuration of email and social provider login with
-     * firebase.
-     *
-     * For email authentication only, use email-login-fire.
-     *
-     * For social provider authentication only, use social-login-fire.
-     *
-     * For both email and social provider authentication, use login-fire.
-     *
-     * Example:
-     * ```
-     * <firebase-app
-     *   name="demo"
-     *   api-key="API_KEY"
-     *   auth-domain="AUTH_DOMAIN"
-     *   database-url="DATABASE_URL"></firebase-app>
-     * <!-- A login-fire element allowing twitter, google and facebook login -->
-     * <login-fire app-name="demo" email-password twitter google facebook></login-fire>
-     * ```
-     *
-     *
-     * @demo demo/index.html
-     */
-    Polymer({
+  <script>
+  Polymer({
     is: 'login-fire',
-      properties: {
-        /**
-         * `appName` represents the name of the firebase-app that was instantiated
-         */
-        appName: {
-          type: String
-        },
-        /**
-         * `anonymous` represents whether to allow anonymous sign in
-         */
-        anonymous: {
-          type: Boolean,
-          value: false,
-        },
-        /**
-         * `github` represents whether to allow github sign in. See the [firebase console](https://console.firebase.google.com) Auth tab for configuration
-         */
-        github: {
-          type: Boolean,
-          value: false,
-        },
-        /**
-         * `twitter` represents whether to allow twitter sign in. See the [firebase console](https://console.firebase.google.com) Auth tab for configuration
-         */
-        twitter: {
-          type: Boolean,
-          value: false,
-        },
-        /**
-         * `facebook` represents whether to allow facebook sign in. See the [firebase console](https://console.firebase.google.com) Auth tab for configuration
-         */
-        facebook: {
-          type: Boolean,
-          value: false,
-        },
-        /**
-         * `google` represents whether to allow google sign in. See the [firebase console](https://console.firebase.google.com) Auth tab for configuration
-         */
-        google: {
-          type: Boolean,
-          value: false,
-        },
-        /**
-         * `emailPassword` represents whether to allow sign in with email and password. See the [firebase console](https://console.firebase.google.com) Auth tab for configuration
-         */
-        emailPassword: {
-          type: Boolean,
-          value: false,
-        },
-        /**
-         * `redirect` represents whether to use a redirect instead of a popup for signing in with the selected providers
-         */
-        redirect: {
-          type: Boolean,
-          value: false,
-        },
-        /**
-         * `user` represents the user object returned by the firebase-auth element
-         */
-        user: {
-          type: Object,
-          readOnly: true,
-          notify: true,
-          computed: "_computeUser(emailUser, socialUser)",
-          observer: "_userChanged",
-        },
-        /**
-         * `signedIn` represents the signed in state returned by the firebase-auth element
-         */
-        signedIn: {
-          type: Boolean,
-          readOnly: true,
-          notify: true,
-          computed: "_computeSignedIn(emailSignedIn, socialSignedIn)",
-        },
-        /**
-        * `statusKnown` represents the status known state returned by the firebase-auth element
-        */
-        statusKnown: {
-          type: Boolean,
-          readOnly: true,
-          notify: true,
-          computed: "_computeStatusKnown(emailStatusKnown, socialStatusKnown)",
-        },
-        /**
-         * `debug` represents if the debug region is shown
-         */
-        debug: {
-          type: Boolean,
-          value: false,
-        },
-        /**
-         * `reverse` represents whether to display the order of social buttons first, default shows email & password first
-         */
-        reverse: {
-          type: Boolean,
-          value: false,
-          observer: '_reverseChanged',
-        },
-        /**
-        * `allows to set custom password reset message `
-        */
-        passwordResetMessage: {
-          type: String,
-          value:  "Password reset email has been sent. Please check your inbox."
-        },
-        /**
-         * If true, will sign up a user who attempts to sign in with an account that doesn't already exist
-         */
-        autoSignUp: {
-          type: Boolean,
-          value: false
-        },
-        /**
-         * Displays mini social sign in buttons removing the "Sign in with" text
-         */
-        mini: {
-          type: Boolean,
-          value: false
-        },
-        /**
-         * Prefers a horizontally structured social login
-         */
-        horizontal: {
-          type: Boolean,
-          value: false,
-          observer: '_horizontalChanged'
-        },
-        /**
-         * If true, SignUp will be hidden.
-         */
-        noSignUp: {
-          type: Boolean,
-          value: false
-        },
-        _showDivider: {
-          type: Boolean,
-          computed: '_computeShowDivider(debug)'
-        },
-        _showButtons: {
-          type: Boolean,
-          computed: '_computeShowButtons(debug)'
-        },
-        _showHorizontalDivider: {
-          type: Boolean,
-          computed: '_computeShowHorizontalDivider(isNarrow, horizontal)'
-        }
+    behaviors: [Convoo.LoginFireCommonBehavior],
+
+    properties: {
+      /**
+       * Enables automatic sign-up on form if the user does not exist.
+       *
+       * @type {Boolean}
+       */
+      autoSignUp: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Prefers a horizontally structured social login.
+       *
+       * @type{Boolean}
+       */
+      horizontal: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Sets custom message displayed when use ask to reset its password.
+       *
+       * @type {String}
+       */
+      passwordResetMessage: {
+        type: String
+      },
+
+      /**
+       * Providers names. A list of the providers names, seperated by comma, to
+       * use for authentication. A button is displayed for each provider.
+       *
+       * Current accepted providers are:
+       *
+       * ```
+       * 'anonymous' (for signin anonymously)
+       * 'facebook'
+       * 'github'
+       * 'google'
+       * 'twitter'
+       * ```
+       *
+       * @type {String}
+       */
+      providers: {
+        type: String,
+        value: 'anonymous'
+      },
+
+      /**
+       * Displays mini social sign in buttons removing the "Sign in with" text
+       */
+      mini: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Hides the divider.
+       *
+       * @type {Boolean}
+       */
+      noDivider: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Displays social buttons first instead of the form. By default, the form
+       * is displayed first.
+       *
+       * @type{Boolean}
+       */
+      reverse: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Removes the view button on the password input
+       */
+      noToggleablePassword: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Adds another input to re-enter password in the sign up view
+       */
+      reenterPassword: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * GitHub scopes.
+       *
+       * @type {String}
+       */
+      githubScopes: {
+        type: String
+      },
+
+      /**
+       * Google scopes.
+       *
+       * @type {String}
+       */
+      googleScopes: {
+        type: String
+      },
+
+      /**
+       * Facebook scopes.
+       *
+       * @type {String}
+       */
+      facebookScopes: {
+        type: String
+      },
+
+      /**
+       * True if the element is too much narrow to be display horizontally.
+       *
+       * @type {Boolean}
+       */
+      _isNarrow: {
+        type: Boolean
+      },
+
+      /**
+       * Sets the divider in horizontal or vertical orientation.
+       *
+       * @type {String}
+       */
+      _dividerStyle: {
+        type: String,
+        computed: '_computeDividerStyle(_isNarrow, horizontal)'
+      }
     },
 
-      _reverseChanged: function(newVal, oldVal){
-        if (newVal){
-          this.classList.add("reverse");
-        } else {
-          this.classList.remove("reverse")
-        }
-      },
+    /**
+     * Signs the user out regardless the provider used for the sign-in.
+     */
+    signOut: function() {
+      this.$$('login-fire-social').signOut();
+    },
 
-      _computeShowHorizontalDivider: function(isNarrow, horizontal){
-        return isNarrow || horizontal;
-      },
-
-      _computeUser: function(emailUser, socialUser){
-        if(this.emailSignedIn){return emailUser;}
-        else if(this.socialSignedIn){return socialUser;}
-        else {return {};}
-      },
-      _computeSignedIn: function(emailSignedIn, socialSignedIn){
-        return emailSignedIn || socialSignedIn;
-      },
-      _computeStatusKnown: function(emailStatusKnown, socialStatusKnown){
-        return emailStatusKnown || socialStatusKnown;
-      },
-      _computeShowDivider: function(e){
-        return this.emailPassword && (this.google || this.facebook || this.twitter || this.github || this.anonymous);
-      },
-      _computeShowButtons: function(e){
-        return this.google || this.facebook || this.twitter || this.github || this.anonymous;
-      },
-      _userChanged: function(u){
-        if(typeof u !== 'undefined' && u != null){
-          if (!(Object.keys(u).length === 0 && u.constructor === Object)){
-            this.fire("signedin", u);
-          }
-        }
-      },
-      _horizontalChanged: function(newVal,oldVal){
-        if(newVal){
-          this.classList.add("vertical");
-          if(this.reverse){this.classList.add("vertical-reversed");}
-        } else {
-          this.classList.remove("vertical");
-          this.classList.remove("vertical-reversed");
-        }
-      },
-      /**
-       * Signs out the signed in user
-       */
-      signOut: function(){
-        this.$$("#emailLogin").signOut();
-        this.$$("#socialLogin").signOut();
-      },
-      attached: function(){
-        this._recalculateDividerClass++;
+    /**
+     * Signs the user in using the target provider. It's not possible to sign in
+     * using the provider "email" when only one button is displayed. Also, does
+     * nothing if a user is already signed in.
+     *
+     * @param  {String} provider name
+     */
+    signInWith: function(provider) {
+      if (this.signedIn) {
+        return;
       }
-    });
-</script>
+
+      if (provider === 'email') {
+        if (this._showOneButton) {
+          console.error("Can't sign in using provider \"email\" when only one button is displayed.");
+        } else {
+          this.$$('login-fire-form').signIn();
+        }
+      } else {
+        this.$$('login-fire-social').signInWith(provider);
+      }
+    },
+
+    /**
+     * Computes CSS class for the divider.
+     *
+     * @param  {Boolean} isNarrow
+     * @param  {Boolean} horizontal
+     * @return {String}            CSS class to set to the divider
+     */
+    _computeDividerStyle: function(isNarrow, horizontal) {
+      return (horizontal || isNarrow) ? 'div--horizontal' : 'div--vertical';
+    }
+  });
+  </script>
 </dom-module>

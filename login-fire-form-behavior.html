@@ -1,0 +1,132 @@
+<!--
+@license
+Copyright (c) 2016 Convoo All Rights Reserved.
+Use of this source code is governed by a MIT license that can be found in the
+LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./login-fire-common-behavior.html">
+<script>
+(function() {
+  'use strict';
+
+  window.Convoo = window.Convoo || {};
+
+  /**
+   * A behavior that allows an element using Firebase Auth to sign-in and sign-up
+   * a user with email address and password. If your element must be able to use
+   * federated identity providers only, you must implement the
+   * `LoginFireSocialBehavior` instead.
+   *
+   * @polymerBehavior Convoo.LoginFireFormBehavior
+   */
+  Convoo.LoginFireFormBehaviorImpl = {
+
+    properties: {
+      /**
+       * Toggles the form views. If `true`, the displayed view should be the
+       * sign-up view. Otherwise the sign-in view.
+       */
+      showResetPW: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * Removes the "show" button on the password input. When this attribute is
+       * `true`, the user is not able to show the password that they wrote into
+       * the input.
+       */
+      noToggleablePassword: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * Adds an input to the sign-up view for asking password confirmation.
+       */
+      reenterPassword: {
+        type: Boolean,
+        value: false
+      },
+      /**
+       * Prevents new users from signing up. When `true` the element can't signs
+       * up a new user.
+       */
+      noSignUp: {
+        type: Boolean,
+        value: false
+      }
+    },
+
+    /**
+     * Starts the sign-in process.
+     *
+     * @param  {String} email    address
+     * @param  {String} password
+     */
+    signIn: function(email, password) {
+      this.$.auth
+        .signInWithEmailAndPassword(email, password)
+        .then(this._fireEvent.bind(this))
+        .catch(this._fireError.bind(this));
+    },
+
+    /**
+     * Signs in or signs out a user. When a user is currently logged in the
+     * `signOut` method is called. When there is no user logged in, the `signIn`
+     * method is called.
+     *
+     * @param  {String} email    address
+     * @param  {String} password
+     */
+    signInOrOut: function(email, password) {
+      if (typeof this.user === 'undefined' || this.user == null) {
+        this.signIn(email, password);
+      } else {
+        this.signOut();
+      }
+    },
+
+    /**
+     * Starts the sign-up process. It requires the provider "email" and the two
+     * parameters `email` and `password`. The password must follow the format
+     * defined by Firebase Auth.
+     *
+     * @param  {String} email    address to use for creating the account
+     * @param  {String} password of the new account
+     */
+    signUp: function(email, password) {
+      if (this.provider === 'email' && !this.noSignUp) {
+        this.$.auth
+          .createUserWithEmailAndPassword(email, password)
+          .then(this._fireEvent.bind(this))
+          .catch(this._fireError.bind(this));
+      } else {
+        console.error('The provider "email" is required for sign up with ' +
+          'email address and password.');
+      }
+    },
+
+    /**
+     * Toggles the form views from the sign-in view to the sign-up view and vise
+     * versa.
+     */
+    toggleShowResetPW: function() {
+      if (this.showResetPW) {
+        this.showResetPW = false;
+        this.showSignUp = false
+      } else {
+        this.showResetPW = true;
+      }
+    }
+  };
+
+  /**
+   * @polymerBehavior
+   */
+  Convoo.LoginFireFormBehavior = [
+    Convoo.LoginFireCommonBehavior,
+    Convoo.LoginFireFormBehaviorImpl
+  ];
+
+})();
+</script>

@@ -1,0 +1,289 @@
+<!--
+@license
+Copyright (c) 2016 Convoo All Rights Reserved.
+Use of this source code is governed by a MIT license that can be found in the
+LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./login-fire-common-behavior.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="./login-fire-button.html">
+
+<!--
+A panel of buttons to authenticate a user with federated identity providers such as
+Google, Facebook, Twitter and GitHub.
+
+Basically a list of `login-fire-button`'s. Please see that component for more information.
+
+Example:
+```
+<firebase-app
+  name="myApp"
+  api-key="API_KEY"
+  auth-domain="AUTH_DOMAIN"
+  database-url="DATABASE_URL"></firebase-app>
+<login-fire-social app-name="myApp" providers="google, facebook, twitter, github, anonymous"></login-fire-social>
+```
+
+### Localization
+
+You can specify the following codes and language in a JSON file passed to the
+`localesFile` property to update the text used. Here are the defaults:
+
+```
+"en": {
+  "lf-signup-facebook": "Sign up with Facebook",
+  "lf-signup-google": "Sign up with Google",
+  "lf-signup-twitter": "Sign up with Twitter",
+  "lf-signup-github": "Sign up with GitHub",
+  "lf-signup-anonymous": "Sign up anonymously",
+  "lf-signin-facebook": "Sign in with Facebook",
+  "lf-signin-google": "Sign in with Google",
+  "lf-signin-twitter": "Sign in with Twitter",
+  "lf-signin-github": "Sign in with GitHub",
+  "lf-signin-anonymous": "Sign in anonymously"
+}
+```
+
+### Styling
+
+Style the buttons with CSS as you would a normal DOM element. The following
+custom properties and mixins are available:
+
+Custom property | Description | Default
+-- | -- | --
+`--login-fire-social` | Mixin applied on the panel | `{}`
+
+@customElement
+@polymer
+@demo demo/login-fire-social.html
+-->
+<dom-module id="login-fire-social">
+  <template>
+    <style>
+      :host {
+        width: 210px;
+        @apply --layout-vertical;
+        @apply --layout-center-center;
+        @apply --login-fire-social;
+      }
+
+      :host([horizontal]) {
+        @apply --layout-horizontal;
+        @apply --layout-wrap;
+        @apply --layout-around-justified;
+        max-width: inherit;
+        width: initial;
+        @apply --login-fire-social;
+      }
+
+      login-fire-button {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      :host([horizontal]) login-fire-button {
+        width: inherit;
+        min-width: 140px;
+        margin-bottom: 0;
+      }
+    </style>
+
+    <template is="dom-if" if="[[_showOneButton]]">
+      <login-fire-button
+        app-name="[[appName]]"
+        user="{{_user}}"
+        status-known="{{_statusKnown}}"
+        signed-in="{{_signedIn}}"
+        mini$="[[mini]]"
+        flat$="[[flat]]"
+        no-sign-in="[[noSignIn]]"
+        no-sign-out="[[noSignOut]]"
+        show-sign-up="{{showSignUp}}"
+        locales-file="[[localesFile]]"
+        language="[[language]]"
+        debug="[[debug]]">
+      </login-fire-button>
+    </template>
+
+    <template is="dom-if" if="[[!_showOneButton]]">
+      <template is="dom-repeat" items="{{_providers}}">
+        <login-fire-button
+          id="lfb[[item.id]]"
+          app-name="[[appName]]"
+          provider="[[item.id]]"
+          scopes="[[item.scopes]]"
+          user="{{_user}}"
+          status-known="{{_statusKnown}}"
+          signed-in="{{_signedIn}}"
+          mini$="[[mini]]"
+          flat$="[[flat]]"
+          redirect="[[redirect]]"
+          no-sign-in="[[noSignIn]]"
+          no-sign-out="[[noSignOut]]"
+          show-sign-up="{{showSignUp}}"
+          locales-file="[[localesFile]]"
+          language="[[language]]"
+          debug="[[debug]]">
+        </login-fire-button>
+      </template>
+    </template>
+
+  </template>
+
+  <script>
+  Polymer({
+    is: 'login-fire-social',
+
+    behaviors: [Convoo.LoginFireCommonBehavior],
+
+    properties: {
+
+      /**
+       * Mini buttons, yes or no.
+       *
+       * @type {Boolean}
+       */
+      mini: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Providers names. A list of the providers names, seperated by comma, to
+       * use for authentication. A button is displayed for each provider.
+       *
+       * Current accepted providers are:
+       *
+       * ```
+       * 'anonymous' (for signin anonymously)
+       * 'facebook'
+       * 'github'
+       * 'google'
+       * 'twitter'
+       * ```
+       *
+       * @type {String}
+       * @default 'anonymous'
+       */
+      providers: {
+        type: String,
+        value: 'anonymous'
+      },
+
+      /**
+       * The scopes that you want to access from GitHub sign in. Available
+       * scopes at https://developer.github.com/v3/oauth/#scopes
+       *
+       * @type {String}
+       */
+      githubScopes: {
+        type: String
+      },
+
+      /**
+       * The scopes that you want to access from Google sign in. Available
+       * scopes at https://developers.google.com/identity/protocols/googlescopes
+       * Make sure to enter full url.
+       *
+       * @type {String}
+       */
+      googleScopes: {
+        type: String
+      },
+
+      /**
+       * The scopes that you want to access from Facebook sign in. Available
+       * scopes at https://developers.facebook.com/docs/facebook-login/permissions
+       *
+       * @type {String}
+       */
+      facebookScopes: {
+        type: String
+      },
+
+      /**
+       * Authentication providers. A list of the providers to use for
+       * authentication. A button is displayed for each provider.
+       *
+       * @type {Array}
+       */
+      _providers: {
+        type: Array,
+        readOnly: true,
+        computed: '_computeProviders(providers)'
+      }
+    },
+
+    observers: [
+      '_scopesChanged(facebookScopes, githubScopes, googleScopes)'
+    ],
+
+    /**
+     * Signs the user out. The provider used for the sign-in has no incidence.
+     */
+    signOut: function() {
+      this.$$('login-fire-button').signOut();
+    },
+
+    /**
+     * Signs the user in using the target provider.
+     *
+     * @param  {String} provider name
+     */
+    signInWith: function(provider) {
+      var btn = this.$$('#lfb' + provider);
+      if (btn) {
+        btn.signIn();
+      }
+    },
+
+    /**
+     * Gets list of providers by names. It takes a list of provider names as
+     * string and builds an array with those providers in it.
+     *
+     * @param  {String} list of provider names
+     * @return {Array}       providers
+     */
+    _computeProviders: function(list) {
+      if (typeof list !== 'string' || list.length == 0) {
+        return [];
+      }
+
+      // String to Array.
+      list = list.replace(/[\s,]+/g, ',').split(',');
+
+      // Get providers.
+      var provider, providers = [];
+      for (var i = 0, l = list.length; i < l; i++) {
+        provider = Convoo._firebaseProviders[list[i]];
+        if (provider) {
+          providers.push(provider);
+        }
+      }
+      return providers;
+    },
+
+    /**
+     * Resets the OAuth provider when its scopes changed.
+     *
+     * @param  {String} facebookScopes to be set to the Facebook provider
+     * @param  {String} githubScopes   to be set to the GitHub provider
+     * @param  {String} googleScopes   to be set to the Google provider
+     */
+    _scopesChanged: function(facebookScopes, githubScopes, googleScopes) {
+      var scopes = {
+        'facebook': facebookScopes,
+        'github': githubScopes,
+        'google': googleScopes
+      };
+      this._providers.forEach(function(provider, index) {
+        if (provider.isSocialNetwork) {
+          provider.scopes = scopes[provider.id];
+          this.notifyPath('_providers.' + index + '.scopes');
+        }
+      }.bind(this));
+    }
+  });
+  </script>
+</dom-module>

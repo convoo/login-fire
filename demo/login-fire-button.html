@@ -1,0 +1,191 @@
+<!--
+@license
+Copyright (c) 2016 Convoo All Rights Reserved.
+Use of this source code is governed by a MIT license that can be found in the
+LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>login-fire-button demo</title>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../../polymerfire/firebase-app.html">
+  <link rel="import" href="../login-fire-button.html">
+
+  <style is="custom-style" include="demo-pages-shared-styles">
+    html {
+      font-family: Roboto, Ubuntu, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+    h2 {
+      color: #6294DD;
+      padding: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <h2>Google login-fire-button</h2>
+    <demo-snippet>
+      <template>
+        <dom-bind>
+          <template>
+            <div>user.id = {{user.uid}}</div>
+            <div>user.displayName = {{user.displayName}}</div>
+            <div>user.email = {{user.email}}</div>
+            <div>user.emailVerified = {{user.emailVerified}}</div>
+            <div>user.isAnonymous = {{user.isAnonymous}}</div>
+            <div>user.photoURL = {{user.photoURL}}
+              <img src$="{{user.photoURL}}" hidden="{{!user.photoURL}}" width="100px" height="100px">
+            </div>
+            <div>user.providerId = {{user.providerId}}</div>
+            <br>
+            <firebase-app name="googleLFBDemo" api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+              auth-domain="convoo-login-demo.firebaseapp.com" database-url="https://convoo-login-demo.firebaseio.com">
+            </firebase-app>
+
+            <!-- Google Sign-in button -->
+            <login-fire-button app-name="googleLFBDemo" user="{{user}}" provider="google"></login-fire-button>
+            <login-fire-button app-name="googleLFBDemo" user="{{user}}" provider="google" redirect></login-fire-button>
+            <login-fire-button app-name="googleLFBDemo" user="{{user}}" provider="google" mini></login-fire-button>
+            <login-fire-button app-name="googleLFBDemo" user="{{user}}" provider="google" mini flat></login-fire-button>
+            <login-fire-button app-name="googleLFBDemo" user="{{user}}" provider="google" mini debug></login-fire-button>
+            <login-fire-button app-name="googleLFBDemo" user="{{user}}" provider="google" no-sign-in></login-fire-button>
+          </template>
+        </dom-bind>
+      </template>
+    </demo-snippet>
+  </div>
+  <div>
+    <h2>Facebook login-fire-button</h2>
+    <demo-snippet>
+      <template>
+        <dom-bind>
+          <template>
+            <div>user.id = {{user.uid}}</div>
+            <div>user.displayName = {{user.displayName}}</div>
+            <div>user.email = {{user.email}}</div>
+            <div>user.emailVerified = {{user.emailVerified}}</div>
+            <div>user.isAnonymous = {{user.isAnonymous}}</div>
+            <div>user.photoURL = {{user.photoURL}}
+              <img src$="{{user.photoURL}}" hidden="{{!user.photoURL}}" width="100px" height="100px"> </div>
+            <div>user.providerId = {{user.providerId}}</div>
+            <br>
+            <firebase-app name="facebookLFBDemo" api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+              auth-domain="convoo-login-demo.firebaseapp.com" database-url="https://convoo-login-demo.firebaseio.com">
+            </firebase-app>
+
+            <!-- Facebook Sign-in button -->
+            <login-fire-button app-name="facebookLFBDemo" user="{{user}}" provider="facebook"></login-fire-button>
+            <login-fire-button app-name="facebookLFBDemo" user="{{user}}" provider="facebook"redirect></login-fire-button>
+            <login-fire-button app-name="facebookLFBDemo" user="{{user}}" provider="facebook"mini></login-fire-button>
+            <login-fire-button app-name="facebookLFBDemo" user="{{user}}" provider="facebook"mini flat></login-fire-button>
+            <login-fire-button app-name="facebookLFBDemo" user="{{user}}" provider="facebook"mini debug></login-fire-button>
+            <login-fire-button app-name="facebookLFBDemo" user="{{user}}" provider="facebook"no-sign-in></login-fire-button>
+          </template>
+        </dom-bind>
+      </template>
+    </demo-snippet>
+  </div>
+  <div>
+    <h2>Twitter login-fire-button</h2>
+    <demo-snippet>
+      <template>
+        <dom-bind>
+          <template>
+            <div>user.id = {{user.uid}}</div>
+            <div>user.displayName = {{user.displayName}}</div>
+            <div>user.email = {{user.email}}</div>
+            <div>user.emailVerified = {{user.emailVerified}}</div>
+            <div>user.isAnonymous = {{user.isAnonymous}}</div>
+            <div>user.photoURL = {{user.photoURL}}
+              <img src$="{{user.photoURL}}" hidden="{{!user.photoURL}}" width="100px" height="100px"> </div>
+            <div>user.providerId = {{user.providerId}}</div>
+            <br>
+            <firebase-app name="twitterLFBDemo" api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+              auth-domain="convoo-login-demo.firebaseapp.com" database-url="https://convoo-login-demo.firebaseio.com">
+            </firebase-app>
+
+            <!-- Twitter Sign-in button -->
+            <login-fire-button app-name="twitterLFBDemo" user="{{user}}" provider="twitter"></login-fire-button>
+            <login-fire-button app-name="twitterLFBDemo" user="{{user}}" provider="twitter" redirect></login-fire-button>
+            <login-fire-button app-name="twitterLFBDemo" user="{{user}}" provider="twitter" mini></login-fire-button>
+            <login-fire-button app-name="twitterLFBDemo" user="{{user}}" provider="twitter" mini flat></login-fire-button>
+            <login-fire-button app-name="twitterLFBDemo" user="{{user}}" provider="twitter" mini debug></login-fire-button>
+            <login-fire-button app-name="twitterLFBDemo" user="{{user}}" provider="twitter" no-sign-in></login-fire-button>
+          </template>
+        </dom-bind>
+      </template>
+    </demo-snippet>
+  </div>
+  <div>
+    <h2>GitHub login-fire-button</h2>
+    <demo-snippet>
+      <template>
+        <dom-bind>
+          <template>
+            <div>user.id = {{user.uid}}</div>
+            <div>user.displayName = {{user.displayName}}</div>
+            <div>user.email = {{user.email}}</div>
+            <div>user.emailVerified = {{user.emailVerified}}</div>
+            <div>user.isAnonymous = {{user.isAnonymous}}</div>
+            <div>user.photoURL = {{user.photoURL}}
+              <img src$="{{user.photoURL}}" hidden="{{!user.photoURL}}" width="100px" height="100px"> </div>
+            <div>user.providerId = {{user.providerId}}</div>
+            <br>
+            <firebase-app name="githubLFBDemo" api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+              auth-domain="convoo-login-demo.firebaseapp.com" database-url="https://convoo-login-demo.firebaseio.com">
+            </firebase-app>
+
+            <!-- GitHub Sign-in button -->
+            <login-fire-button app-name="githubLFBDemo" user="{{user}}" provider="github"></login-fire-button>
+            <login-fire-button app-name="githubLFBDemo" user="{{user}}" provider="github" redirect></login-fire-button>
+            <login-fire-button app-name="githubLFBDemo" user="{{user}}" provider="github" mini></login-fire-button>
+            <login-fire-button app-name="githubLFBDemo" user="{{user}}" provider="github" mini flat></login-fire-button>
+            <login-fire-button app-name="githubLFBDemo" user="{{user}}" provider="github" mini debug></login-fire-button>
+            <login-fire-button app-name="githubLFBDemo" user="{{user}}" provider="github" no-sign-in></login-fire-button>
+          </template>
+        </dom-bind>
+      </template>
+    </demo-snippet>
+  </div>
+  <div>
+    <h2>Anonymous login-fire-button</h2>
+    <demo-snippet>
+      <template>
+        <dom-bind>
+          <template>
+            <div>user.id = {{user.uid}}</div>
+            <div>user.displayName = {{user.displayName}}</div>
+            <div>user.email = {{user.email}}</div>
+            <div>user.emailVerified = {{user.emailVerified}}</div>
+            <div>user.isAnonymous = {{user.isAnonymous}}</div>
+            <div>user.photoURL = {{user.photoURL}}
+              <img src$="{{user.photoURL}}" hidden="{{!user.photoURL}}" width="100px" height="100px"> </div>
+            <div>user.providerId = {{user.providerId}}</div>
+            <br>
+            <firebase-app name="anonymousLFBDemo" api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+              auth-domain="convoo-login-demo.firebaseapp.com" database-url="https://convoo-login-demo.firebaseio.com">
+            </firebase-app>
+
+            <!-- Anonymous Sign-in button -->
+            <login-fire-button app-name="anonymousLFBDemo" user="{{user}}"></login-fire-button>
+            <login-fire-button app-name="anonymousLFBDemo" user="{{user}}" mini></login-fire-button>
+            <login-fire-button app-name="anonymousLFBDemo" user="{{user}}" mini flat></login-fire-button>
+            <login-fire-button app-name="anonymousLFBDemo" user="{{user}}" mini debug></login-fire-button>
+            <login-fire-button app-name="anonymousLFBDemo" user="{{user}}" no-sign-in></login-fire-button>
+          </template>
+        </dom-bind>
+      </template>
+    </demo-snippet>
+  </div>
+</body>
+
+</html>
