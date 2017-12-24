@@ -1,16 +1,17 @@
 {
   "name": "login-fire",
-  "version": "0.1.5",
+  "version": "1.0.0",
   "authors": [
-    "Will in China <email.will.in.china@gmail.com>",
-    "Saad Elbeleidy <sbeleidy90@gmail.com>"
+    "Convoo"
   ],
   "description": "An element that allows simple configuration of multiple provider login for firebase",
   "keywords": [
     "web-component",
     "polymer",
     "login",
-    "firebase"
+    "firebase",
+    "authentication",
+    "auth"
   ],
   "main": "login-fire.html",
   "license": "MIT",
