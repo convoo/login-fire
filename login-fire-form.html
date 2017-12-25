@@ -148,11 +148,12 @@ Example of a valid locales file:
     paper-icon-button {
       color: grey;
     }
-    paper-progress {
+    .btn-progress  {
       position: absolute;
       left: 0;
       bottom: 0;
       width: 100%;
+      @apply --login-fire-button-progress;
     }
     </style>
 
@@ -204,7 +205,7 @@ Example of a valid locales file:
         </paper-input>
         <paper-button raised$="[[!flat]]" type="submit" on-click="_signUp" class="btn--signup" disabled$="[[_inProgress]]">
           <span>[[localize('lf-signup-button')]]</span>
-          <paper-progress hidden$="[[!_inProgress]]" disabled$="[[!_inProgress]]" indeterminate></paper-progress>
+          <paper-progress class="btn-progress" hidden$="[[!_inProgress]]" disabled$="[[!_inProgress]]" indeterminate></paper-progress>
         </paper-button>
         <p class="signup-toggle">
           <span>[[localize('lf-already-have-account')]]</span>
@@ -222,7 +223,7 @@ Example of a valid locales file:
         </p>
         <paper-button raised$="[[!flat]]" type="submit" on-click="_signIn" class="btn--signin" disabled$="[[_inProgress]]">
           <span>[[localize('lf-signin-button')]]</span>
-          <paper-progress hidden$="[[!_inProgress]]" disabled$="[[!_inProgress]]" indeterminate></paper-progress>
+          <paper-progress class="btn-progress" hidden$="[[!_inProgress]]" disabled$="[[!_inProgress]]" indeterminate></paper-progress>
         </paper-button>
         <template is="dom-if" if="[[!noSignUp]]">
           <p class="signup-toggle">
@@ -238,7 +239,7 @@ Example of a valid locales file:
     <template is="dom-if" if="[[showResetPW]]">
       <paper-button raised$="[[!flat]]" type="submit" on-click="_resetPassword" class="btn--resetpw" disabled$="[[_inProgress]]">
         <span>[[localize('lf-resetpw-button')]]</span>
-        <paper-progress hidden$="[[!_inProgress]]" disabled$="[[!_inProgress]]" indeterminate></paper-progress>
+        <paper-progress class="btn-progress" hidden$="[[!_inProgress]]" disabled$="[[!_inProgress]]" indeterminate></paper-progress>
       </paper-button>
       <p>
         <paper-button class="link--reset-pw" on-click="toggleShowResetPW"
