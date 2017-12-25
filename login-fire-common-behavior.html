@@ -292,7 +292,14 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         type: Object,
         readOnly: true
       },
-      _progress: {
+
+      /**
+       * The _inProgress indicator shows whether a sign in or sign out process is currently running.
+       *
+       * @type {Boolean}
+       * @default false
+       */
+      _inProgress: {
         type: Boolean,
         value: false
       }
@@ -323,7 +330,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         console.debug('The element ' + this.is + (this.noSignOut ? ' cannot' : ' can') + ' sign out.');
       }
       if (!this.noSignOut && this.signedIn) {
-        this._progress = true;
+        // Set _inProgress flag to true when a signout is started
+        this._inProgress = true;
         this.$.auth.signOut().then(this._fireEvent.bind(this));
       }
     },
@@ -364,6 +372,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         console.debug(error);
       }
       this.fire('error', error);
+      // When an error event was fired, we have to set the _inProgress flag back to false
+      this._inProgress = false;
     },
 
     /**
@@ -395,6 +405,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
           console.debug('User signed out from', this.config.provider.name);
         }
       }
+      // When signin or signout event was fired, we have to set the _inProgress flag back to false
+      this._inProgress = false;
     },
 
     /**

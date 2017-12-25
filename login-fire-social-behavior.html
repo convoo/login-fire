@@ -53,7 +53,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      */
     signIn: function() {
       if (!this.noSignIn) {
-        this._progress = true;
+        // Set _inProgress flag to true when a signin is started
+        this._inProgress = true;
         if (this.debug) {
           console.log('Signing in...');
         }
@@ -79,6 +80,13 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      * method is called.
      */
     signInOrOut: function() {
+      // Skip processing of this method when we already have started a sign or signout process
+      if (this._inProgress) {
+        if (this.debug) {
+          console.log('Ignored click when already in progress');
+        }
+        return;
+      }
       if (typeof this.user === 'undefined' || this.user == null) {
         this.signIn();
       } else {
