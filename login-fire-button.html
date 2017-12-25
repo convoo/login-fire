@@ -143,11 +143,11 @@ custom properties and mixins are available:
       }
     </style>
 
-    <paper-button class$="btn btn--[[provider]] [[_miniClass]] [[_signOutClass]]" raised$="[[!flat]]" disabled="[[_computedButtonDisabled(_progress, disabled)]]">
+    <paper-button class$="btn btn--[[provider]] [[_miniClass]] [[_signOutClass]]" raised$="[[!flat]]" disabled$="[[_inProgress]]">
       <iron-icon class="btn__icon" icon="login-fire-icons:[[provider]]" hidden$="[[_hideIcon]]"></iron-icon>
       <iron-icon class="btn__icon" icon="login-fire-icons:logout" hidden$="[[!_hideIcon]]"></iron-icon>
       <span class="btn__text">[[_text]]</span>
-      <paper-progress hidden$="[[!_spinnerVisible]]" disabled$="[[!_spinnerVisible]]" indeterminate></paper-progress>
+      <paper-progress hidden$="[[!_inProgress]]" disabled$="[[!_inProgress]]" indeterminate></paper-progress>
     </paper-button>
 
     <firebase-auth id="auth"
@@ -213,23 +213,11 @@ custom properties and mixins are available:
       _text: {
         type: String,
         computed: '_computeButtonText(config.provider, showSignUp, noSignIn, noSignOut, signedIn, localize, language)'
-      },
-      /** True if the button can't be pressed */
-      disabled: {
-        type: Boolean,
-        value: false,
-      },
-      _spinnerVisible: {
-        type: Boolean,
-        computed: '_computeSpinnerVisible(_progress, disabled)'
       }
     },
 
     listeners: {
-      'click': 'signInOrOut',
-      'signedin': 'progressChanged',
-      'signedout': 'progressChanged',
-      'error': 'progressChanged'
+      'click': 'signInOrOut'
     },
 
     /**
@@ -296,17 +284,6 @@ custom properties and mixins are available:
         // User has account
         return localize('lf-signin-' + provider.id);
       }
-    },
-    progressChanged: function(event) {
-      this._progress = false;
-      console.log(event);
-      console.log('Sign in or sign out is complete');
-    },
-    _computedButtonDisabled: function(_progress, disabled) {
-      return _progress || disabled;
-    },
-    _computeSpinnerVisible: function(_progress, disabled) {
-      return _progress && !disabled;
     }
   });
   </script>
