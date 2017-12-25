@@ -291,6 +291,10 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       resources: {
         type: Object,
         readOnly: true
+      },
+      _progress: {
+        type: Boolean,
+        value: false
       }
     },
 
@@ -319,6 +323,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         console.debug('The element ' + this.is + (this.noSignOut ? ' cannot' : ' can') + ' sign out.');
       }
       if (!this.noSignOut && this.signedIn) {
+        this._progress = true;
         this.$.auth.signOut().then(this._fireEvent.bind(this));
       }
     },
