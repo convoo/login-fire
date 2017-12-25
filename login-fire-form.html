@@ -11,6 +11,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="./icons.html">
+<link rel="import" href="../paper-progress/paper-progress.html">
 
 <!--
 A pre-built login form to authenticate a user with email and password using the
@@ -147,6 +148,12 @@ Example of a valid locales file:
     paper-icon-button {
       color: grey;
     }
+    paper-progress {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+    }
     </style>
 
     <div class="msg msg--error" hidden$="[[!_lastError]]">
@@ -195,8 +202,10 @@ Example of a valid locales file:
           hidden$="[[!reenterPassword]]"
           required>
         </paper-input>
-        <paper-button raised$="[[!flat]]" type="submit" on-click="_signUp"
-          class="btn--signup">[[localize('lf-signup-button')]]</paper-button>
+        <paper-button raised$="[[!flat]]" type="submit" on-click="_signUp" class="btn--signup" disabled$="[[_inProgress]]">
+          <span>[[localize('lf-signup-button')]]</span>
+          <paper-progress hidden$="[[!_inProgress]]" disabled$="[[!_inProgress]]" indeterminate></paper-progress>
+        </paper-button>
         <p class="signup-toggle">
           <span>[[localize('lf-already-have-account')]]</span>
           <paper-button on-click="_toggleShowSignUp" tabindex="0"
@@ -211,8 +220,10 @@ Example of a valid locales file:
             on-click="toggleShowResetPW" tabindex="0" noink>
             [[localize('lf-resetpw-link')]]</paper-button>
         </p>
-        <paper-button raised$="[[!flat]]" type="submit" on-click="_signIn"
-          class="btn--signin">[[localize('lf-signin-button')]]</paper-button>
+        <paper-button raised$="[[!flat]]" type="submit" on-click="_signIn" class="btn--signin" disabled$="[[_inProgress]]">
+          <span>[[localize('lf-signin-button')]]</span>
+          <paper-progress hidden$="[[!_inProgress]]" disabled$="[[!_inProgress]]" indeterminate></paper-progress>
+        </paper-button>
         <template is="dom-if" if="[[!noSignUp]]">
           <p class="signup-toggle">
             <span>[[localize('lf-no-account')]]</span>
@@ -225,8 +236,10 @@ Example of a valid locales file:
     </template>
 
     <template is="dom-if" if="[[showResetPW]]">
-      <paper-button raised$="[[!flat]]" type="submit" on-click="_resetPassword"
-        class="btn--resetpw">[[localize('lf-resetpw-button')]]</paper-button>
+      <paper-button raised$="[[!flat]]" type="submit" on-click="_resetPassword" class="btn--resetpw" disabled$="[[_inProgress]]">
+        <span>[[localize('lf-resetpw-button')]]</span>
+        <paper-progress hidden$="[[!_inProgress]]" disabled$="[[!_inProgress]]" indeterminate></paper-progress>
+      </paper-button>
       <p>
         <paper-button class="link--reset-pw" on-click="toggleShowResetPW"
           tabindex="0" noink>[[localize('lf-resetpw-cancel-link')]]
@@ -441,12 +454,14 @@ Example of a valid locales file:
       this._cleanMessages();
       e = this.$$('#emailInput').validate()
       if (e) {
+        this._inProgress = true;
         this.$$('#auth').auth.sendPasswordResetEmail(this.email)
           .then(function() {
-            this.set('_lastMessage',
-              this.localize('lf-resetpw-success-message'));
+            this.set('_lastMessage', this.localize('lf-resetpw-success-message'));
+            this._inProgress = false;
           }.bind(this), function(error) {
             this.set('_lastError', error.message);
+            this._inProgress = false;
           }.bind(this));
       }
     },
