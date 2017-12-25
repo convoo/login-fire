@@ -131,11 +131,12 @@ custom properties and mixins are available:
         @apply --login-fire-btn-signout-hover;
       }
 
-      paper-progress {
+      .btn-progress {
         position: absolute;
         left: 0;
         bottom: 0;
         width: 100%;
+        @apply --login-fire-button-progress;
       }
 
       [hidden] {
@@ -147,7 +148,7 @@ custom properties and mixins are available:
       <iron-icon class="btn__icon" icon="login-fire-icons:[[provider]]" hidden$="[[_hideIcon]]"></iron-icon>
       <iron-icon class="btn__icon" icon="login-fire-icons:logout" hidden$="[[!_hideIcon]]"></iron-icon>
       <span class="btn__text">[[_text]]</span>
-      <paper-progress hidden$="[[!_inProgress]]" disabled$="[[!_inProgress]]" indeterminate></paper-progress>
+      <paper-progress class="btn-progress" hidden$="[[!_inProgress]]" disabled$="[[!_inProgress]]" indeterminate></paper-progress>
     </paper-button>
 
     <firebase-auth id="auth"
