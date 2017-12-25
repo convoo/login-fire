@@ -26,7 +26,8 @@
     "paper-icon-button": "PolymerElements/paper-icon-button#1 - 2",
     "iron-icon": "PolymerElements/iron-icon#1 - 2",
     "iron-iconset-svg": "PolymerElements/iron-iconset-svg#1 - 2",
-    "reverse-element": "convoo/reverse-element#^0.0.6"
+    "reverse-element": "convoo/reverse-element#^0.0.6",
+    "paper-progress": "^2.0.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#1 - 2",
