@@ -1,8 +1,8 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="../paper-button/paper-button.html">
-<link rel="import" href="../paper-input/paper-input.html">
-
+<link rel="import" href="../paper-input/paper-input-container.html">
+<link rel="import" href="../iron-input/iron-input.html">
 
 <dom-module id="email-login-fire">
 <template>
@@ -80,8 +80,18 @@
     <div class="emailPWMessage"></div>
   </div>
   <form on-submit="_signInEmailPW">
-    <paper-input id="emailInput" type="email" label="Email" value="{{email}}" validator="email-validator" error-message="Invalid email address" required auto-validate></paper-input>
-    <paper-input id="pwInput" type="password" label="Password" value="{{pw}}" required></paper-input>
+    <paper-input-container>
+      <label>Email</label>
+      <input class="paper-input-input" is="iron-input" type="email"
+        name="emailInput" aria-label="Email" bind-value="{{email}}"
+        aria-errormessage="Invalid email address" validator="email-validator"
+        required auto-validate>
+    </paper-input-container>
+    <paper-input-container>
+      <label>Password</label>
+      <input class="paper-input-input" is="iron-input" type="password"
+        name="pwInput" aria-label="Password" bind-value="{{pw}}" required>
+    </paper-input-container>
     <p><a href="#" id="reset" on-click="_resetPW">Reset password for entered email</a></p>
     <paper-button id="emailSignUp" type="submit" on-tap="_signUpEmailPW" hidden$="[[noSignUp]]">Sign Up</paper-button>
     <paper-button id="emailSignIn" type="submit" on-tap="_signInEmailPW">Sign In</paper-button>
@@ -174,7 +184,15 @@
           type: Boolean,
           notify: true
         },
-    },
+        /**
+         * Email input value.
+         */
+        email: String,
+        /**
+         * Password input value.
+         */
+        pw: String
+      },
       _userChanged: function(u){
         if(typeof u !== 'undefined' && u != null){
           if (!(Object.keys(u).length === 0 && u.constructor === Object)){
