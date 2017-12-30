@@ -454,9 +454,11 @@ Example of a valid locales file:
         this.$$('#auth').auth.sendPasswordResetEmail(this.email)
           .then(function() {
             this.set('_lastMessage', this.localize('lf-resetpw-success-message'));
-            this._inProgress = false;
           }.bind(this), function(error) {
             this.set('_lastError', error.message);
+          }.bind(this))
+          .finally(function(){
+            /* Set _inProgress back to false once everything is done */
             this._inProgress = false;
           }.bind(this));
       }
