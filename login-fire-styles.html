@@ -10,8 +10,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     .btn--anonymous {
       background-color: #303030;
       color: #ffffff;
-      --paper-progress-active-color: #303030;
-
+      --login-fire-progress-default-active-color: #303030;
     }
     .btn--anonymous:hover {
       background-color: #414040;
@@ -19,8 +18,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     .btn--facebook {
       background-color: #3b5999;
       color: #ffffff;
-      --paper-progress-active-color: #3b5999;
-
+      --login-fire-progress-default-active-color: #3b5999;
     }
     .btn--facebook:hover {
       background-color: #4265b0;
@@ -28,8 +26,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     .btn--github {
       color: black;
       background-color: #f5f5f5;
-      --paper-progress-active-color: black;
-
+      --login-fire-progress-default-active-color: black;
     }
     .btn--github:hover {
       background-color: #ffffff;
@@ -37,8 +34,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     .btn--google {
       color: black;
       background-color: #ffffff;
-      --paper-progress-active-color: black;
-
+      --login-fire-progress-default-active-color: black;
     }
     .btn--mini {
       max-width: 140px;
@@ -46,8 +42,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     .btn--twitter {
       background-color: #55acee;
       color: #ffffff;
-      --paper-progress-active-color: #55acee;
-
+      --login-fire-progress-default-active-color: #55acee;
     }
     .btn--twitter:hover {
       background-color: #5cb9ff;
@@ -58,6 +53,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       bottom: 0;
       width: 100%;
       border-radius: 0px 0px 3px 3px;
+      --paper-progress-active-color: var(--login-fire-progress-active-color, var(--login-fire-progress-default-active-color));
+      --paper-progress-container-color: var(--login-fire-progress-container-color, var(--login-fire-progress-default-container-color));
     }
     </style>
   </template>
