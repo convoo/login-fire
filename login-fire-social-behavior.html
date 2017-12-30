@@ -52,6 +52,13 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      * Starts the sign-in process using a federated identity provider.
      */
     signIn: function() {
+      // Skip processing of this method when we already have started a sign or signout process
+      if (this._inProgress) {
+        if (this.debug) {
+          console.log('Ignored signIn when already in progress');
+        }
+        return;
+      }
       if (!this.noSignIn) {
         // Set _inProgress flag to true when a signin is started
         this._inProgress = true;
@@ -80,13 +87,6 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      * method is called.
      */
     signInOrOut: function() {
-      // Skip processing of this method when we already have started a sign or signout process
-      if (this._inProgress) {
-        if (this.debug) {
-          console.log('Ignored click when already in progress');
-        }
-        return;
-      }
       if (typeof this.user === 'undefined' || this.user == null) {
         this.signIn();
       } else {

@@ -294,7 +294,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       },
 
       /**
-       * The _inProgress indicator shows whether a sign in or sign out process is currently running.
+       * Indicates if a sign in or sign out process is currently in progress.
        *
        * @type {Boolean}
        * @default false
@@ -328,6 +328,13 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     signOut: function() {
       if (this.debug) {
         console.debug('The element ' + this.is + (this.noSignOut ? ' cannot' : ' can') + ' sign out.');
+      }
+      // Skip processing of this method when we already have started a sign or signout process
+      if (this._inProgress) {
+        if (this.debug) {
+          console.log('Ignored signOut when already in progress');
+        }
+        return;
       }
       if (!this.noSignOut && this.signedIn) {
         // Set _inProgress flag to true when a signout is started
