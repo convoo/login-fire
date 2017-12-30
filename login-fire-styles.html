@@ -10,6 +10,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     .btn--anonymous {
       background-color: #303030;
       color: #ffffff;
+      --paper-progress-active-color: #303030;
+
     }
     .btn--anonymous:hover {
       background-color: #414040;
@@ -17,13 +19,17 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     .btn--facebook {
       background-color: #3b5999;
       color: #ffffff;
+      --paper-progress-active-color: #3b5999;
+
     }
     .btn--facebook:hover {
       background-color: #4265b0;
     }
     .btn--github {
       color: black;
-      background-color: #f5f5f5
+      background-color: #f5f5f5;
+      --paper-progress-active-color: black;
+
     }
     .btn--github:hover {
       background-color: #ffffff;
@@ -31,6 +37,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     .btn--google {
       color: black;
       background-color: #ffffff;
+      --paper-progress-active-color: black;
+
     }
     .btn--mini {
       max-width: 140px;
@@ -38,9 +46,18 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     .btn--twitter {
       background-color: #55acee;
       color: #ffffff;
+      --paper-progress-active-color: #55acee;
+
     }
     .btn--twitter:hover {
       background-color: #5cb9ff;
+    }
+    .btn-progress  {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      border-radius: 0px 0px 3px 3px;
     }
     </style>
   </template>
