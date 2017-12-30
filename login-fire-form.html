@@ -11,6 +11,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="./icons.html">
+<link rel="import" href="./login-fire-styles.html">
 <link rel="import" href="../paper-progress/paper-progress.html">
 
 <!--
@@ -80,7 +81,7 @@ Example of a valid locales file:
 -->
 <dom-module id="login-fire-form">
   <template>
-    <style>
+    <style include="login-fire-styles">
     :host {
       display: block;
       width: 210px;
@@ -148,13 +149,7 @@ Example of a valid locales file:
     paper-icon-button {
       color: grey;
     }
-    .btn-progress  {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      @apply --login-fire-button-progress;
-    }
+
     </style>
 
     <div class="msg msg--error" hidden$="[[!_lastError]]">
