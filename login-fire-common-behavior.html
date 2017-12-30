@@ -326,16 +326,18 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      * Starts the sign-out process.
      */
     signOut: function() {
-      if (this.debug) {
-        console.debug('The element ' + this.is + (this.noSignOut ? ' cannot' : ' can') + ' sign out.');
-      }
       // Skip processing of this method when we already have started a sign or signout process
       if (this._inProgress) {
         if (this.debug) {
-          console.log('Ignored signOut when already in progress');
+          console.debug('Ignored signOut when already in progress');
         }
         return;
       }
+
+      if (this.debug) {
+        console.debug('The element ' + this.is + (this.noSignOut ? ' cannot' : ' can') + ' sign out.');
+      }
+
       if (!this.noSignOut && this.signedIn) {
         // Set _inProgress flag to true when a signout is started
         this._inProgress = true;
