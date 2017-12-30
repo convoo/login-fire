@@ -109,14 +109,17 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     },
 
     /**
-     * Store Crendtials in Credentials API
-     * @param  {String} email    address
-     * @param  {String} password
-     */
-    storeCredentials: function(email, password) {
+    * Creates and store a new credential. A new credential is created using the given ID and password.
+    * Then, this credential is stored into the navigator credentials store.
+    *
+    * @param  {String} id the ID of the credential to be created
+    * @param  {String} password the password to be set to the credential for the given ID
+    * @return {Object} a promise that resolves when the browser has stored the id/password (or immediately if the Credentials API is not supported)
+    */
+    storeCredentials: function(id, password) {
       if (navigator.credentials) {
         var cred = new PasswordCredential({
-          id:       email,
+          id:       id,
           password: password
         });
         return navigator.credentials.store(cred);
