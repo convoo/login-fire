@@ -67,7 +67,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       this.$.auth
         .signInWithEmailAndPassword(email, password)
         .then(this._fireEvent.bind(this))
-        .then(() => this.storeCredentials(email, password))
+        .then(() => this._storeCredentialsPassword(email, password))
         .catch(this._fireError.bind(this));
     },
 
@@ -100,31 +100,11 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         this.$.auth
           .createUserWithEmailAndPassword(email, password)
           .then(this._fireEvent.bind(this))
-          .then(() => this.storeCredentials(email, password))
+          .then(() => this._storeCredentialsPassword(email, password))
           .catch(this._fireError.bind(this));
       } else {
         console.error('The provider "email" is required for sign up with ' +
           'email address and password.');
-      }
-    },
-
-    /**
-    * Creates and store a new credential. A new credential is created using the given ID and password.
-    * Then, this credential is stored into the navigator credentials store.
-    *
-    * @param  {String} id the ID of the credential to be created
-    * @param  {String} password the password to be set to the credential for the given ID
-    * @return {Object} a promise that resolves when the browser has stored the id/password (or immediately if the Credentials API is not supported)
-    */
-    storeCredentials: function(id, password) {
-      if (navigator.credentials) {
-        var cred = new PasswordCredential({
-          id:       id,
-          password: password
-        });
-        return navigator.credentials.store(cred);
-      } else {
-        return Promise.resolve();
       }
     },
 

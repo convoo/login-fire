@@ -330,53 +330,6 @@ Example of a valid locales file:
       'signedin': '_handleSignIn'
     },
 
-    observers: [
-      '_onAuthReady(_statusKnown)',
-    ],
-
-    _onAuthReady: function(ready) {
-
-      if (!(ready && navigator.credentials && navigator.credentials.preventSilentAccess && this.auto)) {
-        return;
-      }
-
-      // The new Credential Management API is available
-      if(this.debug) {
-        console.debug('Credential Management API available');
-      }
-
-      // User already signedIn, no need to retrieve credentials
-      if (this.signedIn) {
-        if (this.debug) {
-          console.debug('User is already signedIn, no need to call Credential Management API');
-        }
-        return;
-      }
-
-      navigator.credentials.get({
-        password: true,
-        mediation: 'silent'
-      }).then((cred) => {
-
-        if(this.debug) {
-          console.debug(`Credential found: ${cred}`);
-        }
-
-        // Ensure they're not empty or user already signedIn while fetching credentials
-        if (!cred || this.signedIn) {
-          return Promise.resolve();
-        }
-
-        if (cred.type === 'password') {
-          this.signIn(cred.id, cred.password);
-        } 
-      }, () => {
-        if(this.debug) {
-          console.debug('No Credentials found in the Credentials Management API');
-        }
-      });
-    },
-
     /**
      * Cleans message and error sections.
      */
