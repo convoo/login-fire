@@ -263,7 +263,7 @@ custom properties and mixins are available:
      */
     _computeButtonText: function(provider, showSignUp, noSignIn, noSignOut, signedIn, localize, language) {
       // User logged in.
-      if (noSignIn || (!noSignOut && signedIn)) {
+      if (noSignIn || (!noSignOut && signedIn) || !provider) {
         return localize('lf-signout');
       }
 
