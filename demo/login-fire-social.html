@@ -170,6 +170,37 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     </demo-snippet>
   </div>
 
+  <div class="vertical-section-container centered">
+    <h3>Signing Out</h3>
+    <demo-snippet id="signing-out-demo">
+      <template>
+        <dom-bind>
+          <template is="dom-bind">
+            <firebase-app name="signingOutDemo" api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+              auth-domain="convoo-login-demo.firebaseapp.com" database-url="https://convoo-login-demo.firebaseio.com">
+            </firebase-app>
+            <login-fire-social app-name="signingOutDemo" user="{{user}}"></login-fire-social>
+            <template is="dom-if" if="[[user]]">
+              <span>Is user anonymous? [[user.isAnonymous]]</span>
+              <br>
+              <br>
+              <button onclick="signout()">Sign-Out with native button?</button>
+            </template>
+            <script>
+              function signout() {
+                const demoSnippet = document.getElementById('signing-out-demo');
+                // NOTE: the login-fire-social element is outside of the demo-snippet's shadow root.
+                demoSnippet.querySelector('login-fire-social').$$('login-fire-button').signOut();
+                // You can also use:
+                // demoSnippet.querySelector('login-fire-social').signOut();
+              }
+            </script>
+          </template>
+        </dom-bind>
+      </template>
+    </demo-snippet>
+  </div>
+
 </body>
 
 </html>
