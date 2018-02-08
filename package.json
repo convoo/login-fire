@@ -1,0 +1,39 @@
+{
+  "name": "login-fire",
+  "version": "1.0.0",
+  "description": "Simple way to add authentication to your app using Firebase Auth.",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "commitizen": "^2.9.6",
+    "cz-conventional-changelog": "^2.1.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/convoo/login-fire.git"
+  },
+  "keywords": [
+    "login",
+    "auth",
+    "authentication",
+    "polymer",
+    "firebase",
+    "web-component"
+  ],
+  "author": "Convoo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/convoo/login-fire/issues"
+  },
+  "homepage": "https://github.com/convoo/login-fire#readme",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
