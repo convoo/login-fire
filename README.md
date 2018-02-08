@@ -229,9 +229,13 @@ Style the buttons with CSS as you would a normal DOM element. A few custom prope
 
 ## Contributing
 
-### Install the Polymer-CLI
+### Install Development Dependencies
 
-First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
+First, make sure you have [NPM](https://www.npmjs.com/) installed (locally or globally).
+
+```
+$ npm run install
+```
 
 ### Viewing Your Application
 
@@ -268,7 +272,7 @@ Your application is already set up to be tested via [web-component-tester](https
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -m 'Add some feature'`
+3. Commit your changes: `git cz`
 
 Optional but highly encouraged: Follow [this commit guide](https://conventionalcommits.org/)
 
