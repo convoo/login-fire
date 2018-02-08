@@ -1,4 +1,4 @@
-bower_components
+bower_components*
 build
 .idea
-/bower_components-1.x/
+/node_modules/
