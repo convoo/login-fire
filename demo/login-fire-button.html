@@ -46,13 +46,14 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
               <img src$="{{user.photoURL}}" hidden="{{!user.photoURL}}" width="100px" height="100px">
             </div>
             <div>user.providerId = {{user.providerId}}</div>
+            <div>inProgress = {{inProgress}}</div>
             <br>
             <firebase-app name="googleLFBDemo" api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
               auth-domain="convoo-login-demo.firebaseapp.com" database-url="https://convoo-login-demo.firebaseio.com">
             </firebase-app>
 
             <!-- Google Sign-in button -->
-            <login-fire-button app-name="googleLFBDemo" user="{{user}}" provider="google"></login-fire-button>
+            <login-fire-button app-name="googleLFBDemo" user="{{user}}" provider="google" in-progress="{{inProgress}}"></login-fire-button>
             <login-fire-button app-name="googleLFBDemo" user="{{user}}" provider="google" redirect></login-fire-button>
             <login-fire-button app-name="googleLFBDemo" user="{{user}}" provider="google" mini></login-fire-button>
             <login-fire-button app-name="googleLFBDemo" user="{{user}}" provider="google" mini flat></login-fire-button>
