@@ -64,7 +64,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      * @param  {String} password
      */
     signIn: function(email, password) {
-      this._inProgress = true;
+      this._setInProgress(true);
       this.$.auth
         .signInWithEmailAndPassword(email, password)
         .then(this._fireEvent.bind(this))
@@ -97,7 +97,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      */
     signUp: function(email, password) {
       if (this.provider === 'email' && !this.noSignUp) {
-        this._inProgress = true;
+        this._setInProgress(true);
         this.$.auth
           .createUserWithEmailAndPassword(email, password)
           .then(this._fireEvent.bind(this))

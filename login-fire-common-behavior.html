@@ -299,9 +299,11 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
        * @type {Boolean}
        * @default false
        */
-      _inProgress: {
+      inProgress: {
         type: Boolean,
-        value: false
+        value: false,
+        readOnly: true,
+        notify: true
       }
     },
 
@@ -327,7 +329,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      */
     signOut: function() {
       // Skip processing of this method when we already have started a sign or signout process
-      if (this._inProgress) {
+      if (this.inProgress) {
         if (this.debug) {
           console.debug('Ignored signOut when already in progress');
         }
@@ -339,8 +341,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       }
 
       if (!this.noSignOut && this.signedIn) {
-        // Set _inProgress flag to true when a signout is started
-        this._inProgress = true;
+        // Set inProgress flag to true when a signout is started
+        this._setInProgress(true);
         this.$.auth.signOut().then(this._fireEvent.bind(this));
       }
     },
@@ -381,8 +383,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         console.debug(error);
       }
       this.fire('error', error);
-      // When an error event was fired, we have to set the _inProgress flag back to false
-      this._inProgress = false;
+      // When an error event was fired, we have to set the inProgress flag back to false
+      this._setInProgress(false);
     },
 
     /**
@@ -414,8 +416,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
           console.debug('User signed out from', this.config.provider.name);
         }
       }
-      // When signin or signout event was fired, we have to set the _inProgress flag back to false
-      this._inProgress = false;
+      // When signin or signout event was fired, we have to set the inProgress flag back to false
+      this._setInProgress(false);
     },
 
     /**
