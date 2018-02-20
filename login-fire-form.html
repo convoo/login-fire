@@ -200,9 +200,9 @@ Example of a valid locales file:
           hidden$="[[!reenterPassword]]"
           required>
         </paper-input>
-        <paper-button raised$="[[!flat]]" type="submit" on-click="_signUp" class="btn--signup" disabled$="[[_inProgress]]">
+        <paper-button raised$="[[!flat]]" type="submit" on-click="_signUp" class="btn--signup" disabled$="[[inProgress]]">
           <span>[[localize('lf-signup-button')]]</span>
-          <paper-progress class="btn-progress" hidden$="[[!_inProgress]]" disabled$="[[!_inProgress]]" indeterminate></paper-progress>
+          <paper-progress class="btn-progress" hidden$="[[!inProgress]]" disabled$="[[!inProgress]]" indeterminate></paper-progress>
         </paper-button>
         <p class="signup-toggle">
           <span>[[localize('lf-already-have-account')]]</span>
@@ -218,9 +218,9 @@ Example of a valid locales file:
             on-click="toggleShowResetPW" tabindex="0" noink>
             [[localize('lf-resetpw-link')]]</paper-button>
         </p>
-        <paper-button raised$="[[!flat]]" type="submit" on-click="_signIn" class="btn--signin" disabled$="[[_inProgress]]">
+        <paper-button raised$="[[!flat]]" type="submit" on-click="_signIn" class="btn--signin" disabled$="[[inProgress]]">
           <span>[[localize('lf-signin-button')]]</span>
-          <paper-progress class="btn-progress" hidden$="[[!_inProgress]]" disabled$="[[!_inProgress]]" indeterminate></paper-progress>
+          <paper-progress class="btn-progress" hidden$="[[!inProgress]]" disabled$="[[!inProgress]]" indeterminate></paper-progress>
         </paper-button>
         <template is="dom-if" if="[[!noSignUp]]">
           <p class="signup-toggle">
@@ -234,9 +234,9 @@ Example of a valid locales file:
     </template>
 
     <template is="dom-if" if="[[showResetPW]]">
-      <paper-button raised$="[[!flat]]" type="submit" on-click="_resetPassword" class="btn--resetpw" disabled$="[[_inProgress]]">
+      <paper-button raised$="[[!flat]]" type="submit" on-click="_resetPassword" class="btn--resetpw" disabled$="[[inProgress]]">
         <span>[[localize('lf-resetpw-button')]]</span>
-        <paper-progress class="btn-progress" hidden$="[[!_inProgress]]" disabled$="[[!_inProgress]]" indeterminate></paper-progress>
+        <paper-progress class="btn-progress" hidden$="[[!inProgress]]" disabled$="[[!inProgress]]" indeterminate></paper-progress>
       </paper-button>
       <p>
         <paper-button class="link--reset-pw" on-click="toggleShowResetPW"
@@ -452,7 +452,7 @@ Example of a valid locales file:
       this._cleanMessages();
       e = this.$$('#emailInput').validate()
       if (e) {
-        this._inProgress = true;
+        this._setInProgress(true);
         this.$$('#auth').auth.sendPasswordResetEmail(this.email)
           .then(function() {
             this.set('_lastMessage', this.localize('lf-resetpw-success-message'));
@@ -460,8 +460,8 @@ Example of a valid locales file:
             this.set('_lastError', error.message);
           }.bind(this))
           .finally(function(){
-            /* Set _inProgress back to false once everything is done */
-            this._inProgress = false;
+            /* Set inProgress back to false once everything is done */
+            this._setInProgress(false);
           }.bind(this));
       }
     },
