@@ -169,6 +169,7 @@ localesFile property to update the text used. Here are the defaults:
           language="[[language]]"
           debug="[[debug]]"
           no-toggleable-password="[[noToggleablePassword]]"
+          no-sign-up="[[noSignUp]]"
           reenter-password="[[reenterPassword]]">
         </login-fire-form>
 
@@ -292,6 +293,16 @@ localesFile property to update the text used. Here are the defaults:
        * Removes the view button on the password input
        */
       noToggleablePassword: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * If sign up suggestion should be visible.
+       *
+       * @type {Boolean}
+       */
+       noSignUp: {
         type: Boolean,
         value: false
       },
