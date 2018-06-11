@@ -68,6 +68,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       this.$.auth
         .signInWithEmailAndPassword(email, password)
         .then(this._fireEvent.bind(this))
+        .then(() => this._storeCredentialsPassword(email, password))
         .catch(this._fireError.bind(this));
     },
 
@@ -101,6 +102,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         this.$.auth
           .createUserWithEmailAndPassword(email, password)
           .then(this._fireEvent.bind(this))
+          .then(() => this._storeCredentialsPassword(email, password))
           .catch(this._fireError.bind(this));
       } else {
         console.error('The provider "email" is required for sign up with ' +

@@ -200,6 +200,17 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       },
 
       /**
+       * Automatically sign in the user with credentials stored in
+       * Credentials API
+       *
+       * @type {Boolean}
+       */
+      auto: {
+        type: Boolean,
+        value: true
+      },
+
+      /**
        * Prevents the element from signing out. It means, if this attribute is
        * `true`, the `signOut` method has no effect.
        *
@@ -331,6 +342,11 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         this._setInProgress(true);
         this.$.auth.signOut().then(this._fireEvent.bind(this));
       }
+
+      // Ensure the auto sign-in won’t happen until next time the user enables auto sign-in
+      if (navigator.credentials) {
+        navigator.credentials.preventSilentAccess();
+      }
     },
 
     /**
@@ -430,6 +446,91 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         console.debug('StatusKnown changed for', newVal);
       }
       this._setStatusKnown(newVal);
+
+      if(newVal) {
+        this._retrieveCredentialFromCredentialAPI().then((cred) => {
+          if (this.debug) {
+            console.debug(`Credential found: ${cred}`);
+          }
+          this.signIn(cred.id, cred.password);
+        }).catch((err) => {
+          if (this.debug) {
+            console.debug(err);
+          }
+        });
+      }
+    },
+
+    /**
+    * Retrieve credentials from Credential API (browser)
+    *
+    * @return {Object} a promise that resolves with the id/password stored in the browser
+    */
+    _retrieveCredentialFromCredentialAPI: function() {
+      return new Promise((resolve, reject) => {
+        
+        if (!(navigator.credentials && navigator.credentials.preventSilentAccess && this.auto)) {
+          return reject('Credential API: unavailable with this browser');
+        }
+
+        // User already signedIn, no need to retrieve credentials
+        if (this.signedIn) {
+          return reject('Credential API: User is already signedIn');
+        }
+
+        // The new Credential Management API is available
+        if (this.debug) {
+          console.debug('Credential API: available, calling...');
+        }
+
+        navigator.credentials.get({
+          password: true
+        }).then((cred) => {
+
+          // Ensure they're not empty 
+          if (!cred) {
+            return reject('Credential API: cred not found');
+          }
+
+          // Ensure user is not already signedIn while fetching credentials
+          if (this.signedIn) {
+            return reject('Credential API: User is already signedIn after fetch');
+          }
+
+          if (cred.type === 'password') {
+            return resolve({
+              id: cred.id,
+              password: cred.password
+            });
+          }
+        }, () => {
+          return reject('Credential API: cred not found');
+        });
+      });
+    },
+
+    /**
+    * Creates and store a new credential. A new credential is created using the given ID and password.
+    * Then, this credential is stored into the navigator credentials store.
+    *
+    * @param  {String} id the ID of the credential to be created
+    * @param  {String} password the password to be set to the credential for the given ID
+    * @return {Object} a promise that resolves when the browser has stored the id/password (or immediately if the Credentials API is not supported)
+    */
+    _storeCredentialsPassword: function (id, password) {
+      if (navigator.credentials) {
+        var cred = new PasswordCredential({
+          id: id,
+          password: password
+        });
+        if(this.debug) {
+          console.debug(`Calling Credentials API to store credentials with id : ${id}`);
+        }
+        return navigator.credentials.store(cred);
+      } else {
+        console.debug('Credentials API is not available to store credentials...');
+        return Promise.resolve();
+      }
     },
 
     /**
