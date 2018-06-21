@@ -1,0 +1,148 @@
+<!--
+@license
+Copyright (c) 2016 Convoo All Rights Reserved.
+Use of this source code is governed by a MIT license that can be found in the
+LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>login-fire-button demo</title>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../../paper-toggle-button/paper-toggle-button.html">
+  <link rel="import" href="../paper-social-button.html">
+
+  <style is="custom-style" include="demo-pages-shared-styles">
+    html {
+      font-family: Roboto, Ubuntu, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    h2 {
+      color: #6294DD;
+      padding: 15px;
+    }
+
+    span {
+      margin-right: 20px;
+    }
+
+    paper-toggle-button {
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div>
+    <h2>Default</h2>
+    <demo-snippet>
+      <template>
+        <dom-bind id="demo">
+          <template is="dom-bind">
+            <span>Disabled</span><paper-toggle-button name="disabled" active="{{disabled}}"></paper-toggle-button><br><br>
+            <span>Mini</span><paper-toggle-button name="mini" active="{{mini}}"></paper-toggle-button><br><br>
+            <span>Flat</span><paper-toggle-button name="flat" active="{{flat}}"></paper-toggle-button><br><br>
+            <paper-social-button provider="[[p1]]" disabled$="[[disabled]]" mini$="[[mini]]" flat$="[[flat]]" on-tap="alert"></paper-social-button>
+            <paper-social-button provider="[[p2]]" disabled$="[[disabled]]" mini$="[[mini]]" flat$="[[flat]]" on-tap="alert"></paper-social-button>
+            <paper-social-button provider="[[p3]]" disabled$="[[disabled]]" mini$="[[mini]]" flat$="[[flat]]" on-tap="alert"></paper-social-button>
+            <paper-social-button provider="[[p4]]" disabled$="[[disabled]]" mini$="[[mini]]" flat$="[[flat]]" on-tap="alert"></paper-social-button>
+            <paper-social-button provider="[[p5]]" disabled$="[[disabled]]" mini$="[[mini]]" flat$="[[flat]]" on-tap="alert"></paper-social-button>
+            <script>
+              demo.p1 = {
+                id: 'anonymous',
+                name: 'Anonymous'
+              };
+              demo.p2 = {
+                id: 'google',
+                name: 'Google'
+              };
+              demo.p3 = {
+                id: 'facebook',
+                name: 'Facebook'
+              };
+              demo.p4 = {
+                id: 'github',
+                name: 'GitHub'
+              };
+              demo.p5 = {
+                id: 'twitter',
+                name: 'Twitter'
+              };
+              demo.alert = function(event) {
+                let provider = event.target.provider;
+                window.alert(`${provider.name} button clicked!`);
+              }
+            </script>
+          </template>
+      </dom-bind>
+      </template>
+    </demo-snippet>
+  </div>
+
+  <div>
+    <h2>Signing in/up/out</h2>
+    <demo-snippet>
+      <template>
+        <dom-bind id="demo2">
+          <template is="dom-bind">
+            <span>Show sign-up</span><paper-toggle-button name="showSignUp" active="{{showSignUp}}"></paper-toggle-button><br><br>
+            <span>Show sign-out</span><paper-toggle-button name="showSignOut" active="{{showSignOut}}"></paper-toggle-button><br><br>
+            <paper-social-button provider="[[p]]" show-sign-out$="[[showSignOut]]" show-sign-up$="[[showSignUp]]"></paper-social-button>
+            <script>
+              demo2.p = {
+                id: 'anonymous',
+                name: 'Anonymous'
+              };
+            </script>  
+          </template>
+      </dom-bind>
+      </template>
+    </demo-snippet>
+  </div>
+
+  <div>
+    <h2>Customized style</h2>
+    <demo-snippet>
+      <template>
+        <dom-bind id="demo3">
+          <template is="dom-bind">
+            <custom-style>
+              <style is="custom-style">
+                paper-social-button.custom {
+                  --login-fire-button-anonymous: {
+                    background-color: transparent;
+                    color: transparent;
+                    border: dashed 1px lightgray;
+                  };
+                  --login-fire-button-anonymous-hover: {
+                    background-color: antiquewhite;
+                    color: burlywood;
+                    border: none;
+                  };
+                }
+              </style>
+            </custom-style>
+            <paper-social-button class="custom" provider="[[p]]"></paper-social-button>
+            <script>
+              demo3.p = {
+                id: 'anonymous',
+                name: 'Anonymous'
+              };
+            </script>  
+          </template>
+      </dom-bind>
+      </template>
+    </demo-snippet>
+  </div>
+
+</body>
+
+</html>

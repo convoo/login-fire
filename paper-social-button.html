@@ -1,0 +1,354 @@
+<!--
+@license
+Copyright (c) 2016 Convoo All Rights Reserved.
+Use of this source code is governed by a MIT license that can be found in the
+LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./localize-behavior.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../paper-progress/paper-progress.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="./login-fire-styles.html">
+<link rel="import" href="./icons.html">
+
+<!--
+A paper-button that integrates social medias icons and styles.
+
+Example:
+```
+<paper-social-button provider="{'id': 'facebook', 'name': 'Facebook'}" on-tap="signIn"></paper-social-button>
+<paper-social-button provider="{'id': 'google', 'name': 'Google'}" on-tap="signIn" mini></paper-social-button>
+<paper-social-button provider="{'id': 'twitter', 'name': 'Twitter'}" on-tap="signIn" mini flat></paper-social-button>
+```
+
+### Styling
+
+Style the buttons with CSS as you would a normal DOM element. The following
+custom properties and mixins are available:
+
+| Custom property | Description | Default
+| -- | -- | --
+| `--login-fire-button` | Mixin applied on the button | `{}`
+| `--login-fire-button-anonymous` | Mixin applied on the anonymous button | `{}`
+| `--login-fire-button-anonymous-hover` | Mixin applied on the anonymous button when mouve hovers it | `{}`
+| `--login-fire-button-facebook` | Mixin applied on the Facebook button | `{}`
+| `--login-fire-button-facebook-hover` | Mixin applied on the Facebook button when mouve hovers it | `{}`
+| `--login-fire-button-github` | Mixin applied on the GitHub button | `{}`
+| `--login-fire-button-github-hover` | Mixin applied on the GitHub button when mouve hovers it | `{}`
+| `--login-fire-button-google` | Mixin applied on the Google button | `{}`
+| `--login-fire-button-google-hover` | Mixin applied on the Google button when mouve hovers it | `{}`
+| `--login-fire-button-icon` | Mixin applied on the icon of the button | `{}`
+| `--login-fire-button-text` | Mixin applied on the text of the button | `{}`
+| `--login-fire-button-twitter` | Mixin applied on the Twitter button | `{}`
+| `--login-fire-button-twitter-hover` | Mixin applied on the Twitter button when mouve hovers it | `{}`
+| `--login-fire-btn-signout` | Mixin applied to the sign-out button | `{}`
+| `--login-fire-btn-signout-hover` | Mixin applied to the sign-out button when mouve hovers it | `{}`
+| `--login-fire-progress-active-color` | The color that is applied to the paper-progress bar as active color | `--google-green-500`
+| `--login-fire-progress-container-color` | The color that is applied to the paper-progress-container | `--google-grey-300`
+
+@customElement
+@polymer
+@demo demo/paper-social-button.html
+-->
+
+<dom-module id="paper-social-button">
+  <template>
+    <style include="login-fire-styles">
+      :host {
+        display: inline-block;
+        @apply --login-fire-button;
+      }
+      .btn {
+        text-align: left;
+        text-transform: none;
+        min-height: 40px;
+        display: flex;
+        @apply --login-fire-button;
+      }
+      .btn--google {
+        @apply --login-fire-button-google;
+      }
+      .btn--google:hover {
+        @apply --login-fire-button-google-hover;
+      }
+      .btn--twitter {
+        @apply --login-fire-button-twitter;
+      }
+      .btn--twitter:hover {
+        @apply --login-fire-button-twitter-hover;
+      }
+      .btn--facebook {
+        @apply --login-fire-button-facebook;
+      }
+      .btn--facebook:hover {
+        @apply --login-fire-button-facebook-hover;
+      }
+      .btn--github {
+        @apply --login-fire-button-github;
+      }
+      .btn--github:hover {
+        @apply --login-fire-button-github-hover;
+      }
+      .btn--anonymous {
+        @apply --login-fire-button-anonymous;
+      }
+      .btn--anonymous:hover {
+        @apply --login-fire-button-anonymous-hover;
+      }
+      .btn__icon {
+        width: 30px;
+        height: 16px;
+        @apply --login-fire-button-icon;
+      }
+      .btn__text {
+        text-align: center;
+        width: 100%;
+        overflow-x: auto;
+        text-overflow: ellipsis;
+        @apply --login-fire-button-text;
+      }
+      .btn--signed-out {
+        background-color: transparent;
+        color: grey;
+        text-align: center;
+        @apply --login-fire-btn-signout;
+      }
+      .btn--signed-out:hover {
+        background-color: lightgray;
+        @apply --login-fire-btn-signout-hover;
+      }
+      .btn:not([mini]) {
+        min-width: 150px;
+      }
+      [mini] {
+        max-width: 120px;
+        min-width: 80px;
+      }
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+
+    <paper-button class$="btn [[_providerClass]]" on-tap="__retargetingEvent" mini$="[[mini]]" raised$="[[!flat]]" disabled$="[[disabled]]">
+      <iron-icon class="btn__icon" icon="login-fire-icons:[[_iconName]]"></iron-icon>
+      <span class="btn__text">[[_text]]</span>
+      <paper-progress class="btn-progress" hidden$="[[!showProgressBar]]" disabled$="[[!showProgressBar]]" indeterminate></paper-progress>
+    </paper-button>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'paper-social-button',
+
+      behaviors: [
+        Convoo.LocalizeBehavior
+      ],
+
+      properties: {
+        /**
+         * Mini format, yes or no.
+         *
+         * @type {Boolean}
+         */
+        mini: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * Button disabled, yes or no.
+         * 
+         * @type {Boolean}
+         */
+        disabled: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * Flat button, yes or no.
+         *
+         * @type {Boolean}
+         */
+        flat: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * Auth provider. The list of auth providers available is defined in the
+         * *Convoo._firebaseProviders* property inside the
+         * <a href="./#Convoo.LoginFireCommonBehavior">Convoo.LoginFireCommonBehavior</a>.
+         * 
+         * @type {{id: String, name: String, isSocialNetwork: Boolean, scopes: String}}
+         */
+        provider: {
+          type: Object,
+          value: null
+        },
+
+        /**
+         * Shows the sign-up button (when `true`). The `showSignOut` property
+         * prevails over this one.
+         * 
+         * @type {Boolean}
+         */
+        showSignUp: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * Shows the sign-out button (when `true`). It prevails over the
+         * `showSignUp` property.
+         * 
+         * @type {Boolean}
+         */
+        showSignOut: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * Shows a progress bar at the bottom of the button.
+         * 
+         * @type {Boolean}
+         */
+        showProgressBar: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * Defines if the provider icon must be hidden or not.
+         *
+         * @type {Boolean}
+         */
+        _iconName: {
+          type: Boolean,
+          computed: '_computeIconName(provider, showSignOut, disabled)'
+        },
+
+        /**
+         * CSS class added when the button has mini format.
+         *
+         * @type {String}
+         */
+        _miniClass: {
+          type: String,
+          computed: '_computeMiniClass(mini)'
+        },
+
+        /**
+         * CSS class added when the log-out button is shown.
+         *
+         * @type {String}
+         */
+        _providerClass: {
+          type: String,
+          computed: '_computeProviderClass(provider, showSignOut, disabled)'
+        },
+
+        /**
+         * Button text.
+         *
+         * @type {String}
+         */
+        _text: {
+          type: String,
+          computed: '_computeButtonText(provider, showSignUp, showSignOut, localize, mini, language)'
+        }
+      },
+
+      /**
+       * The provider logo is shown when the user can sign in and is not yet signed
+       * in or when they can not sign out. It is hidden otherwise.
+       *
+       * @param  {Boolean} showSignOut   Tells if the sign-out view must be shown
+       * @return {Boolean}               The icon name to be displayed next to
+       * the button text.
+       */
+      _computeIconName: function(provider, showSignOut) {
+        if (showSignOut || !provider) {
+          return 'logout';
+        }
+        if (this.disabled && provider.id == 'google') {
+          return 'google-grey';
+        }
+        return provider.id;
+      },
+
+      /**
+       * Computes the CSS class to add according to the mini format of the
+       * element.
+       *
+       * @param  {Boolean} isMini Tells if the button is in mini format
+       * @return {String}         A CSS class name to add on the button to turn
+       * it in mini format.
+       */
+      _computeMiniClass: function(isMini) {
+        return isMini ? 'btn--mini' : '';
+      },
+
+      /**
+       * Computes the CSS class to add when the user is currently signed in.
+       *
+       * @param  {Boolean} showSignOut  Tells if the sign-out view must be shown
+       * @return {String}               A CSS class name to add on the button to
+       * display its sign-out view.
+       */
+      _computeProviderClass: function(provider, showSignOut) {
+        if (this.disabled) {
+          return '';
+        }
+        if (showSignOut || !provider) {
+          return 'btn--signed-out';
+        }
+        return `btn--${provider.id}`;
+      },
+
+      /**
+       * Computes the text to be displayed inside the button.
+       *
+       * @param  {{id: String, name: String, isSocialNetwork: Boolean, scopes: String}} provider Used for the authentication
+       * @param  {Boolean} showSignUp   Tells if the sign-up view must be shown
+       * @param  {Boolean} showSignOut  Tells if the sign-out view must be shown
+       * @param  {Function} localize    Function from the Polymer.AppLocalizeBehavior behavior
+       * @param  {Boolean} isMini       Tells if the mode "mini" is enabled
+       * @return {String}               The text to be displayed inside the button.
+       */
+      _computeButtonText: function(provider, showSignUp, showSignOut, localize, isMini) {
+        // User logged in.
+        if (showSignOut || !provider) {
+          return localize('lf-signout');
+        }
+
+        // User not logged in and mini format.
+        if (isMini) {
+          return provider.name;
+        }
+
+        return localize(`lf-sign${showSignUp ? 'up': 'in'}-${provider.id}`);
+      },
+
+      /**
+       * Retargets native event. It normalizes events fired by replaceing the
+       * original target (that can be a child of the paper-social-button) by the
+       * `paper-social-button` itself.
+       * 
+       * @param {Object} event  The event to be retargeted
+       */
+      __retargetingEvent: function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (!this.disabled) {
+          this.dispatchEvent(new Event(event.type, Object.assign({}, event, {
+            target: this,
+          })));
+        }
+      },
+
+    });
+  </script>
+</dom-module>

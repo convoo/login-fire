@@ -14,7 +14,7 @@
   },
   "scripts": {
     "install": "npm install && bower install",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "polymer test",
     "release": "standard-version",
     "release:patch": "standard-version --release-as patch",
     "release:minor": "standard-version --release-as minor",

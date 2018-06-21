@@ -1,0 +1,113 @@
+<!doctype html>
+
+<html>
+
+<head>
+  <title>paper-social-button test</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+  <link rel="import" src="../../test-fixture/test-fixture.html">
+
+  <!-- import providers -->
+  <link rel="import" href="../login-fire-common-behavior.html">
+  <link rel="import" href="../paper-social-button.html">
+</head>
+
+<body>
+
+  <test-fixture id="Default">
+    <template>
+        <paper-social-button></paper-social-button>
+    </template>
+  </test-fixture>
+
+  <script>
+    describe('Behavior Audit - Fixture: Default', function() {
+      let button;
+
+      beforeEach(() => {
+        button = fixture('Default');
+        button.provider = Convoo._firebaseProviders['anonymous'];
+      });
+
+      it('Should contain the provider name in its text', () => {
+        // Anonymous.
+        expect(button.provider.id).to.be.equal('anonymous');
+        expect(button._text).to.be.equal('Sign in anonymously');
+        // Google.
+        button.provider = Convoo._firebaseProviders['google'];
+        expect(button.provider.id).to.be.equal('google');
+        expect(button._text).to.be.equal('Sign in with Google');
+        // Facebook.
+        button.provider = Convoo._firebaseProviders['facebook'];
+        expect(button.provider.id).to.be.equal('facebook');
+        expect(button._text).to.be.equal('Sign in with Facebook');
+        // GitHub.
+        button.provider = Convoo._firebaseProviders['github'];
+        expect(button.provider.id).to.be.equal('github');
+        expect(button._text).to.be.equal('Sign in with GitHub');
+        // Twitter.
+        button.provider = Convoo._firebaseProviders['twitter'];
+        expect(button.provider.id).to.be.equal('twitter');
+        expect(button._text).to.be.equal('Sign in with Twitter');
+      });
+
+      it('Should display only the provider name in mini mode', () => {
+        button.mini = true;
+        for (const id in Convoo._firebaseProviders) {
+          if (Convoo._firebaseProviders.hasOwnProperty(id)) {
+            const provider = Convoo._firebaseProviders[id];
+            button.provider = provider;
+            expect(button._text).to.be.equal(provider.name);
+          }
+        }
+      });
+
+      it('Should natively support English, French and German', () => {
+        button.language = 'de';
+        expect(button._text).to.be.equal('Anonym anmelden');
+        button.language = 'en';
+        expect(button._text).to.be.equal('Sign in anonymously');
+        button.language = 'fr';
+        expect(button._text).to.be.equal('Se connecter anonymement');
+      });
+
+      it('Should display a progress bar when "showProgressBar" is true', () => {
+        let progressBar = (button.shadowRoot || button).querySelector('paper-progress');
+        expect(progressBar.indeterminate).to.be.true;
+        expect(progressBar.hidden).to.be.true;
+        expect(progressBar.disabled).to.be.true;
+        button.showProgressBar = true;
+        expect(progressBar.hidden).to.be.false;
+        expect(progressBar.disabled).to.be.false;
+      });
+
+      it('Should show sign-up when it\'s asked', () => {
+        expect(button._text).to.contain('Sign in');
+        button.showSignUp = true;
+        expect(button._text).to.contain('Sign up');
+      });
+
+      it('Should show sign-out when it\'s asked', () => {
+        expect(button._text).to.contain('Sign in');
+        button.showSignOut = true;
+        expect(button._text).to.contain('Sign out');
+      });
+
+      it('Should prioritize sign-out over sign-up', () => {
+        button.showSignUp = true;
+        button.showSignOut = true;
+        expect(button._text).to.contain('Sign out');
+      });
+    });
+
+    a11ySuite('Default', [], () => {
+      button = fixture('Default');
+      button.provider = Convoo._firebaseProviders['anonymous'];
+    });
+  </script>
+</body>
+
+</html>

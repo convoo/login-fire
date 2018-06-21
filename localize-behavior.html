@@ -1,0 +1,69 @@
+<!--
+@license
+Copyright (c) 2016 Convoo All Rights Reserved.
+Use of this source code is governed by a MIT license that can be found in the
+LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="./locales.html">
+<script>
+  (function() {
+    'use strict';
+
+    window.Convoo = window.Convoo || {};
+
+    /**
+     * Behavior that brings localization ability to an element.
+     * 
+     * @polymerBehavior Convoo.LocalizeBehavior
+     */
+    Convoo.LocalizeBehaviorImpl = {
+
+      properties: {
+        /**
+         * Sets the language to use.
+         *
+         * @type {String}
+         */
+        language: {
+          type: String,
+          value: 'en'
+        },
+
+        /**
+         * Path to an external file containing locales. If the value is set, the
+         * target file will be used instead of the default one _("locales.html")_.
+         *
+         * The target file must be in JSON format. Be sure the file is kept
+         * during the build of your project. By default, the Polymer build pipe
+         * loses JSON files during the optimization.
+         *
+         * For more detail about the file format, please read the
+         * <a href="https://github.com/PolymerElements/app-localize-behavior">AppLocalizeBehavior</a>
+         * documentation.
+         *
+         * @type {String}
+         */
+        localesFile: {
+          type: String
+        },
+      },
+
+      attached: function() {
+        // Load locales file for i18n.
+        if (this.localesFile && typeof this.localesFile !== 'undefined') {
+          this.loadResources(this.resolveUrl(this.localesFile));
+        } else {
+          this.set('resources', window.Convoo._locales);
+        }
+      }
+    };
+
+    Convoo.LocalizeBehavior = [
+      Polymer.AppLocalizeBehavior,
+      Convoo.LocalizeBehaviorImpl
+    ];
+
+  }());
+</script>
