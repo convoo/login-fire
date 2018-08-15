@@ -44,7 +44,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
        */
       _oauthProvider: {
         type: Object,
-        computed: '_computeOAuthProvider(provider, scopes)'
+        computed: '_computeOAuthProvider(config.provider, scopes)'
       }
     },
 
@@ -59,25 +59,25 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         }
         return;
       }
-      if (!this.noSignIn) {
-        // Set inProgress flag to true when a signin is started
-        this._setInProgress(true);
+      if (!this.signedIn && !this.noSignIn) {
         if (this.debug) {
           console.log('Signing in...');
         }
-        if (this.provider === 'anonymous') {
-          this.$.auth.signInAnonymously()
-            .then(this._fireEvent.bind(this))
-            .catch(this._fireError.bind(this));
-        } else if (this.redirect) {
-          this.$.auth.signInWithRedirect(this._oauthProvider)
-            .then(this._fireEvent.bind(this))
-            .catch(this._fireError.bind(this));
-        } else {
-          this.$.auth.signInWithPopup(this._oauthProvider)
-            .then(this._fireEvent.bind(this))
-            .catch(this._fireError.bind(this));
-        }
+        this._setInProgress(true);
+        this.__injectFirebaseAuth()
+          .then(auth => {
+            if (!!auth.user) {
+              return auth.user;
+            }
+            if (this.provider === 'anonymous') {
+              return auth.signInAnonymously();
+            }
+            return this.redirect ?
+              auth.signInWithRedirect(this._oauthProvider) :
+              auth.signInWithPopup(this._oauthProvider);
+          })
+          .then(() => this._setInProgress(false))
+          .catch(resp => this._fireError(resp));
       }
     },
 
@@ -98,15 +98,14 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      * Creates a new federated identity provider instance according to the given
      * ID.
      *
-     * @param  {String} id      of federated identity provider to be created
-     * @param  {String} scopes  to be set
-     * @return {Object}         federated identity provider instance according
+     * @param  {String} provider  the provider that will be used for authentication
+     * @param  {String} scopes    to be set
+     * @return {Object}           federated identity provider instance according
      * to the given ID.
      */
-    _computeOAuthProvider: function(id, scopes) {
-      var provider = Convoo._firebaseProviders[id.toLowerCase()];
+    _computeOAuthProvider: function(provider, scopes) {
       var oauthProvider;
-      if (provider.isSocialNetwork) {
+      if (provider && provider.isSocialNetwork) {
         oauthProvider = new firebase.auth[provider.name + 'AuthProvider']();
         if (provider.scopes) {
           oauthProvider.addScope(provider.scopes);

@@ -6,6 +6,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 -->
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../polymerfire/firebase-auth.html">
+<link rel="import" href="./localize-behavior.html">
 <link rel="import" href="./login-fire-form-behavior.html">
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
@@ -253,7 +254,11 @@ Example of a valid locales file:
   <script>
   Polymer({
     is: 'login-fire-form',
-    behaviors: [Convoo.LoginFireFormBehavior],
+
+    behaviors: [
+      Convoo.LocalizeBehavior,
+      Convoo.LoginFireFormBehavior
+    ],
 
     properties: {
       /**

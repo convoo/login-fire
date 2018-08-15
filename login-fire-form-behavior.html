@@ -65,10 +65,11 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      */
     signIn: function(email, password) {
       this._setInProgress(true);
-      this.$.auth
-        .signInWithEmailAndPassword(email, password)
-        .then(this._fireEvent.bind(this))
-        .catch(this._fireError.bind(this));
+      this.__injectFirebaseAuth()
+        .then(auth => !!auth.user ? auth.user :
+          auth.signInWithEmailAndPassword(email, password))
+        .then(() => this._setInProgress(false))
+        .catch(resp => this._fireError(resp));
     },
 
     /**
@@ -98,10 +99,9 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     signUp: function(email, password) {
       if (this.provider === 'email' && !this.noSignUp) {
         this._setInProgress(true);
-        this.$.auth
-          .createUserWithEmailAndPassword(email, password)
-          .then(this._fireEvent.bind(this))
-          .catch(this._fireError.bind(this));
+        this.$.auth.createUserWithEmailAndPassword(email, password)
+          .then(() => this._setInProgress(false))
+          .catch(resp => this._fireError(resp));
       } else {
         console.error('The provider "email" is required for sign up with ' +
           'email address and password.');

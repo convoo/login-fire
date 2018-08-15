@@ -5,8 +5,7 @@ Use of this source code is governed by a MIT license that can be found in the
 LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 -->
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
-<link rel="import" href="./locales.html">
+<link rel="import" href="../polymerfire/firebase-auth.html">
 <script>
 (function() {
   'use strict';
@@ -111,26 +110,6 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       },
 
       /**
-       * Flat button, yes or not.
-       *
-       * @type {Boolean}
-       */
-      flat: {
-        type: Boolean,
-        value: false
-      },
-
-      /**
-       * Sets the language to use.
-       *
-       * @type {String}
-       */
-      language: {
-        type: String,
-        value: 'en'
-      },
-
-      /**
        * ID of the federated identity provider to use. The list of available
        * providers is located at `Convoo._firebaseProviders`.
        *
@@ -222,24 +201,6 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       },
 
       /**
-       * Path to an external file containing locales. If the value is set, the
-       * target file will be used instead of the default one _("locales.html")_.
-       *
-       * The target file must be in JSON format. Be sure the file is kept
-       * during the build of your project. By default, the Polymer build pipe
-       * loses JSON files during the optimization.
-       *
-       * For more detail about the file format, please read the
-       * <a href="https://github.com/PolymerElements/app-localize-behavior">AppLocalizeBehavior</a>
-       * documentation.
-       *
-       * @type {String}
-       */
-      localesFile: {
-        type: String
-      },
-
-      /**
        * `True` if a user is authenticated, otherwise `false`.
        *
        * @type {Boolean}
@@ -265,9 +226,11 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
        * `user`.
        *
        * @type {Object}
+       * @default null
        */
       _user: {
         type: Object,
+        value: null,
         observer: '_userChanged'
       },
 
@@ -292,14 +255,41 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         value: false,
         readOnly: true,
         notify: true
-      }
+      },
+
+      /**
+       * When this attribute is `true`, the element tries to log the user in
+       * right after have been attached to the DOM if and only if the user was
+       * signed in when they left the application.
+       * 
+       * @type {Boolean}
+       * @default false
+       */
+      auto: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Reference to a private instance of FirebaseAuth element.
+       * 
+       * @type {Object}
+       */
+      _auth: Object
     },
+
+    observers: [
+      '_fireEvent(_user, inProgress)'
+    ],
 
     attached: function() {
       if (this.localesFile && typeof this.localesFile !== 'undefined') {
         this.loadResources(this.resolveUrl(this.localesFile));
       } else {
         this.set('resources', window.Convoo._locales);
+      }
+      if (this.auto) {
+        this.__injectFirebaseAuth();
       }
     },
 
@@ -314,7 +304,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      * Starts the sign-out process.
      */
     signOut: function() {
-      // Skip processing of this method when we already have started a sign or signout process
+      // Skip processing of this method when we already have started a signin or signout process
       if (this.inProgress) {
         if (this.debug) {
           console.debug('Ignored signOut when already in progress');
@@ -323,13 +313,14 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       }
 
       if (this.debug) {
-        console.debug('The element ' + this.is + (this.noSignOut ? ' cannot' : ' can') + ' sign out.');
+        console.debug(`The element ${this.is} can${this.noSignOut ? 'not' : ''} sign out.`);
       }
 
       if (!this.noSignOut && this.signedIn) {
         // Set inProgress flag to true when a signout is started
         this._setInProgress(true);
-        this.$.auth.signOut().then(this._fireEvent.bind(this));
+        this._auth.signOut()
+          .then(() => this._setInProgress(false));
       }
     },
 
@@ -369,41 +360,40 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
         console.debug(error);
       }
       this.fire('error', error);
-      // When an error event was fired, we have to set the inProgress flag back to false
       this._setInProgress(false);
     },
 
     /**
      * Fires an event for signaling the user is signed-in or signed-out.
      *
-     * @param  {Object} response from Firebase Auth
+     * @param {Object} newUser        the new representation of the user
+     * @param {inProgress} inProgress the status of the sign-in/sign-out process
      */
-    _fireEvent: function(response) {
-      if (this.debug) {
-        console.debug('Firing event');
+    _fireEvent: function(newUser, inProgress) {
+      if (inProgress || newUser == this.user) {
+        return;
       }
-      if (response) {
-        var user = response.user || response;
-        var credential = response.credential;
-        this.fire('signedin', {
-          user: user,
-          credential: credential
-        });
-        if (this.debug) {
-          console.debug('User signed in with', this.config.provider.name);
-          console.debug({
-            user: user,
-            credential: credential
-          });
-        }
-      } else {
-        this.fire('signedout');
+      this._setUser(newUser);
+      // Signed out.
+      if (!this.user) {
         if (this.debug) {
           console.debug('User signed out from', this.config.provider.name);
+          console.debug('Firing event');
         }
+        this.fire('signedout');
+        return;
       }
-      // When signin or signout event was fired, we have to set the inProgress flag back to false
-      this._setInProgress(false);
+      // Signed in.
+      if (this.debug) {
+        console.debug('User signed in with', this.config.provider.name);
+        console.debug({
+          user: this.user
+        });
+        console.debug('Firing event');
+      }
+      this.fire('signedin', {
+        user: this.user
+      });
     },
 
     /**
@@ -449,8 +439,45 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
       if (this.debug && typeof oldVal !== 'undefined') {
         console.debug('User changed for', newVal);
       }
-      this._setUser(newVal);
-    }
+    },
+
+    /**
+     * Creates a new FirebaseAuth element and adds it into the shadow root of the
+     * element. Does nothing if a FirebaseAuth element is already present.
+     * 
+     * @return {Promise} a promise that resolve the FirebaseAuth element of the
+     * component implementing this behavior.
+     */
+    __injectFirebaseAuth: function() {
+      return new Promise((resolve, reject) => {
+        const shadowRoot = this.shadowRoot || this.shadyRoot;
+        this._auth = shadowRoot.querySelector('firebase-auth');
+        if (!this._auth) {
+          this._auth = this.__newFirebaseAuth(this.provider);
+          shadowRoot.appendChild(this._auth);
+        }
+        resolve(this._auth);
+      });
+    },
+
+    /**
+     * Creates a new instance of the FirebaseAuth element. This instance will
+     * link its "user", "status-known" and "signed-in" properties to the
+     * according properties (which the same names) of the element who called
+     * this method.
+     * 
+     * @return {HTMLElement} new instance of the FirebaseAuth element.
+     */
+    __newFirebaseAuth: function(provider) {
+      const fa = document.createElement('firebase-auth');
+      fa.id = 'auth';
+      fa.appName = this.appName;
+      fa.provider = provider;
+      fa.addEventListener('user-changed', event => this.set('_user', event.detail.value));
+      fa.addEventListener('status-known-changed', event => this.set('_statusKnown', event.detail.value));
+      fa.addEventListener('signed-in-changed', event => this.set('_signedIn', event.detail.value));
+      return fa;
+    },
 
     /**
      * Fired when Firebase returns an error.
@@ -477,7 +504,6 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
    * @polymerBehavior
    */
   Convoo.LoginFireCommonBehavior = [
-    Polymer.AppLocalizeBehavior,
     Convoo.LoginFireCommonBehaviorImpl
   ];
 }());

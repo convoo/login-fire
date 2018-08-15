@@ -1,0 +1,68 @@
+<!doctype html>
+
+<html>
+
+<head>
+  <title>login-fire-button test</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+  <link rel="import" src="../../test-fixture/test-fixture.html">
+
+  <link rel="import" href="../../polymerfire/firebase-app.html">
+  <link rel="import" href="../login-fire-button.html">
+</head>
+
+<body>
+
+  <firebase-app
+    name="loginFireButtonTest"
+    api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+    auth-domain="convoo-login-demo.firebaseapp.com"
+    database-url="https://convoo-login-demo.firebaseio.com">
+  </firebase-app>
+
+  <test-fixture id="Default">
+    <template>
+      <login-fire-button app-name="loginFireButtonTest" debug></login-fire-button>
+    </template>
+  </test-fixture>
+
+  <script>
+    describe('Behavior Audit - Fixture: Default', function() {
+      let button;
+
+      beforeEach(() => {
+        button = fixture('Default');
+      });
+
+      it('Should be able to log a user in', (done) => {
+        button.addEventListener('signedin', function() {
+          expect(button.user).to.not.be.null;
+          expect(button.user.isAnonymous).to.be.true;
+          expect(button.user.uid).to.not.be.null;
+          done();
+        });
+        button.signIn();
+      });
+
+      it('Should be able to log a user out', (done) => {
+        button.addEventListener('signedin', function() {
+          button.signOut();
+        });
+        button.addEventListener('signedout', function() {
+          expect(button.user).to.be.null;
+          done();
+        });
+        button.signIn();
+      });
+    });
+
+    a11ySuite('Default', [], () => {
+      button = fixture('Default');
+    });
+  </script>
+</body>
+
+</html>

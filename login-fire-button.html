@@ -5,13 +5,9 @@ Use of this source code is governed by a MIT license that can be found in the
 LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 -->
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./paper-social-button.html">
 <link rel="import" href="./login-fire-social-behavior.html">
-<link rel="import" href="../polymerfire/firebase-auth.html">
-<link rel="import" href="../paper-button/paper-button.html">
-<link rel="import" href="./login-fire-styles.html">
-<link rel="import" href="../iron-icon/iron-icon.html">
-<link rel="import" href="./icons.html">
-<link rel="import" href="../paper-progress/paper-progress.html">
+<link rel="import" href="./localize-behavior.html">
 
 <!--
 A button to authenticate a user with a federated identity provider such as Google, Facebook, Twitter or GitHub.
@@ -38,28 +34,7 @@ Example:
 
 ### Styling
 
-Style the buttons with CSS as you would a normal DOM element. The following
-custom properties and mixins are available:
-
-| Custom property | Description | Default
-| -- | -- | --
-| `--login-fire-button` | Mixin applied on the button | `{}`
-| `--login-fire-button-anonymous` | Mixin applied on the anonymous button | `{}`
-| `--login-fire-button-anonymous-hover` | Mixin applied on the anonymous button when mouve hovers it | `{}`
-| `--login-fire-button-facebook` | Mixin applied on the Facebook button | `{}`
-| `--login-fire-button-facebook-hover` | Mixin applied on the Facebook button when mouve hovers it | `{}`
-| `--login-fire-button-github` | Mixin applied on the GitHub button | `{}`
-| `--login-fire-button-github-hover` | Mixin applied on the GitHub button when mouve hovers it | `{}`
-| `--login-fire-button-google` | Mixin applied on the Google button | `{}`
-| `--login-fire-button-google-hover` | Mixin applied on the Google button when mouve hovers it | `{}`
-| `--login-fire-button-icon` | Mixin applied on the icon of the button | `{}`
-| `--login-fire-button-text` | Mixin applied on the text of the button | `{}`
-| `--login-fire-button-twitter` | Mixin applied on the Twitter button | `{}`
-| `--login-fire-button-twitter-hover` | Mixin applied on the Twitter button when mouve hovers it | `{}`
-| `--login-fire-btn-signout` | Mixin applied to the sign-out button | `{}`
-| `--login-fire-btn-signout-hover` | Mixin applied to the sign-out button when mouve hovers it | `{}`
-| `--login-fire-progress-active-color` | The color that is applied to the paper-progress bar as active color | `--google-green-500`
-| `--login-fire-progress-container-color` | The color that is applied to the paper-progress-container | `--google-grey-300`
+See the "Styling" section of the `paper-social-button` element documentation.
 
 @customElement
 @polymer
@@ -67,97 +42,29 @@ custom properties and mixins are available:
 -->
 <dom-module id="login-fire-button">
   <template>
-    <style include="login-fire-styles">
-      :host {
-        display: inline-block;
-        @apply --login-fire-button;
-      }
-      .btn {
-        text-align: left;
-        text-transform: none;
-        min-height: 40px;
-        display: flex;
-        @apply --login-fire-button;
-      }
-      .btn--google{
-        @apply --login-fire-button-google;
-      }
-      .btn--google:hover{
-        @apply --login-fire-button-google-hover;
-      }
-      .btn--twitter{
-        @apply --login-fire-button-twitter;
-      }
-      .btn--twitter:hover{
-        @apply --login-fire-button-twitter-hover;
-      }
-      .btn--facebook{
-        @apply --login-fire-button-facebook;
-      }
-      .btn--facebook:hover{
-        @apply --login-fire-button-facebook-hover;
-      }
-      .btn--github{
-        @apply --login-fire-button-github;
-      }
-      .btn--github:hover{
-        @apply --login-fire-button-github-hover;
-      }
-      .btn--anonymous{
-        @apply --login-fire-button-anonymous;
-      }
-      .btn--anonymous:hover{
-        @apply --login-fire-button-anonymous-hover;
-      }
-      .btn__icon {
-        padding-left: 8px;
-        width: 30px;
-        height: 16px;
-        @apply --login-fire-button-icon;
-      }
-      .btn__text {
-        text-align: center;
-        width: 100%;
-        @apply --login-fire-button-text;
-      }
-      .btn__signed-out{
-        background-color: transparent;
-        color: grey;
-        text-align: center;
-        width: 170px;
-        @apply --login-fire-btn-signout;
-      }
-
-      .btn__signed-out:hover {
-        background-color: lightgray;
-        @apply --login-fire-btn-signout-hover;
-      }
-
-      [hidden] {
-        display: none !important;
-      }
-    </style>
-
-    <paper-button class$="btn btn--[[provider]] [[_miniClass]] [[_signOutClass]]" raised$="[[!flat]]" disabled$="[[inProgress]]">
-      <iron-icon class="btn__icon" icon="login-fire-icons:[[provider]]" hidden$="[[_hideIcon]]"></iron-icon>
-      <iron-icon class="btn__icon" icon="login-fire-icons:logout" hidden$="[[!_hideIcon]]"></iron-icon>
-      <span class="btn__text">[[_text]]</span>
-      <paper-progress class="btn-progress" hidden$="[[!inProgress]]" disabled$="[[!inProgress]]" indeterminate></paper-progress>
-    </paper-button>
-
-    <firebase-auth id="auth"
-      app-name="[[appName]]"
-      provider="[[provider]]"
-      user="{{_user}}"
-      status-known="{{_statusKnown}}"
-      signed-in="{{_signedIn}}">
-    </firebase-auth>
+    <paper-social-button
+      provider="[[config.provider]]"
+      no-sign-in="[[noSignIn]]"
+      no-sign-out="[[noSignOut]]"
+      language="[[language]]"
+      show-sign-out$="[[_signedIn]]"
+      show-sign-up$="[[showSignUp]]"
+      show-progress-bar$="[[inProgress]]"
+      flat$="[[flat]]"
+      mini$="[[mini]]"
+      disabled$="[[inProgress]]"
+      on-tap="signInOrOut">
+    </paper-social-button>
   </template>
 
   <script>
   Polymer({
     is: 'login-fire-button',
-    behaviors: [Convoo.LoginFireSocialBehavior],
+
+    behaviors: [
+      Convoo.LocalizeBehavior,
+      Convoo.LoginFireSocialBehavior
+    ],
 
     properties: {
       /**
@@ -171,113 +78,13 @@ custom properties and mixins are available:
       },
 
       /**
-       * Defines if the provider icon must be hidden or not.
+       * Flat button, yes or not.
        *
        * @type {Boolean}
        */
-      _hideIcon: {
+      flat: {
         type: Boolean,
-        computed: '_computeHideIcon(noSignIn, noSignOut, signedIn)'
-      },
-
-      /**
-       * CSS class added when the button has mini format.
-       *
-       * @type {String}
-       */
-      _miniClass: {
-        type: String,
-        computed: '_computeMiniClass(mini)'
-      },
-
-      /**
-       * CSS class added when the log-out button is shown.
-       *
-       * @type {String}
-       */
-      _signOutClass: {
-        type: String,
-        computed: '_computeSignOutClass(noSignIn, noSignOut, signedIn)'
-      },
-
-      /**
-       * Button text.
-       *
-       * @type {String}
-       */
-      _text: {
-        type: String,
-        computed: '_computeButtonText(config.provider, showSignUp, noSignIn, noSignOut, signedIn, localize, language)'
-      }
-    },
-
-    listeners: {
-      'click': 'signInOrOut'
-    },
-
-    /**
-     * The provider logo is shown when the user can sign in and is not yet signed
-     * in or when they can not sign out. It is hidden otherwise.
-     *
-     * @param  {Boolean} noSignIn   is `false` if a user can sign in
-     * @param  {Boolean} noSignOut  is `false` if the element can sign out
-     * @param  {Boolean} signedIn   is `true` if a user is actually signed in
-     * @return {Boolean}            `true` if the element can sign out and a
-     * user is currently signed in.
-     */
-    _computeHideIcon: function(noSignIn, noSignOut, signedIn) {
-      return !((!noSignIn && !signedIn) || noSignOut);
-    },
-
-    /**
-     * Computes the CSS class to add according to the mini format of the
-     * element.
-     *
-     * @param  {Boolean} isMini `true` if the button is in mini format
-     * @return {String}         a CSS class name to add when `isMini` is true,
-     * else returns an empty string.
-     */
-    _computeMiniClass: function(isMini) {
-      return isMini ? 'btn--mini' : '';
-    },
-
-    /**
-     * Computes the CSS class to add when the user is currently signed in.
-     *
-     * @param  {Boolean} noSignOut is `false` if the element can sign out
-     * @param  {Boolean} signedIn  is `true` if a user is actually signed in
-     * @return {String}            a CSS class name to add when element can sign out
-     */
-    _computeSignOutClass: function(noSignIn, noSignOut, signedIn) {
-      if (noSignIn || (!noSignOut && signedIn)) {
-        return 'btn__signed-out';
-      }
-    },
-
-    /**
-     * Computes the text to be displayed inside the button.
-     *
-     * @param  {Object} user     logged-in
-     * @param  {Object} provider used for the authentication
-     * @return {String}          the text to be displayed inside the button.
-     */
-    _computeButtonText: function(provider, showSignUp, noSignIn, noSignOut, signedIn, localize, language) {
-      // User logged in.
-      if (noSignIn || (!noSignOut && signedIn) || !provider) {
-        return localize('lf-signout');
-      }
-
-      // User not logged in and mini format.
-      if (this.mini) {
-        return provider.name;
-      }
-
-      if (showSignUp && !noSignIn) {
-        // User doesn't have account
-        return localize('lf-signup-' + provider.id);
-      } else if (!noSignIn) {
-        // User has account
-        return localize('lf-signin-' + provider.id);
+        value: false
       }
     }
   });
