@@ -5,9 +5,10 @@ Use of this source code is governed by a MIT license that can be found in the
 LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 -->
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="./login-fire-common-behavior.html">
+<link rel="import" href="./localize-behavior.html">
+<link rel="import" href="./login-fire-social-behavior.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="./login-fire-button.html">
+<link rel="import" href="./paper-social-button.html">
 
 <!--
 A panel of buttons to authenticate a user with federated identity providers such as
@@ -25,30 +26,12 @@ Example:
 <login-fire-social app-name="myApp" providers="google, facebook, twitter, github, anonymous"></login-fire-social>
 ```
 
-### Localization
-
-You can specify the following codes and language in a JSON file passed to the
-`localesFile` property to update the text used. Here are the defaults:
-
-```
-"en": {
-  "lf-signup-facebook": "Sign up with Facebook",
-  "lf-signup-google": "Sign up with Google",
-  "lf-signup-twitter": "Sign up with Twitter",
-  "lf-signup-github": "Sign up with GitHub",
-  "lf-signup-anonymous": "Sign up anonymously",
-  "lf-signin-facebook": "Sign in with Facebook",
-  "lf-signin-google": "Sign in with Google",
-  "lf-signin-twitter": "Sign in with Twitter",
-  "lf-signin-github": "Sign in with GitHub",
-  "lf-signin-anonymous": "Sign in anonymously"
-}
-```
-
 ### Styling
 
 Style the buttons with CSS as you would a normal DOM element. The following
-custom properties and mixins are available:
+custom properties and mixins are available. You can find more custom CSS
+properties in the "Styling" section of the `paper-social-button` element
+documentation.
 
 Custom property | Description | Default
 -- | -- | --
@@ -77,55 +60,48 @@ Custom property | Description | Default
         @apply --login-fire-social;
       }
 
-      login-fire-button {
+      paper-social-button {
         width: 100%;
         margin-bottom: 10px;
       }
 
-      :host([horizontal]) login-fire-button {
+      :host([horizontal]) paper-social-button {
         width: inherit;
         min-width: 140px;
         margin-bottom: 0;
       }
     </style>
 
-    <template is="dom-if" if="[[_showOneButton]]">
-      <login-fire-button
-        app-name="[[appName]]"
-        user="{{_user}}"
-        status-known="{{_statusKnown}}"
-        signed-in="{{_signedIn}}"
+    <template is="dom-if" if="[[_showOneButton]]" restamp>
+      <paper-social-button
+        signed-in="[[_signedIn]]"
         mini$="[[mini]]"
         flat$="[[flat]]"
-        no-sign-in="[[noSignIn]]"
-        no-sign-out="[[noSignOut]]"
-        show-sign-up="{{showSignUp}}"
+        no-sign-in
         locales-file="[[localesFile]]"
         language="[[language]]"
-        debug="[[debug]]">
-      </login-fire-button>
+        in-progress="[[inProgress]]"
+        disabled$="[[inProgress]]"
+        on-tap="signOut">
+      </paper-social-button>
     </template>
 
-    <template is="dom-if" if="[[!_showOneButton]]">
+    <template is="dom-if" if="[[!_showOneButton]]" restamp>
       <template is="dom-repeat" items="{{_providers}}">
-        <login-fire-button
-          id="lfb[[item.id]]"
-          app-name="[[appName]]"
-          provider="[[item.id]]"
-          scopes="[[item.scopes]]"
-          user="{{_user}}"
-          status-known="{{_statusKnown}}"
-          signed-in="{{_signedIn}}"
+        <paper-social-button
+          provider="[[item]]"
+          signed-in="[[_signedIn]]"
           mini$="[[mini]]"
           flat$="[[flat]]"
-          redirect="[[redirect]]"
           no-sign-in="[[noSignIn]]"
           no-sign-out="[[noSignOut]]"
           show-sign-up="{{showSignUp}}"
           locales-file="[[localesFile]]"
           language="[[language]]"
-          debug="[[debug]]">
-        </login-fire-button>
+          in-progress="[[inProgress]]"
+          disabled$="[[inProgress]]"
+          on-tap="_onClick">
+        </paper-social-button>
       </template>
     </template>
 
@@ -135,7 +111,10 @@ Custom property | Description | Default
   Polymer({
     is: 'login-fire-social',
 
-    behaviors: [Convoo.LoginFireCommonBehavior],
+    behaviors: [
+      Convoo.LocalizeBehavior,
+      Convoo.LoginFireSocialBehavior
+    ],
 
     properties: {
 
@@ -145,6 +124,16 @@ Custom property | Description | Default
        * @type {Boolean}
        */
       mini: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Flat buttons, yes or no.
+       *
+       * @type {Boolean}
+       */
+      flat: {
         type: Boolean,
         value: false
       },
@@ -220,21 +209,14 @@ Custom property | Description | Default
     ],
 
     /**
-     * Signs the user out. The provider used for the sign-in has no incidence.
-     */
-    signOut: function() {
-      this.$$('login-fire-button').signOut();
-    },
-
-    /**
      * Signs the user in using the target provider.
      *
      * @param  {String} provider name
      */
     signInWith: function(provider) {
-      var btn = this.$$('#lfb' + provider);
-      if (btn) {
-        btn.signIn();
+      let prov = this._providers.find(p => p.id == provider);
+      if (prov) {
+        this._signInWithProvider(prov);
       }
     },
 
@@ -277,12 +259,27 @@ Custom property | Description | Default
         'github': githubScopes,
         'google': googleScopes
       };
-      this._providers.forEach(function(provider, index) {
+      this._providers.forEach((provider, index) => {
         if (provider.isSocialNetwork) {
           provider.scopes = scopes[provider.id];
           this.notifyPath('_providers.' + index + '.scopes');
         }
-      }.bind(this));
+      });
+    },
+
+    _onClick: function(event) {
+      this._signInWithProvider(event.target.provider);
+    },
+
+    /**
+     * Signs in using the given provider.
+     *
+     * @param {Object} provider the provider to be used to sign in
+     */
+    _signInWithProvider: function(provider) {
+      this.set('provider', provider.id);
+      this.set('scopes', provider.scopes);
+      this.signInOrOut();
     }
   });
   </script>

@@ -189,10 +189,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
             <script>
               function signout() {
                 const demoSnippet = document.getElementById('signing-out-demo');
-                // NOTE: the login-fire-social element is outside of the demo-snippet's shadow root.
-                demoSnippet.querySelector('login-fire-social').$$('login-fire-button').signOut();
-                // You can also use:
-                // demoSnippet.querySelector('login-fire-social').signOut();
+                demoSnippet.querySelector('login-fire-social').signOut();
               }
             </script>
           </template>

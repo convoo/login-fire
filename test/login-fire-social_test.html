@@ -1,0 +1,122 @@
+<!doctype html>
+
+<html>
+
+<head>
+  <title>login-fire-social test</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+  <link rel="import" src="../../test-fixture/test-fixture.html">
+
+  <link rel="import" href="../../polymerfire/firebase-app.html">
+  <link rel="import" href="../login-fire-social.html">
+</head>
+
+<body>
+
+  <firebase-app name="loginFireSocialTest" api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE" auth-domain="convoo-login-demo.firebaseapp.com" database-url="https://convoo-login-demo.firebaseio.com">
+  </firebase-app>
+
+  <test-fixture id="Default">
+    <template>
+      <login-fire-social app-name="loginFireSocialTest"></login-fire-social>
+    </template>
+  </test-fixture>
+
+  <script>
+    /**
+     * Adds delay to a function call. Used for assertions after templates "dom-if"
+     * and "dom-repeat" restamping. Seems those tempaltes need time for re-redering.
+     */
+    const afterNextRender = (f, delay = 5) => setTimeout(f, delay);
+
+    describe('Behavior Audit - Fixture: Default', function() {
+      let social;
+
+      beforeEach(function(done) {
+        social = fixture('Default');
+        afterNextRender(done);
+      });
+
+      it('Should display only "Anonymous" button', function() {
+        let buttons = (social.shadowRoot || social).querySelectorAll('paper-social-button');
+        expect(typeof buttons).to.be.Array;
+        expect(buttons.length).to.be.equal(1);
+      });
+
+      it('Should have only "Anonymous" provider in its list', function() {
+        expect(social.providers).to.be.equal('anonymous');
+        expect(social._providers.length).to.be.equal(1);
+        expect(social._providers[0].id).to.be.equal('anonymous');
+      });
+
+      it('Should display buttons in same order as its provider list', function() {
+        social.providers = 'twitter, google, facebook';
+        expect(social._providers.length).to.be.equal(3);
+        expect(social._providers[0].id).to.be.equal('twitter');
+        expect(social._providers[1].id).to.be.equal('google');
+        expect(social._providers[2].id).to.be.equal('facebook');
+      });
+
+      it('Should ignore invalid providers', function() {
+        social.providers = 'facebook, gooooogle, , twitter';
+        expect(social._providers.length).to.be.equal(2);
+        expect(social._providers[0].id).to.be.equal('facebook');
+        expect(social._providers[1].id).to.be.equal('twitter');
+      });
+
+      it('Should sign-in with the provider associated to the clicked button', function(done) {
+        social.providers = 'facebook, google, twitter';
+        afterNextRender(() => {
+          const button = (social.shadowRoot || social).querySelectorAll('paper-social-button')[1];
+          stub('login-fire-social', {
+            signInOrOut: null,
+          });
+          button.addEventListener('click', function(event) {
+            expect(social.provider).to.be.equal('google');
+            expect(social.provider).to.be.equal(event.target.provider.id);
+            done();
+          })
+          button.click();
+        });
+      });
+
+      it('Should display only a sign-out button when user is signed-in', function(done) {
+        social.addEventListener('signedin', function() {
+          afterNextRender(() => {
+            expect(social.signedIn).to.be.true;
+            let buttons = (social.shadowRoot || social).querySelectorAll('paper-social-button');
+            expect(buttons.length).to.be.equal(1);
+            expect(buttons[0]._text).to.contain('Sign out');
+            done();
+          });
+        });
+        (social.shadowRoot || social).querySelector('paper-social-button').click();
+      });
+
+      it('Should apply attribute "flat" on all buttons', function() {
+        social.flat = true;
+        let buttons = social.root.querySelectorAll('paper-social-button');
+        for (const button of buttons) {
+          expect(button.flat).to.be.true;
+        }
+      });
+
+      it('Should apply attribute "mini" on all buttons', function() {
+        social.mini = true;
+        let buttons = social.root.querySelectorAll('paper-social-button');
+        for (const button of buttons) {
+          expect(button.mini).to.be.true;
+        }
+      });
+    });
+
+    a11ySuite('Default', [], function() {
+      social = fixture('Default');
+    });
+  </script>
+</body>
+
+</html>
