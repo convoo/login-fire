@@ -27,7 +27,7 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
        * Toggles the form views. If `true`, the displayed view should be the
        * sign-up view. Otherwise the sign-in view.
        */
-      showResetPW: {
+      showResetPassword: {
         type: Boolean,
         value: false
       },
@@ -99,7 +99,8 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     signUp: function(email, password) {
       if (this.provider === 'email' && !this.noSignUp) {
         this._setInProgress(true);
-        this.$.auth.createUserWithEmailAndPassword(email, password)
+        this.__injectFirebaseAuth()
+          .then(auth => auth.createUserWithEmailAndPassword(email, password))
           .then(() => this._setInProgress(false))
           .catch(resp => this._fireError(resp));
       } else {
@@ -112,12 +113,12 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
      * Toggles the form views from the sign-in view to the sign-up view and vise
      * versa.
      */
-    toggleShowResetPW: function() {
-      if (this.showResetPW) {
-        this.showResetPW = false;
+    toggleShowResetPassword: function() {
+      if (this.showResetPassword) {
+        this.showResetPassword = false;
         this.showSignUp = false
       } else {
-        this.showResetPW = true;
+        this.showResetPassword = true;
       }
     }
   };

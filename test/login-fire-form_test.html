@@ -1,0 +1,315 @@
+<!doctype html>
+
+<html>
+
+<head>
+  <title>login-fire-form test</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+  <link rel="import" src="../../test-fixture/test-fixture.html">
+
+  <link rel="import" href="../../polymerfire/firebase-app.html">
+  <link rel="import" href="../login-fire-form.html">
+</head>
+
+<body>
+
+  <firebase-app
+    name="loginFireButtonTest"
+    api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+    auth-domain="convoo-login-demo.firebaseapp.com"
+    database-url="https://convoo-login-demo.firebaseio.com">
+  </firebase-app>
+
+  <test-fixture id="Default">
+    <template>
+      <login-fire-form app-name="loginFireButtonTest"></login-fire-form>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="SignUp">
+    <template>
+      <login-fire-form app-name="loginFireButtonTest" show-sign-up></login-fire-form>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="ResetPassword">
+    <template>
+      <login-fire-form app-name="loginFireButtonTest" show-reset-password></login-fire-form>
+    </template>
+  </test-fixture>
+
+  <script>
+    /**
+     * Adds delay to a function call. Used for assertions after templates "dom-if"
+     * restamping. Seems those tempaltes need time for re-redering.
+     */
+    const afterNextRender = (f, delay = 5) => setTimeout(f, delay);
+
+    describe('Behavior Audit - Fixture: Default', function() {
+      let form;
+
+      beforeEach(() => {
+        form = fixture('Default');
+      });
+
+      it('Should be cancable', function(done) {
+        let emailInput;
+        let passwordInput;
+        form.addEventListener('cancel', function() {
+          expect(emailInput.value).to.be.empty;
+          expect(passwordInput.value).to.be.empty;
+          done();
+        });
+        form.email = 'john@convoo.com';
+        form.password = '123foo';
+        flush(function() {
+          emailInput = (form.shadowRoot || form).querySelector('#emailInput');
+          passwordInput = (form.shadowRoot || form).querySelector('#passwordInput');
+          expect(emailInput.value).to.be.equal('john@convoo.com');
+          expect(passwordInput.value).to.be.equal('123foo');
+          form.cancel();
+        });
+      });
+
+      it('Should be sendable', function(done) {
+        form.email = 'john@convoo.com';
+        form.password = '123foo';
+        sinon.spy(form, 'confirm');
+        flush(function() {
+          form.confirm();
+          expect(form.confirm.calledOnce).to.be.true;
+          form.confirm.restore();
+          done();
+        });
+      });
+
+      it('Should be able to validate email address format', function(done) {
+        form.email = 'johnconvoo.com';
+        flush(function() {
+          expect(form.validateEmail()).to.be.false;
+          form.email = 'john@.convoo.com';
+          expect(form.validateEmail()).to.be.false;
+          form.email = '@convoo.com';
+          expect(form.validateEmail()).to.be.false;
+          form.email = 'john@convoo.c';
+          expect(form.validateEmail()).to.be.false;
+          form.email = '.doe@convoo.com';
+          expect(form.validateEmail()).to.be.false;
+          form.email = 'john..doe@convoo.com';
+          expect(form.validateEmail()).to.be.false;
+          form.email = 'john@convoo.com';
+          expect(form.validateEmail()).to.be.true;
+          form.email = 'john.doe@convoo.co.jp'; 
+          expect(form.validateEmail()).to.be.true;
+          done();
+        });
+      });
+
+      it('Should require relatively strong password', function(done) {
+        form.password = '12345';
+        flush(function() {
+          expect(form.validatePassword()).to.be.false;
+          form.password = '123foo';
+          expect(form.validatePassword()).to.be.false;
+          form.password = 'VeryStrongPassword';
+          expect(form.validatePassword()).to.be.false;
+          form.password = 'V3ry5tr0ngP455w0rd';
+          expect(form.validatePassword()).to.be.false;
+          form.password = 'V3ry5tr0ngP455w0rd!!!';
+          expect(form.validatePassword()).to.be.true;
+          form.password = 'Str0ngP455w0rd!!!';
+          expect(form.validatePassword()).to.be.true;
+          form.password = '#Pa55w0Rd';
+          expect(form.validatePassword()).to.be.true;
+          done();
+        });
+      });
+
+      it('Should ignore password strength validation if no regex provided', function(done) {
+        form.password = '123foo';
+        flush(function() {
+          expect(form.validatePassword()).to.be.false;
+          form.passwordRegex = null;
+          form.password = '123foo';
+          expect(form.validatePassword()).to.be.true;
+          done();
+        });
+      })
+
+      it('Should be valid only if email address and password are valid', function(done) {
+        flush(function() {
+          expect(form.validateEmail()).to.be.false;
+          expect(form.validatePassword()).to.be.false;
+          expect(form.validate().passed).to.be.false;
+          form.email = 'john@convoo.com';
+          expect(form.validateEmail()).to.be.true;
+          expect(form.validate().passed).to.be.false;
+          form.password = 'AA#00aaa';
+          expect(form.validatePassword()).to.be.true;
+          expect(form.validate().passed).to.be.true;
+          form.email = 'john@convoo.c';
+          expect(form.validateEmail()).to.be.false;
+          expect(form.validate().passed).to.be.false;
+          form.email = 'john@convoo.com';
+          form.password = 'AA00aaa';
+          expect(form.validateEmail()).to.be.true;
+          expect(form.validatePassword()).to.be.false;
+          expect(form.validate().passed).to.be.false;
+          done();
+        });
+      });
+
+      it('Should be sent only when it is valid', function(done) {
+        sinon.stub(form, 'signIn');
+        sinon.stub(form, 'signUp');
+        form.addEventListener('confirm', function() {
+          expect(form.signIn.calledOnce).to.be.true;
+          expect(form.signUp.notCalled).to.be.true;
+          form.signIn.restore();
+          form.signUp.restore();
+          done();
+        });
+        flush(function() {
+          expect(form.validate().passed).to.be.false;
+          form.confirm();
+          expect(form.signIn.calledOnce).to.be.false;
+          expect(form.signUp.notCalled).to.be.true;
+          form.email = 'john@convoo.com';
+          form.password = '#AA00aaa';
+          expect(form.validate().passed).to.be.true;
+          form.confirm();
+        });
+      });
+
+      it('Should display sign-in view after a sign-out', function(done) {
+        form.__injectFirebaseAuth();
+        sinon.stub(form._auth, 'signOut', function() {
+          this._setUser(null);
+          return Promise.resolve();
+        });
+        form.addEventListener('signedin', form.signOut);
+        form.addEventListener('signedout', function() {
+          flush(function() {
+            let button = (form.shadowRoot || form).querySelector('.btn--signin');
+            expect(button).to.not.be.null;
+            expect(button.innerText.toLowerCase()).to.contain('sign in');
+            form._signIn.restore();
+            form._auth.signOut.restore();
+            done();
+          });
+        });
+        sinon.spy(form, '_signIn');
+        flush(function() {
+          let button = (form.shadowRoot || form).querySelector('.btn--signin');
+          expect(button).to.not.be.null;
+          expect(button.innerText.toLowerCase()).to.contain('sign in');
+        });
+        form.email = 'john@convoo.com';
+        form.password = '#AA00aaa';
+        form.confirm();
+        expect(form._signIn.calledOnce).to.be.true;
+      });
+    });
+
+    describe('Behavior Audit - Fixture: SignUp', function() {
+      let form;
+
+      beforeEach(() => {
+        form = fixture('SignUp');
+      });
+
+      it('Should display sign-in view after a sign-out', function(done) {
+        form.__injectFirebaseAuth();
+        sinon.stub(form._auth, 'signOut', function() {
+          this._setUser(null);
+          return Promise.resolve();
+        });
+        sinon.stub(form._auth, 'createUserWithEmailAndPassword', function() {
+          this._setUser({name: 'John'});
+          return Promise.resolve();
+        });
+        form.addEventListener('signedin', form.signOut);
+        form.addEventListener('signedout', function() {
+          flush(function() {
+            let button = (form.shadowRoot || form).querySelector('.btn--signin');
+            expect(button).to.not.be.null;
+            expect(button.innerText.toLowerCase()).to.contain('sign in');
+            form._signUp.restore();
+            form._auth.signOut.restore();
+            done();
+          });
+        });
+        flush(function() {
+          let button = (form.shadowRoot || form).querySelector('.btn--signup');
+          expect(button).to.not.be.null;
+          expect(button.innerText.toLowerCase()).to.contain('sign up');
+        });
+        form.email = 'john@convoo.com';
+        form.password = '#AA00aaa';
+        sinon.spy(form, '_signUp');
+        form.confirm();
+        expect(form._signUp.calledOnce).to.be.true;
+      });
+    });
+
+    describe('Behavior Audit - Fixture: ResetPassword', function() {
+      let form;
+
+      beforeEach(() => {
+        form = fixture('ResetPassword');
+      });
+
+      it('Should display sign-in view after sent request to reset password', function(done) {
+        form.__injectFirebaseAuth();
+        form.email = 'john@convoo.com';
+        sinon.stub(form._auth, 'sendPasswordResetEmail', () => Promise.resolve());
+        form.sendPasswordResetEmail();
+        flush(function() {
+          expect(form._auth.sendPasswordResetEmail.calledOnce).to.be.true;
+          form._auth.sendPasswordResetEmail.restore();
+          let button = (form.shadowRoot || form).querySelector('.btn--signin');
+          expect(button).to.not.be.null;
+          expect(button.innerText.toLowerCase()).to.contain('sign in');
+          done();
+        });
+      });
+
+      it('Should send email to reset password only if email is valid', function(done) {
+        form.__injectFirebaseAuth();
+        sinon.spy(form, 'sendPasswordResetEmail');
+        sinon.stub(form._auth, 'sendPasswordResetEmail', () => Promise.resolve());
+        flush(function() {
+          expect(form.validateEmail()).to.be.false;
+          form.confirm();
+          expect(form.sendPasswordResetEmail.notCalled).to.be.true;
+          expect(form._auth.sendPasswordResetEmail.notCalled).to.be.true;
+          form.email = 'john@convoo.com';
+          expect(form.validateEmail()).to.be.true;
+          form.confirm();
+          expect(form.sendPasswordResetEmail.calledOnce).to.be.true;
+          expect(form._auth.sendPasswordResetEmail.calledOnce).to.be.true;
+          form.sendPasswordResetEmail.restore();
+          form._auth.sendPasswordResetEmail.restore();
+          done();
+        });
+      });
+    });
+
+    a11ySuite('Default', [], () => {
+      form = fixture('Default');
+    });
+
+    a11ySuite('SignUp', [], () => {
+      form = fixture('SignUp');
+    });
+
+    a11ySuite('ResetPassword', [], () => {
+      form = fixture('ResetPassword');
+    });
+  </script>
+</body>
+
+</html>

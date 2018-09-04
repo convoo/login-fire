@@ -5,7 +5,6 @@ Use of this source code is governed by a MIT license that can be found in the
 LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 -->
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="./localize-behavior.html">
 <link rel="import" href="./login-fire-form-behavior.html">
 <link rel="import" href="../paper-button/paper-button.html">
@@ -50,34 +49,6 @@ Custom property | Description | Default
 `--login-fire-progress-active-color` | The color that is applied to the paper-progress bar as active color | `--google-green-500`
 `--login-fire-progress-container-color` | The color that is applied to the paper-progress-container | `--google-grey-300`
 
-
-### Localization
-
-You can specify the following codes and language in a JSON file passed to the
-`localesFile` property to update the text used by the form. A few languages are
-already supported and you can even contribute to the project adding yours.
-Example of a valid locales file:
-```
-"en": {
-  "lf-email": "Email",
-  "lf-email-invalid": "Invalid email address",
-  "lf-password": "Password",
-  "lf-reenter-password": "Re-enter Password",
-  "lf-passwords-dont-match": "Passwords do not match",
-  "lf-already-have-account": "Already have an account?",
-  "lf-already-have-account-action": "Sign in",
-  "lf-no-account": "Don' have an account?",
-  "lf-no-account-action": "Sign up",
-  "lf-resetpw-link": "Forgot password",
-  "lf-resetpw-cancel-link": "Nevermind, I remembered my password.",
-  "lf-resetpw-button": "Reset password",
-  "lf-resetpw-success-message": "Password reset email has been sent. Please check your inbox.",
-  "lf-signup-button": "Sign Up",
-  "lf-signin-button": "Sign In",
-  "lf-signout": "Sign out"
-}
-```
-
 @customElement
 @polymer
 @demo demo/login-fire-form.html
@@ -87,6 +58,7 @@ Example of a valid locales file:
     <style include="login-fire-styles">
     :host {
       display: block;
+      @apply --layout-vertical;
       width: 210px;
       @apply --login-fire-form;
     }
@@ -94,8 +66,8 @@ Example of a valid locales file:
       width: 100%;
     }
     paper-button.btn--signup {
-      margin: 15px 0;
       width: 100%;
+      margin-top: 10px;
       @apply --login-fire-btn-signup;
     }
     paper-button.btn--signin {
@@ -103,18 +75,18 @@ Example of a valid locales file:
       @apply --login-fire-btn-signin;
     }
     .btn {
-        color: gray;
+      color: gray;
     }
     .link--reset-pw {
+      width: fit-content;
       color: var(--login-fire-reset-password-color, gray);
       text-decoration: none;
       text-transform: none;
       font-size: 12px;
       font-style: italic;
       font-weight: lighter;
-      cursor: pointer;
       margin: 0;
-      padding: 0;
+      padding-left: 0;
     }
     .link--reset-pw:hover {
       color: var(--login-fire-reset-password-hover-color, gray);
@@ -152,7 +124,6 @@ Example of a valid locales file:
     paper-icon-button {
       color: grey;
     }
-
     </style>
 
     <div class="msg msg--error" hidden$="[[!_lastError]]">
@@ -166,16 +137,18 @@ Example of a valid locales file:
       type="email"
       label="[[localize('lf-email')]]"
       value="{{email}}"
+      pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
       error-message="[[localize('lf-email-invalid')]]"
       on-keydown="_submitOnEnter"
       required>
     </paper-input>
 
-    <template is="dom-if" if="[[!showResetPW]]">
+    <template is="dom-if" if="[[!showResetPassword]]">
       <paper-input id="passwordInput"
         type="password"
         label="[[localize('lf-password')]]"
         value="{{password}}"
+        pattern="[[passwordRegex]]"
         error-message="[[localize('lf-password-invalid')]]"
         on-keydown="_submitOnEnter"
         required>
@@ -196,59 +169,58 @@ Example of a valid locales file:
           type="password"
           label="[[localize('lf-reenter-password')]]"
           value="{{_passwordAgain}}"
+          pattern="[[passwordRegex]]"
           error-message="[[localize('lf-passwords-dont-match')]]"
           on-keydown="_submitOnEnter"
           hidden$="[[!reenterPassword]]"
           required>
         </paper-input>
-        <paper-button raised$="[[!flat]]" type="submit" on-click="_signUp" class="btn--signup" disabled$="[[inProgress]]">
+        <paper-button raised$="[[!flat]]" type="submit" on-click="confirm" class="btn--signup" disabled$="[[inProgress]]">
           <span>[[localize('lf-signup-button')]]</span>
           <paper-progress class="btn-progress" hidden$="[[!inProgress]]" disabled$="[[!inProgress]]" indeterminate></paper-progress>
         </paper-button>
-        <p class="signup-toggle">
+        <div class="signup-toggle">
           <span>[[localize('lf-already-have-account')]]</span>
           <paper-button on-click="_toggleShowSignUp" tabindex="0"
             title="[[localize('lf-already-have-account')]] [[localize('lf-already-have-account-action')]]" noink>
             [[localize('lf-already-have-account-action')]]
           </paper-button>
-        </p>
+        </div>
       </template>
+      
       <template is="dom-if" if="[[!_showSignUp]]">
-        <p>
-          <paper-button class="link--reset-pw"
-            on-click="toggleShowResetPW" tabindex="0" noink>
-            [[localize('lf-resetpw-link')]]</paper-button>
-        </p>
-        <paper-button raised$="[[!flat]]" type="submit" on-click="_signIn" class="btn--signin" disabled$="[[inProgress]]">
+        <paper-button class="link--reset-pw"
+          on-click="toggleShowResetPassword" tabindex="0" noink>
+          <span>[[localize('lf-resetpw-link')]]</span>
+        </paper-button>
+        <paper-button raised$="[[!flat]]" type="submit" on-click="confirm" class="btn--signin" disabled$="[[inProgress]]">
           <span>[[localize('lf-signin-button')]]</span>
           <paper-progress class="btn-progress" hidden$="[[!inProgress]]" disabled$="[[!inProgress]]" indeterminate></paper-progress>
         </paper-button>
+
         <template is="dom-if" if="[[!noSignUp]]">
-          <p class="signup-toggle">
+          <div class="signup-toggle">
             <span>[[localize('lf-no-account')]]</span>
             <paper-button on-click="_toggleShowSignUp" tabindex="0"
               title="[[localize('lf-no-account')]] [[localize('lf-no-account-action')]]" noink>
-              [[localize('lf-no-account-action')]]</paper-button>
-          </p>
+              [[localize('lf-no-account-action')]]
+            </paper-button>
+          </div>
         </template>
+
       </template>
     </template>
 
-    <template is="dom-if" if="[[showResetPW]]">
-      <paper-button raised$="[[!flat]]" type="submit" on-click="_resetPassword" class="btn--resetpw" disabled$="[[inProgress]]">
+    <template is="dom-if" if="[[showResetPassword]]">
+      <paper-button class="link--reset-pw" on-click="toggleShowResetPassword"
+        tabindex="0" noink>[[localize('lf-resetpw-cancel-link')]]
+      </paper-button>
+      <paper-button raised$="[[!flat]]" type="submit" on-click="confirm" class="btn--resetpw" disabled$="[[inProgress]]">
         <span>[[localize('lf-resetpw-button')]]</span>
         <paper-progress class="btn-progress" hidden$="[[!inProgress]]" disabled$="[[!inProgress]]" indeterminate></paper-progress>
       </paper-button>
-      <p>
-        <paper-button class="link--reset-pw" on-click="toggleShowResetPW"
-          tabindex="0" noink>[[localize('lf-resetpw-cancel-link')]]
-        </paper-button>
-      </p>
     </template>
 
-    <firebase-auth id="auth" app-name="[[appName]]" user="{{_user}}"
-      signed-in="{{_signedIn}}" status-known="{{_statusKnown}}">
-    </firebase-auth>
   </template>
 
   <script>
@@ -304,6 +276,24 @@ Example of a valid locales file:
       },
 
       /**
+       * Regular expression used to check password strength. The default Regex
+       * checks if the password has a length at least of 8 chars and contains:
+       * - 2 uppercase letters
+       * - 1 special char letter [!@#$&*]
+       * - 2 digits
+       * - 3 lowercase letters
+       * 
+       * Password strength validation can be disabled by setting this property
+       * to `null`.
+       * 
+       * @type {String}
+       */
+      passwordRegex: {
+        type: String,
+        value: '^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8,}$'
+      },
+
+      /**
        * Password confirmation field value.
        *
        * @type {String}
@@ -319,7 +309,7 @@ Example of a valid locales file:
        */
       _showSignUp: {
         type: Boolean,
-        computed: '_computeShowSignUp(showSignUp,noSignUp)'
+        computed: '_computeShowSignUp(showSignUp, noSignUp)'
       },
 
       /**
@@ -343,7 +333,83 @@ Example of a valid locales file:
 
     listeners: {
       'error': '_handleError',
-      'signedin': '_handleSignIn'
+      'signedin': '_handleSignIn',
+      'signedout': '_handleSignOut',
+      'reset-password-email-sent': '_handleResetPasswordEmailSent'
+    },
+
+    /**
+     * Empties the form. Fires a `cancel` event.
+     */
+    cancel: function() {
+      this._cleanInputs();
+      this.fire('cancel');
+    },
+
+    /**
+     * Confirms the form. Depending of the form state, it tries to sign-in,
+     * sign-up or reset the password.
+     */
+    confirm: function() {
+      let validation = this.validate();
+      if (!validation.passed) {
+        return;
+      }
+      if (this._showSignUp) {
+        this._signUp();
+      } else if (this.showResetPassword) {
+        this.sendPasswordResetEmail();
+      } else if (!this._showSignUp) {
+        this._signIn()
+      }
+      this.fire('confirm');
+    },
+
+    /**
+     * Validates the email field. This is a basic validation. The only one way
+     * to be sure the value is a true email address is to send it an email.
+     * 
+     * @return {Boolean} true if the provided email address has a good format.
+     */
+    validateEmail: function() {
+      let input = !Polymer.Element ? this.querySelector('#emailInput') :
+        this.root.querySelector('#emailInput');
+      return input.validate();
+    },
+
+    /**
+     * Validates the password field.
+     * 
+     * @return {Boolean} true if the password value pass the RegExp
+     * `passwordRegex`.
+     */
+    validatePassword: function() {
+      let input = !Polymer.Element ? this.querySelector('#passwordInput') :
+        this.root.querySelector('#passwordInput');
+      return !!this.showResetPassword || input.validate() &&
+        (!this.reenterPassword || input.value == this._passwordAgain.value);
+    },
+
+    /**
+     * Validates the form. Checks if the email address and the password are both
+     * passing their validation.
+     * 
+     * @return {Object{passed: Boolean, error?: Object}} the validation result.
+     */
+    validate: function() {
+      let isEmailValid = this.validateEmail();
+      let isPasswordValid = this.validatePassword();
+      let validation = {
+        passed: isEmailValid && isPasswordValid
+      };
+      return validation.passed ? validation : Object.assign({}, validation, {
+        error: {
+          code: `form/invalid-${isEmailValid ? 'password' : 'email'}`,
+          message: `${isEmailValid ?
+            'The password does not pass the validation.' :
+            'The email address is not valid.'} The form was not sent.`
+        }
+      });
     },
 
     /**
@@ -366,7 +432,10 @@ Example of a valid locales file:
      * Cleans password input
      */
     _cleanPasswordInput: function() {
-      this.$$('#passwordInput').value = '';
+      let input = this.$$('#passwordInput');
+      if (input) {
+        input.value = '';
+      }
     },
 
     /**
@@ -383,9 +452,7 @@ Example of a valid locales file:
      */
     _signIn: function() {
       this._cleanMessages();
-      e = this.$$('#emailInput').validate();
-      p = this.$$('#passwordInput').validate();
-      if (e && p) {
+      if (this.validateEmail() && this.validatePassword()) {
         this.signIn(this.email, this.password);
       }
     },
@@ -395,26 +462,15 @@ Example of a valid locales file:
      */
     _signUp: function(e) {
       this._cleanMessages();
-      e = this.$$('#emailInput').validate()
-      p = this.$$('#passwordInput').validate()
-      if (this.reenterPassword) {
-        this.$$('#repeatPasswordInput').invalid = false;
-        pRepeat = this.password == this._passwordAgain &&
-          this.$$('#repeatPasswordInput').validate()
-
-        if (e && p && pRepeat) {
-          this.signUp(this.email, this.password);
-          this.email = null;
-          this.password = null;
-          this._passwordAgain = null;
-        } else if (!pRepeat) {
-          this.$$('#repeatPasswordInput').invalid = true;
+      if (!this.validateEmail() || !this.validatePassword()) {
+        if (this.reenterPassword) {
+          const repeatPwInput = this.$$('#repeatPasswordInput');
+          repeatPwInput.invalid = !repeatPwInput.validate() || this.password != this._passwordAgain;
+          return;
         }
-      } else if (e && p) {
-        this.signUp(this.email, this.password);
-        this.email = null;
-        this.password = null;
       }
+      this.signUp(this.email, this.password);
+      this._cleanInputs();
     },
 
     /**
@@ -425,26 +481,37 @@ Example of a valid locales file:
     },
 
     /**
+     * Handler called after a successful `signOut`. Switches back to the `sign-in`
+     * view if necessary.
+     */
+    _handleSignOut: function() {
+      if (this.showSignUp) {
+        this._toggleShowSignUp();
+      }
+    },
+
+    _handleResetPasswordEmailSent: function() {
+      this.showResetPassword = false;
+    },
+
+    /**
      * Displays error message. If the attribute `autoSignUp` is `true`, before
      * to display the error message, a sign up process is tried.
      *
      * @param  {Object} e the event caught that contains the error message
      */
     _handleError: function(e) {
-      if (this.autoSignUp && e.detail.code === 'auth/user-not-found') {
+      let errorCode = e.detail.code;
+      if (this.autoSignUp && errorCode === 'auth/user-not-found') {
         this.signUp(this.email, this.password);
-        this.email = null;
-        this.password = null;
-      } else {
-        // Localize Firebase error if possible
-        var errorMessage = this.localize('lf-error-' + e.detail.code);
-        this.set('_lastError', errorMessage || e.detail.message);
-
-        // Clean password input if wrong password or email
-        if (e.detail.code == 'auth/wrong-password' ||
-          e.detail.code == 'auth/user-not-found') {
-          this._cleanPasswordInput();
-        }
+        this._cleanInputs();
+        return;
+      }
+      // Display error message.
+      var errorMessage = this.localize('lf-error-' + errorCode);
+      this.set('_lastError', errorMessage || e.detail.message);
+      if (['auth/wrong-password', 'auth/user-not-found'].includes(errorCode)) {
+        this._cleanPasswordInput();
       }
     },
 
@@ -453,21 +520,17 @@ Example of a valid locales file:
      * the address entered in the form when the user clicks on the link to reset
      * its password.
      */
-    _resetPassword: function() {
+    sendPasswordResetEmail: function() {
       this._cleanMessages();
-      e = this.$$('#emailInput').validate()
-      if (e) {
+      if (this.validateEmail()) {
         this._setInProgress(true);
-        this.$$('#auth').auth.sendPasswordResetEmail(this.email)
-          .then(function() {
-            this.set('_lastMessage', this.localize('lf-resetpw-success-message'));
-          }.bind(this), function(error) {
-            this.set('_lastError', error.message);
-          }.bind(this))
-          .finally(function(){
-            /* Set inProgress back to false once everything is done */
-            this._setInProgress(false);
-          }.bind(this));
+        this._auth.sendPasswordResetEmail(this.email)
+          .then(() => {
+              this.set('_lastMessage', this.localize('lf-resetpw-success-message'));
+              this.fire('reset-password-email-sent');
+            },
+            (error) => this.set('_lastError', error.message))
+          .finally(()=> this._setInProgress(false));
       }
     },
 
@@ -476,13 +539,7 @@ Example of a valid locales file:
      */
     _submitOnEnter: function(e) {
       if (e.keyCode === 13) {
-        if (this._showSignUp) {
-          this._signUp();
-        } else if (this.showResetPW) {
-          this._resetPassword();
-        } else if (!this._showSignUp) {
-          this._signIn()
-        }
+        this.confirm();
       }
     },
 
@@ -498,11 +555,30 @@ Example of a valid locales file:
      * Hides the password in the parent by switching the type to password
      */
     _hidePW: function(e) {
-      setTimeout(function() {
+      setTimeout(() => {
         this.$$('#passwordIconButton').icon = 'login-fire-icons:visibility';
         this.$$('#passwordInput').type = 'password';
-      }.bind(this), 1000)
+      }, 1000);
     }
+
+    /**
+     * Fired when the form is canceled. At this time, inputs are cleaned.
+     *
+     * @event cancel
+     */
+
+    /**
+     * Fired when the form is confirmed. At this time, the sign-in, sign-up or
+     * reset password process is just started.
+     *
+     * @event confirm
+     */
+
+    /**
+     * Fired when an email to reset the password is sent.
+     *
+     * @event reset-password-email-sent
+     */
   });
   </script>
 </dom-module>
