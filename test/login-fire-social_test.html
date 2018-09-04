@@ -26,24 +26,20 @@
   </test-fixture>
 
   <script>
-    /**
-     * Adds delay to a function call. Used for assertions after templates "dom-if"
-     * and "dom-repeat" restamping. Seems those tempaltes need time for re-redering.
-     */
-    const afterNextRender = (f, delay = 5) => setTimeout(f, delay);
-
     describe('Behavior Audit - Fixture: Default', function() {
       let social;
 
-      beforeEach(function(done) {
+      beforeEach(function() {
         social = fixture('Default');
-        afterNextRender(done);
       });
 
-      it('Should display only "Anonymous" button', function() {
-        let buttons = (social.shadowRoot || social).querySelectorAll('paper-social-button');
-        expect(typeof buttons).to.be.Array;
-        expect(buttons.length).to.be.equal(1);
+      it('Should display only "Anonymous" button', function(done) {
+        flush(function() {
+          let buttons = (social.shadowRoot || social).querySelectorAll('paper-social-button');
+          expect(typeof buttons).to.be.Array;
+          expect(buttons.length).to.be.equal(1);
+          done();
+        });
       });
 
       it('Should have only "Anonymous" provider in its list', function() {
@@ -69,11 +65,9 @@
 
       it('Should sign-in with the provider associated to the clicked button', function(done) {
         social.providers = 'facebook, google, twitter';
-        afterNextRender(() => {
+        sinon.stub(social, 'signInOrOut');
+        flush(function() {
           const button = (social.shadowRoot || social).querySelectorAll('paper-social-button')[1];
-          stub('login-fire-social', {
-            signInOrOut: null,
-          });
           button.addEventListener('click', function(event) {
             expect(social.provider).to.be.equal('google');
             expect(social.provider).to.be.equal(event.target.provider.id);
@@ -85,7 +79,7 @@
 
       it('Should display only a sign-out button when user is signed-in', function(done) {
         social.addEventListener('signedin', function() {
-          afterNextRender(() => {
+          flush(function() {
             expect(social.signedIn).to.be.true;
             let buttons = (social.shadowRoot || social).querySelectorAll('paper-social-button');
             expect(buttons.length).to.be.equal(1);
@@ -93,7 +87,7 @@
             done();
           });
         });
-        (social.shadowRoot || social).querySelector('paper-social-button').click();
+        social.signInWith('anonymous');
       });
 
       it('Should apply attribute "flat" on all buttons', function() {
