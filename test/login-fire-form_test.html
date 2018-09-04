@@ -206,6 +206,9 @@
         form.confirm();
         expect(form._signIn.calledOnce).to.be.true;
       });
+
+      it('Should send verification email on sign-up');
+      it('Should allow automatic sign-up without email verification');
     });
 
     describe('Behavior Audit - Fixture: SignUp', function() {
