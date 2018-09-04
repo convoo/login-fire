@@ -42,12 +42,6 @@
   </test-fixture>
 
   <script>
-    /**
-     * Adds delay to a function call. Used for assertions after templates "dom-if"
-     * restamping. Seems those tempaltes need time for re-redering.
-     */
-    const afterNextRender = (f, delay = 5) => setTimeout(f, delay);
-
     describe('Behavior Audit - Fixture: Default', function() {
       let form;
 
@@ -55,7 +49,7 @@
         form = fixture('Default');
       });
 
-      it('Should be cancable', function(done) {
+      it('Should be cancelable', function(done) {
         let emailInput;
         let passwordInput;
         form.addEventListener('cancel', function() {
