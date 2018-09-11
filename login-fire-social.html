@@ -72,7 +72,7 @@ Custom property | Description | Default
       }
     </style>
 
-    <template is="dom-if" if="[[_showOneButton]]" restamp>
+    <template is="dom-if" if="[[_showSignOutButton]]" restamp>
       <paper-social-button
         signed-in="[[_signedIn]]"
         mini$="[[mini]]"
@@ -86,7 +86,7 @@ Custom property | Description | Default
       </paper-social-button>
     </template>
 
-    <template is="dom-if" if="[[!_showOneButton]]" restamp>
+    <template is="dom-if" if="[[!_showSignOutButton]]" restamp>
       <template is="dom-repeat" items="{{_providers}}">
         <paper-social-button
           provider="[[item]]"

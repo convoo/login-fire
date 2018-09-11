@@ -139,7 +139,7 @@ localesFile property to update the text used. Here are the defaults:
     }
     </style>
 
-    <template is="dom-if" if="[[_showOneButton]]">
+    <template is="dom-if" if="[[_showSignOutButton]]">
       <login-fire-button
         app-name="[[appName]]"
         user="{{_user}}"
@@ -156,7 +156,7 @@ localesFile property to update the text used. Here are the defaults:
       </login-fire-button>
     </template>
 
-    <template is="dom-if" if="[[!_showOneButton]]">
+    <template is="dom-if" if="[[!_showSignOutButton]]">
       <reverse-element reverse="[[reverse]]">
         <login-fire-form
           app-name="[[appName]]"
@@ -372,7 +372,7 @@ localesFile property to update the text used. Here are the defaults:
       }
 
       if (provider === 'email') {
-        if (this._showOneButton) {
+        if (this._showSignOutButton) {
           console.error("Can't sign in using provider \"email\" when only one button is displayed.");
         } else {
           this.$$('login-fire-form').signIn();
