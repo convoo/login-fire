@@ -152,16 +152,16 @@ Custom property | Description | Default
         error-message="[[localize('lf-password-invalid')]]"
         on-keydown="_submitOnEnter"
         required>
-        <template is="dom-if" if="[[!noToggleablePassword]]">
-          <paper-icon-button
-            id="passwordIconButton"
-            slot="suffix"
-            on-down="_revealPW"
-            on-up="_hidePW"
-            icon="login-fire-icons:visibility"
-            title="[[localize('lf-reveal-password')]]">
-          </paper-icon-button>
-        </template>
+        <paper-icon-button
+          id="passwordIconButton"
+          slot="suffix"
+          suffix
+          on-down="_revealPW"
+          on-up="_hidePW"
+          icon="login-fire-icons:visibility"
+          title="[[localize('lf-reveal-password')]]"
+          hidden$="[[noToggleablePassword]]">
+        </paper-icon-button>
       </paper-input>
 
       <template is="dom-if" if="[[_showSignUp]]">
