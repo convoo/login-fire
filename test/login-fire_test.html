@@ -1,18 +1,208 @@
 <!doctype html>
 
 <html>
-  <head>
-    <title>login-fire test</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="../../web-component-tester/browser.js"></script>
-  </head>
-  <body>
 
-    <script>
-      suite('login-fire', function() {
+<head>
+  <title>login-fire test</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+  <link rel="import" src="../../test-fixture/test-fixture.html">
+
+  <link rel="import" href="../../polymerfire/firebase-app.html">
+  <link rel="import" href="../login-fire.html">
+</head>
+
+<body>
+
+  <firebase-app
+    name="loginFireTest"
+    api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+    auth-domain="convoo-login-demo.firebaseapp.com"
+    database-url="https://convoo-login-demo.firebaseio.com">
+  </firebase-app>
+
+  <test-fixture id="Default">
+    <template>
+      <login-fire app-name="loginFireTest"></login-fire>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="MobilePhone">
+    <template>
+      <div style="width:425px">
+        <login-fire app-name="loginFireTest"></login-fire>
+      </div>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="Tablet">
+    <template>
+      <div style="width:768px">
+        <login-fire app-name="loginFireTest"></login-fire>
+      </div>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="Laptop">
+    <template>
+      <div style="width:1024px">
+        <login-fire app-name="loginFireTest"></login-fire>
+      </div>
+    </template>
+  </test-fixture>
+
+  <script>
+    describe('Behavior Audit - Fixture: Default', function() {
+      let loginFire;
+
+      beforeEach(function() {
+        loginFire = fixture('Default');
       });
-    </script>
-  </body>
+
+      it('Should allow to hide the divider line', function(done) {
+        flush(function() {
+          let divider = (loginFire.shadowRoot || loginFire).querySelector('.div');
+          expect(divider.hidden).to.be.false;
+          loginFire.noDivider = true;
+          divider = (loginFire.shadowRoot || loginFire).querySelector('.div');
+          expect(divider.hidden).to.be.true;
+          done();
+        });
+      });
+
+      it('Should allow to reverse the order of display between the form and buttons', function(done) {
+        const getChildren = () => (loginFire.shadowRoot || loginFire).querySelector('reverse-element').children;
+        flush(function() {
+          let children = getChildren();
+          expect(children.length).to.be.equal(3);
+          expect(children[0].tagName).to.be.equal('LOGIN-FIRE-FORM');
+          expect(children[2].tagName).to.be.equal('LOGIN-FIRE-SOCIAL');
+          loginFire.reverse = true;
+        });
+        flush(function() {
+          children = getChildren();
+          expect(children.length).to.be.equal(3);
+          expect(children[0].tagName).to.be.equal('LOGIN-FIRE-SOCIAL');
+          expect(children[2].tagName).to.be.equal('LOGIN-FIRE-FORM');
+          done();
+        });
+      });
+      
+      it('Should allow to disable password visibility feature', function(done) {
+        flush(function() {
+          const form = (loginFire.shadowRoot || loginFire).querySelector('login-fire-form');
+          expect(form.noToggleablePassword).to.be.false;
+          let button = (form.shadowRoot || form).querySelector('#passwordIconButton');
+          expect(button.hidden).to.be.false;
+          loginFire.noToggleablePassword = true;
+          button = (form.shadowRoot || form).querySelector('#passwordIconButton');
+          expect(form.noToggleablePassword).to.be.true;
+          expect(button.hidden).to.be.true;
+          done();
+        });
+      });
+      
+      it('Should be able to sign in with specified provider', function(done) {
+        flush(function() {
+          loginFire.providers = 'anonymous, google, facebook';
+          const social = (loginFire.shadowRoot || loginFire).querySelector('login-fire-social');
+          sinon.stub(social, 'signInOrOut');
+          expect(social.provider).to.be.equal('anonymous');
+          loginFire.signInWith('google');
+          expect(social.signInOrOut.calledOnce).to.be.true;
+          expect(social.provider).to.be.equal('google');
+          social.signInOrOut.restore();
+          done();
+        });
+      });
+
+      it('Should be able to sign out', function(done) {
+        loginFire.addEventListener('signedout', function checkSignedOut() {
+          flush(function() {
+            expect(loginFire.signedIn).to.be.false;
+            loginFire.removeEventListener('signedout', checkSignedOut);
+            done();
+          });
+        });
+        loginFire.addEventListener('signedin', function checkSignedIn() {
+          loginFire.signOut();
+          loginFire.removeEventListener('signedin', checkSignedIn);
+        });
+        flush(function() {
+          (loginFire.shadowRoot || loginFire).querySelector('login-fire-social').signIn();
+        });
+      });
+
+      it('Should fire "signedin" and "signedout" events only once', function(done) {
+        let signedinCount = 0;
+        let signedoutCount = 0;
+        const checkSignedIn = function() {
+          const calls = loginFire.fire.getCalls().filter((call) => call.args[0] == 'signedin');
+          signedinCount += calls.length;
+          expect(signedinCount).to.be.equal(1);
+          loginFire.signOut();
+        };
+        loginFire.addEventListener('signedin', checkSignedIn);
+        loginFire.addEventListener('signedout', function checkSignedOut() {
+          const calls = loginFire.fire.getCalls().filter((call) => call.args[0] == 'signedout');
+          loginFire.fire.restore();
+          signedoutCount += calls.length;
+          expect(signedinCount).to.be.equal(1);
+          expect(signedoutCount).to.be.equal(1);
+          setTimeout(() => {
+            loginFire.removeEventListener('signedin', checkSignedIn);
+            loginFire.removeEventListener('signedout', checkSignedOut);
+            done();
+          }, 10);
+        });
+        sinon.spy(loginFire, 'fire');
+        flush(function() {
+          (loginFire.shadowRoot || loginFire).querySelector('login-fire-social').signIn();
+        });
+      });
+
+      it('Should allow to force vertical display');
+    });
+
+    describe('Behavior Audit - Fixture: MobilePhone', function() {
+      let loginFire;
+
+      beforeEach(function() {
+        loginFire = fixture('MobilePhone');
+      });
+
+      it('Should display email button instead of the form');
+      it('Should display buttons vertically');
+    });
+
+    describe('Behavior Audit - Fixture: Tablet', function() {
+      let loginFire;
+
+      beforeEach(function() {
+        loginFire = fixture('Tablet');
+      });
+
+      it('Should display the form for sign-in with email');
+      it('Should be displayed horizontally');
+    });
+
+    describe('Behavior Audit - Fixture: Laptop', function() {
+      let loginFire;
+
+      beforeEach(function() {
+        loginFire = fixture('Laptop');
+      });
+
+      it('Should display the form for sign-in with email');
+      it('Should be displayed horizontally');
+    });
+
+    a11ySuite('Default', [], () => {
+      loginFire = fixture('Default');
+    });
+  </script>
+</body>
+
 </html>

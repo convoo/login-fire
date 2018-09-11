@@ -5,13 +5,13 @@ Use of this source code is governed by a MIT license that can be found in the
 LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 -->
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./localize-behavior.html">
 <link rel="import" href="./login-fire-common-behavior.html">
 <link rel="import" href="../iron-media-query/iron-media-query.html">
 <link rel="import" href="../reverse-element/reverse-element.html">
-<link rel="import" href="../polymerfire/firebase-auth.html">
 <link rel="import" href="./login-fire-form.html">
 <link rel="import" href="./login-fire-social.html">
-<link rel="import" href="./login-fire-button.html">
+<link rel="import" href="./paper-social-button.html">
 
 <!--
 An element allowing user authentication with email and password or federated
@@ -45,44 +45,6 @@ Custom property | Description | Default
 `--login-fire-divider-color` | The color for the divider bar | `gray`
 `--login-fire-background-color` | The color for the divider bar | `white`
 
-
-### Localization
-
-You can specify the following codes and language in a json file passed to the
-localesFile property to update the text used. Here are the defaults:
-```
-{
-  "en": {
-    "lf-email": "Email",
-    "lf-email-invalid": "Invalid email address",
-    "lf-password": "Password",
-    "lf-reenter-password": "Re-enter Password",
-    "lf-passwords-dont-match": "Passwords do not match",
-    "lf-already-have-account": "Already have an account?",
-    "lf-already-have-account-action": "Sign in",
-    "lf-no-account": "Don' have an account?",
-    "lf-no-account-action": "Sign up",
-    "lf-resetpw-link": "Forgot password",
-    "lf-resetpw-cancel-link": "Nevermind, I remembered my password.",
-    "lf-resetpw-button": "Reset password",
-    "lf-resetpw-success-message": "Password reset email has been sent. Please check your inbox.",
-    "lf-signup-button": "Sign Up",
-    "lf-signup-facebook": "Sign up with Facebook",
-    "lf-signup-google": "Sign up with Google",
-    "lf-signup-twitter": "Sign up with Twitter",
-    "lf-signup-github": "Sign up with GitHub",
-    "lf-signup-anonymous": "Sign up anonymously",
-    "lf-signin-button": "Sign In",
-    "lf-signin-facebook": "Sign in with Facebook",
-    "lf-signin-google": "Sign in with Google",
-    "lf-signin-twitter": "Sign in with Twitter",
-    "lf-signin-github": "Sign in with GitHub",
-    "lf-signin-anonymous": "Sign in anonymously",
-    "lf-signout": "Sign out"
-  }
-}
-```
-
 @customElement
 @polymer
 @demo demo/login-fire.html
@@ -92,8 +54,6 @@ localesFile property to update the text used. Here are the defaults:
     <style>
     reverse-element {
       background: var(--login-fire-background-color, white);
-      padding-top: 40px;
-      padding-bottom: 40px;
       @apply --layout-horizontal;
       @apply --layout-wrap;
       @apply --layout-center-center;
@@ -137,23 +97,23 @@ localesFile property to update the text used. Here are the defaults:
       min-width: 300px;
       max-width: 400px;
     }
+    [hidden] {
+      display: none !important;
+    }
     </style>
 
     <template is="dom-if" if="[[_showSignOutButton]]">
-      <login-fire-button
-        app-name="[[appName]]"
-        user="{{_user}}"
-        status-known="{{_statusKnown}}"
-        signed-in="{{_signedIn}}"
+      <paper-social-button
+        signed-in="[[_signedIn]]"
         mini$="[[mini]]"
         flat$="[[flat]]"
-        no-sign-in="[[noSignIn]]"
-        no-sign-out="[[noSignOut]]"
-        show-sign-up="{{showSignUp}}"
+        no-sign-in
         locales-file="[[localesFile]]"
         language="[[language]]"
-        debug="[[debug]]">
-      </login-fire-button>
+        in-progress="[[inProgress]]"
+        disabled$="[[inProgress]]"
+        on-click="signOut">
+      </paper-social-button>
     </template>
 
     <template is="dom-if" if="[[!_showSignOutButton]]">
@@ -168,6 +128,8 @@ localesFile property to update the text used. Here are the defaults:
           flat="{{flat}}"
           locales-file="[[localesFile]]"
           language="[[language]]"
+          on-signedin="__retargetingEvent"
+          on-signedout="__retargetingEvent"
           debug="[[debug]]"
           no-toggleable-password="[[noToggleablePassword]]"
           reenter-password="[[reenterPassword]]">
@@ -195,6 +157,8 @@ localesFile property to update the text used. Here are the defaults:
           google-scopes="[[googleScopes]]"
           facebook-scopes="[[facebookScopes]]"
           github-scopes="[[githubScopes]]"
+          on-signedin="__retargetingEvent"
+          on-signedout="__retargetingEvent"
           debug="[[debug]]">
         </login-fire-social>
       </reverse-element>
@@ -207,7 +171,11 @@ localesFile property to update the text used. Here are the defaults:
   <script>
   Polymer({
     is: 'login-fire',
-    behaviors: [Convoo.LoginFireCommonBehavior],
+
+    behaviors: [
+      Convoo.LocalizeBehavior,
+      Convoo.LoginFireCommonBehavior
+    ],
 
     properties: {
       /**
@@ -228,15 +196,6 @@ localesFile property to update the text used. Here are the defaults:
       horizontal: {
         type: Boolean,
         value: false
-      },
-
-      /**
-       * Sets custom message displayed when use ask to reset its password.
-       *
-       * @type {String}
-       */
-      passwordResetMessage: {
-        type: String
       },
 
       /**
@@ -375,7 +334,7 @@ localesFile property to update the text used. Here are the defaults:
         if (this._showSignOutButton) {
           console.error("Can't sign in using provider \"email\" when only one button is displayed.");
         } else {
-          this.$$('login-fire-form').signIn();
+          this.$$('login-fire-form').confirm();
         }
       } else {
         this.$$('login-fire-social').signInWith(provider);
@@ -391,7 +350,20 @@ localesFile property to update the text used. Here are the defaults:
      */
     _computeDividerStyle: function(isNarrow, horizontal) {
       return (horizontal || isNarrow) ? 'div--horizontal' : 'div--vertical';
-    }
+    },
+
+    /**
+     * Retargets native event. It stops the event propagation to ensure not
+     * dispatch it multiple times and lets the original event (that can be
+     * dispatched by the paper-social-button or the login-fire-form) bubbles.
+     * 
+     * @param {Object} event  The event to stop the propagation
+     */
+    __retargetingEvent: function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+    },
+
   });
   </script>
 </dom-module>
