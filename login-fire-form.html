@@ -284,13 +284,14 @@ Custom property | Description | Default
        * - 3 lowercase letters
        * 
        * Password strength validation can be disabled by setting this property
-       * to `null`.
+       * to "none", "null" or a falsy value.
        * 
        * @type {String}
        */
       passwordRegex: {
         type: String,
-        value: '^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8,}$'
+        value: '^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{8,}$',
+        observer: '_passwordRegexChanged'
       },
 
       /**
@@ -410,6 +411,13 @@ Custom property | Description | Default
             'The email address is not valid.'} The form was not sent.`
         }
       });
+    },
+
+    _passwordRegexChanged: function(regex) {
+      if (typeof regex == 'string' &&
+        (!regex || regex == 'none' || regex == 'null')) {
+        this.set('passwordRegex', null);
+      }
     },
 
     /**
