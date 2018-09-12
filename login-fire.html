@@ -110,7 +110,6 @@ Custom property | Description | Default
         no-sign-in
         locales-file="[[localesFile]]"
         language="[[language]]"
-        in-progress="[[inProgress]]"
         disabled$="[[inProgress]]"
         on-click="signOut">
       </paper-social-button>
@@ -121,6 +120,7 @@ Custom property | Description | Default
         <login-fire-form
           app-name="[[appName]]"
           user="{{_user}}"
+          in-progress="{{_inProgress}}"
           signed-in="{{_signedIn}}"
           status-known="{{_statusKnown}}"
           auto-sign-up="[[autoSignUp]]"
@@ -143,6 +143,7 @@ Custom property | Description | Default
           app-name="[[appName]]"
           providers="[[providers]]"
           user="{{_user}}"
+          in-progress="{{_inProgress}}"
           signed-in="{{_signedIn}}"
           status-known="{{_statusKnown}}"
           no-sign-in="[[noSignIn]]"
@@ -308,6 +309,11 @@ Custom property | Description | Default
       _dividerStyle: {
         type: String,
         computed: '_computeDividerStyle(_isNarrow, horizontal)'
+      },
+
+      _inProgress: {
+        type: Boolean,
+        observer: '_inProgressChanged'
       }
     },
 
@@ -350,6 +356,10 @@ Custom property | Description | Default
      */
     _computeDividerStyle: function(isNarrow, horizontal) {
       return (horizontal || isNarrow) ? 'div--horizontal' : 'div--vertical';
+    },
+
+    _inProgressChanged() {
+      this._setInProgress(this._inProgress);
     },
 
     /**
