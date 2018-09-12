@@ -1,6 +1,6 @@
 {
   "name": "login-fire",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Simple way to add authentication to your app using Firebase Auth.",
   "directories": {
     "test": "test"

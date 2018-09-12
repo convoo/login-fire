@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/convoo/login-fire/compare/v2.0.0...v2.0.1) (2018-09-12)
+
+
+### Bug Fixes
+
+* **documentation:** missing doc for login-fire-button ([52f56f9](https://github.com/convoo/login-fire/commit/52f56f9))
+* **login-fire-button:** ensure child has same width ([3d7c774](https://github.com/convoo/login-fire/commit/3d7c774))
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/convoo/login-fire/compare/v1.1.1...v2.0.0) (2018-09-11)
 
