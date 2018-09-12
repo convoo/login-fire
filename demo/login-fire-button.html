@@ -208,6 +208,34 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
     </demo-snippet>
   </div>
 
+  <div>
+    <h3>Custom style</h3>
+    <demo-snippet>
+      <template>
+        <custom-style>
+          <style is="custom-style">
+            login-fire-button.custom {
+              --login-fire-button-anonymous: {
+                background-color: transparent;
+                color: transparent;
+                border: dashed 1px lightgray;
+              };
+              --login-fire-button-anonymous-hover: {
+                background-color: antiquewhite;
+                color: burlywood;
+                border: none;
+              };
+            }
+          </style>
+        </custom-style>
+        <firebase-app name="customStyleDemo" api-key="AIzaSyAhoCXxkY-ffNwA_7L7HIwBVpASYj1btNE"
+          auth-domain="convoo-login-demo.firebaseapp.com" database-url="https://convoo-login-demo.firebaseio.com">
+        </firebase-app>
+        <login-fire-button class="custom" app-name="customStyleDemo"></login-fire-button>
+      </template>
+    </demo-snippet>
+  </div>
+
 </body>
 
 </html>
