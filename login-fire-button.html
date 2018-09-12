@@ -42,6 +42,14 @@ See the "Styling" section of the `paper-social-button` element documentation.
 -->
 <dom-module id="login-fire-button">
   <template>
+    <style>
+    :host {
+      display: inline-block;
+      --login-fire-button: {
+        width: 100%;
+      };
+    }
+    </style>
     <paper-social-button
       provider="[[config.provider]]"
       no-sign-in="[[noSignIn]]"
