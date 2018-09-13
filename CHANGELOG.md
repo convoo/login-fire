@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.0.2"></a>
+## [2.0.2](https://github.com/convoo/login-fire/compare/v2.0.1...v2.0.2) (2018-09-13)
+
+
+### Bug Fixes
+
+* **login-fire:** attribute reflection ([f2c7014](https://github.com/convoo/login-fire/commit/f2c7014))
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/convoo/login-fire/compare/v2.0.0...v2.0.1) (2018-09-12)
 
