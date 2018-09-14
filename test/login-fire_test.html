@@ -139,25 +139,19 @@
         let signedinCount = 0;
         let signedoutCount = 0;
         const checkSignedIn = function() {
-          const calls = loginFire.fire.getCalls().filter((call) => call.args[0] == 'signedin');
-          signedinCount += calls.length;
-          expect(signedinCount).to.be.equal(1);
+          expect(++signedinCount).to.be.equal(1);
           loginFire.signOut();
         };
         loginFire.addEventListener('signedin', checkSignedIn);
         loginFire.addEventListener('signedout', function checkSignedOut() {
-          const calls = loginFire.fire.getCalls().filter((call) => call.args[0] == 'signedout');
-          loginFire.fire.restore();
-          signedoutCount += calls.length;
-          expect(signedinCount).to.be.equal(1);
-          expect(signedoutCount).to.be.equal(1);
+          expect(++signedoutCount).to.be.equal(1);
+          // Wait a little to listen unexpected extra signedin/signedout events.
           setTimeout(() => {
             loginFire.removeEventListener('signedin', checkSignedIn);
             loginFire.removeEventListener('signedout', checkSignedOut);
             done();
           }, 10);
         });
-        sinon.spy(loginFire, 'fire');
         flush(function() {
           (loginFire.shadowRoot || loginFire).querySelector('login-fire-social').signIn();
         });

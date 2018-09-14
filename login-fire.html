@@ -6,7 +6,6 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
 -->
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="./localize-behavior.html">
-<link rel="import" href="./login-fire-common-behavior.html">
 <link rel="import" href="../iron-media-query/iron-media-query.html">
 <link rel="import" href="../reverse-element/reverse-element.html">
 <link rel="import" href="./login-fire-form.html">
@@ -104,7 +103,7 @@ Custom property | Description | Default
 
     <template is="dom-if" if="[[_showSignOutButton]]">
       <paper-social-button
-        signed-in="[[_signedIn]]"
+        signed-in="[[signedIn]]"
         mini$="[[mini]]"
         flat$="[[flat]]"
         no-sign-in
@@ -119,17 +118,18 @@ Custom property | Description | Default
       <reverse-element reverse="[[reverse]]">
         <login-fire-form
           app-name="[[appName]]"
-          user="{{_user}}"
-          in-progress="{{_inProgress}}"
-          signed-in="{{_signedIn}}"
-          status-known="{{_statusKnown}}"
+          user="{{user}}"
+          in-progress="{{_inProgressForm}}"
+          signed-in="{{signedIn}}"
+          status-known="{{statusKnown}}"
+          no-sign-out="[[noSignOut]]"
+          no-sign-in="[[noSignIn]]"
           auto-sign-up="[[autoSignUp]]"
           show-sign-up="{{showSignUp}}"
           flat="{{flat}}"
           locales-file="[[localesFile]]"
           language="[[language]]"
-          on-signedin="__retargetingEvent"
-          on-signedout="__retargetingEvent"
+          auto="[[auto]]"
           debug="[[debug]]"
           no-toggleable-password="[[noToggleablePassword]]"
           reenter-password="[[reenterPassword]]">
@@ -142,10 +142,10 @@ Custom property | Description | Default
         <login-fire-social
           app-name="[[appName]]"
           providers="[[providers]]"
-          user="{{_user}}"
-          in-progress="{{_inProgress}}"
-          signed-in="{{_signedIn}}"
-          status-known="{{_statusKnown}}"
+          user="{{user}}"
+          in-progress="{{_inProgressSocial}}"
+          signed-in="{{signedIn}}"
+          status-known="{{statusKnown}}"
           no-sign-in="[[noSignIn]]"
           no-sign-out="[[noSignOut]]"
           redirect="[[redirect]]"
@@ -158,8 +158,7 @@ Custom property | Description | Default
           google-scopes="[[googleScopes]]"
           facebook-scopes="[[facebookScopes]]"
           github-scopes="[[githubScopes]]"
-          on-signedin="__retargetingEvent"
-          on-signedout="__retargetingEvent"
+          auto="[[auto]]"
           debug="[[debug]]">
         </login-fire-social>
       </reverse-element>
@@ -175,10 +174,21 @@ Custom property | Description | Default
 
     behaviors: [
       Convoo.LocalizeBehavior,
-      Convoo.LoginFireCommonBehavior
     ],
 
     properties: {
+      /**
+       * An application name. This is required if you want use several Firebase
+       * configurations in the same app. All elements that implement this
+       * behavior and having the same application name share their properties.
+       *
+       * @type {String}
+       */
+       appName: {
+        type: String,
+        value: ''
+      },
+
       /**
        * Enables automatic sign-up on form if the user does not exist.
        *
@@ -293,6 +303,118 @@ Custom property | Description | Default
       },
 
       /**
+       * Sets the element in debug mode. In the debug mode, the Firebase
+       * configuration used by the element and relevant steps like a user
+       * change are print out into the browser's console.
+       *
+       * @type {Boolean}
+       */
+       debug: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Defines if the authentication must use redirection. If `false`, the
+       * authentication will use pop-up.
+       *
+       * @type {Boolean}
+       */
+       redirect: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * When this attribute is `true`, the element tries to log the user in
+       * right after have been attached to the DOM if and only if the user was
+       * signed in when they left the application.
+       * 
+       * @type {Boolean}
+       * @default false
+       */
+       auto: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * `True` if a user is authenticated, otherwise `false`.
+       *
+       * @type {Boolean}
+       */
+       signedIn: {
+        type: Boolean,
+        value: false,
+        notify: true
+      },
+
+      /**
+       * Whether to show the view at sign up or sign in.
+       *
+       * @type {Boolean}
+       */
+      showSignUp: {
+        type: Boolean,
+        value: false,
+        notify: true
+      },
+
+      /**
+       * When `true`, login status can be determined by checking user property.
+       *
+       * @type {Boolean}
+       */
+      statusKnown: {
+        type: Boolean,
+        value: false,
+        notify: true
+      },
+
+      /**
+       * Signed-in user. This user representation is accessible from all elements
+       * that use Firebase Auth with the same application name.
+       *
+       * @type {Object}
+       */
+      user: {
+        type: Object,
+        notify: true
+      },
+
+      /**
+       * Prevents the element from signing out. It means, if this attribute is
+       * `true`, the `signOut` method has no effect.
+       *
+       * @type {Boolean}
+       */
+      noSignOut: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * Prevents the element from signing in. It means, if this attribute is
+       * `true`, the `signIn` method has no effect.
+       *
+       * @type {Boolean}
+       */
+      noSignIn: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * This property is used in `login-fire` and `login-fire-social` when the
+       * user is signed in and allowed to sign out. Then it shows only one
+       * button (instead of multiple) to sign out.
+       */
+       _showSignOutButton: {
+        type: Boolean,
+        computed: '_computeShowOneButton(noSignIn, signedIn, noSignOut)'
+      },
+
+      /**
        * True if the element is too much narrow to be display horizontally.
        *
        * @type {Boolean}
@@ -311,9 +433,10 @@ Custom property | Description | Default
         computed: '_computeDividerStyle(_isNarrow, horizontal)'
       },
 
-      _inProgress: {
+      inProgress: {
         type: Boolean,
-        observer: '_inProgressChanged'
+        notify: true,
+        computed: '_computeInProgress(_inProgressForm, _inProgressSocial)'
       }
     },
 
@@ -358,20 +481,16 @@ Custom property | Description | Default
       return (horizontal || isNarrow) ? 'div--horizontal' : 'div--vertical';
     },
 
-    _inProgressChanged() {
-      this._setInProgress(this._inProgress);
+    _computeInProgress() {
+      return this._inProgressForm || this._inProgressSocial;
     },
 
     /**
-     * Retargets native event. It stops the event propagation to ensure not
-     * dispatch it multiple times and lets the original event (that can be
-     * dispatched by the paper-social-button or the login-fire-form) bubbles.
-     * 
-     * @param {Object} event  The event to stop the propagation
+     * Returns `true` when the element allows only to signing out or a user is
+     * already signed in and they can signing out.
      */
-    __retargetingEvent: function(event) {
-      event.preventDefault();
-      event.stopPropagation();
+     _computeShowOneButton: function(noSignIn, signedIn, noSignOut) {
+      return noSignIn || (signedIn && !noSignOut);
     },
 
   });
