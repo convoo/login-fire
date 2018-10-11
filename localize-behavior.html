@@ -46,16 +46,23 @@ LICENSE file or at https://github.com/convoo/login-fire/blob/master/LICENSE.
          * @type {String}
          */
         localesFile: {
-          type: String
+          type: String,
+          observer: '_localesFileChanged'
         },
       },
 
       attached: function() {
-        // Load locales file for i18n.
-        if (this.localesFile && typeof this.localesFile !== 'undefined') {
-          this.loadResources(this.resolveUrl(this.localesFile));
-        } else {
+        if (!this.localesFile || this.localesFile.trim().length == 0) {
           this.set('resources', window.Convoo._locales);
+        }
+      },
+
+      /**
+       * Loads locales file for internationalization.
+       */
+      _localesFileChanged: function() {
+        if (this.localesFile && this.localesFile.trim().length != 0) {
+          this.loadResources(this.resolveUrl(this.localesFile));
         }
       }
     };
