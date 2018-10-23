@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.1.0"></a>
+# [2.1.0](https://github.com/convoo/login-fire/compare/v2.0.2...v2.1.0) (2018-10-23)
+
+
+### Bug Fixes
+
+* **i18n:** dynamically load locales ([e12ac50](https://github.com/convoo/login-fire/commit/e12ac50))
+
+
+### Features
+
+* **i18n:** add support for Turkish ([6e46231](https://github.com/convoo/login-fire/commit/6e46231))
+
+
+
 <a name="2.0.2"></a>
 ## [2.0.2](https://github.com/convoo/login-fire/compare/v2.0.1...v2.0.2) (2018-09-13)
 
