@@ -132,6 +132,7 @@ Custom property | Description | Default
           auto="[[auto]]"
           debug="[[debug]]"
           no-toggleable-password="[[noToggleablePassword]]"
+          password-regex="{{passwordRegex}}"
           reenter-password="[[reenterPassword]]">
         </login-fire-form>
 
@@ -273,6 +274,23 @@ Custom property | Description | Default
       reenterPassword: {
         type: Boolean,
         value: false
+      },
+
+      /**
+       * Regular expression used to check password strength. The default Regex
+       * checks if the password has a length at least of 8 chars and contains:
+       * - 2 uppercase letters
+       * - 1 special char letter [!@#$&*]
+       * - 2 digits
+       * - 3 lowercase letters
+       * 
+       * Password strength validation can be disabled by setting this property
+       * to "none", "null" or a falsy value.
+       * 
+       * @type {String}
+       */
+      passwordRegex: {
+        type: String,
       },
 
       /**
