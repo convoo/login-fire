@@ -137,7 +137,7 @@ Custom property | Description | Default
       type="email"
       label="[[localize('lf-email')]]"
       value="{{email}}"
-      pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+      pattern="[[emailRegex]]"
       error-message="[[localize('lf-email-invalid')]]"
       on-keydown="_submitOnEnter"
       required>
@@ -264,6 +264,25 @@ Custom property | Description | Default
        */
       email: {
         type: String
+      },
+
+      /**
+       * Regular expression used to check email address format. It's a simplified
+       * version that check the email address has the same syntax as described
+       * on <a href="https://en.wikipedia.org/wiki/Email_address">Wikipedia</a>.
+       * Pay attention, quoted email addresses are not passing the validation due
+       * to the complexity of the regular expression it should have been write.
+       *
+       * Email address syntax validation can be disabled by setting this property
+       * to "none", "null" or a falsy value.
+       *
+       * @type {String}
+       */
+      emailRegex: {
+        type: String,
+        value: "^[\\w\"]{1}([\\.!#$%&'*+-/=?^_`{|}~ ]?\\w){0,63}@\\w+([\\.-]?\\w+)*(\\.\\w{2,24})+$",
+        observer: '_emailRegexChanged',
+        notify: true,
       },
 
       /**
@@ -412,6 +431,13 @@ Custom property | Description | Default
             'The email address is not valid.'} The form was not sent.`
         }
       });
+    },
+
+    _emailRegexChanged(regex) {
+      if (typeof regex == 'string' &&
+        (!regex || regex == 'none' || regex == 'null')) {
+        this.set('emailRegex', null);
+      }
     },
 
     _passwordRegexChanged: function(regex) {

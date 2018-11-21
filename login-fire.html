@@ -133,6 +133,7 @@ Custom property | Description | Default
           debug="[[debug]]"
           no-toggleable-password="[[noToggleablePassword]]"
           password-regex="{{passwordRegex}}"
+          email-regex="{{emailRegex}}"
           reenter-password="[[reenterPassword]]">
         </login-fire-form>
 
@@ -290,6 +291,22 @@ Custom property | Description | Default
        * @type {String}
        */
       passwordRegex: {
+        type: String,
+      },
+
+      /**
+       * Regular expression used to check email address format. It's a simplified
+       * version that check the email address has the same syntax as described
+       * on <a href="https://en.wikipedia.org/wiki/Email_address">Wikipedia</a>.
+       * Pay attention, quoted email addresses are not passing the validation due
+       * to the complexity of the regular expression it should have been write.
+       *
+       * Email address syntax validation can be disabled by setting this property
+       * to "none", "null" or a falsy value.
+       *
+       * @type {String}
+       */
+      emailRegex: {
         type: String,
       },
 
