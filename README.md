@@ -1,28 +1,32 @@
 # Login-Fire
 
-<p align="center">
+<div align="center" markdown="1">
   <img alt="login-fire" src="Login-Fire@4x.png" width="200">
-</p>
+</div>
 
-<p align="center">
-Simple way to add authentication to your app using <a href="https://firebase.google.com/docs/auth/">Firebase Auth</a>.
-</p>
+<div align="center" markdown="1">
 
-<p align="center">
-  <a href="https://beta.webcomponents.org/element/convoo/login-fire"><img src="https://img.shields.io/badge/webcomponents.org-published-blue.svg"></a>
-  <a href="https://gitter.im/convoo/login-fire"><img src="https://img.shields.io/badge/gitter-join%20chat-brightgreen.svg"></a>
-  <a href="http://waffle.io/convoo/login-fire"><img src="https://badge.waffle.io/convoo/login-fire.svg?label=In%20Progress&title=In%20Progress"></a>
-  <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg"></a>
-</p>
+Simple way to add authentication to your app using [Firebase Auth](https://firebase.google.com/docs/auth/).
+</div>
+
+<div align="center" markdown="1">
+
+[![Web Components Status](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/convoo/login-fire)
+[![Gitter](https://img.shields.io/badge/gitter-join%20chat-brightgreen.svg)](https://gitter.im/convoo/login-fire)
+[![Waffle Status](https://badge.waffle.io/convoo/login-fire.svg?label=In%20Progress&title=In%20Progress)](http://waffle.io/convoo/login-fire)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![Build Status](https://travis-ci.org/convoo/login-fire.svg?branch=master)](https://travis-ci.org/convoo/login-fire)
+</div>
 
 ---
 
 ## Overview & Demo
 
 The following elements are available:
+
 * `<login-fire-button>` for single provider authentication
 * `<login-fire-social>` for multiple provider authentication
-* `<login-fire-form>` for email and password authentication 
+* `<login-fire-form>` for email and password authentication
 * `<login-fire>` for all of the above.
 
 The goal of the \<login-fire\> elements is to provide a simple to setup, elegant UI for authentication using [Firebase Auth](https://firebase.google.com/docs/auth/).
@@ -33,7 +37,7 @@ Note: login-fire is **not** associated with [Firebase](https://firebase.google.c
 
 ## Install
 
-```
+```ssh
 bower install login-fire --save
 ```
 
@@ -61,6 +65,7 @@ Add authentication with email and password as well as federated identity provide
 </custom-element-demo>
 ```
 -->
+
 ```html
 <firebase-app
   name="login"
@@ -100,6 +105,7 @@ Add multiple federated identity providers authentication to your app with [Fireb
 </custom-element-demo>
 ```
 -->
+
 ```html
 <firebase-app
   name="social"
@@ -115,7 +121,6 @@ Add multiple federated identity providers authentication to your app with [Fireb
   signed-in="{{signedIn}}">
 </login-fire-social>
 ```
-
 
 ## \<login-fire-form\>
 
@@ -140,6 +145,7 @@ Add email-password authentication to your app with [Firebase Auth API](https://f
 </custom-element-demo>
 ```
 -->
+
 ```html
 <firebase-app
   name="email"
@@ -162,6 +168,7 @@ A button for a single federated identity provider (Google, Facebook, Twitter, Gi
 ```html
 <link rel="import" href="/bower_components/login-fire/login-fire-button.html">
 ```
+
 <!--
 ```
 <custom-element-demo>
@@ -177,6 +184,7 @@ A button for a single federated identity provider (Google, Facebook, Twitter, Gi
 </custom-element-demo>
 ```
 -->
+
 ```html
 <firebase-app
   name="button"
@@ -233,20 +241,20 @@ Style the buttons with CSS as you would a normal DOM element. A few custom prope
 
 First, make sure you have [NPM](https://www.npmjs.com/) installed (locally or globally).
 
-```
-$ npm run install
+```ssh
+npm install && polymer install
 ```
 
 ### Viewing Your Application
 
-```
-$ polymer serve
+```ssh
+polymer serve
 ```
 
 ### Building Your Application
 
-```
-$ polymer build
+```ssh
+polymer build
 ```
 
 This will create a `build/` folder with `bundled/` and `unbundled/` sub-folders
@@ -256,14 +264,14 @@ CSS, and JS optimizers.
 You can serve the built versions by giving `polymer serve` a folder to serve
 from:
 
-```
-$ polymer serve build/bundled
+```ssh
+polymer serve build/bundled
 ```
 
 ### Running Tests
 
-```
-$ polymer test
+```ssh
+polymer test
 ```
 
 Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
@@ -272,10 +280,7 @@ Your application is already set up to be tested via [web-component-tester](https
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git cz`
-
-Optional but highly encouraged: Follow [this commit guide](https://conventionalcommits.org/)
-
+3. Commit your changes: `git cz` (please follow [this commit guide](https://conventionalcommits.org/))
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request. :D
 

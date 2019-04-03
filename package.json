@@ -9,11 +9,10 @@
   "devDependencies": {
     "commitizen": "^2.9.6",
     "cz-conventional-changelog": "^2.1.0",
-    "polymer-cli": "^1.6.0",
+    "polymer-cli": "^1.9.8",
     "standard-changelog": "^1.0.9"
   },
   "scripts": {
-    "install": "npm install && bower install",
     "test": "polymer test",
     "release": "standard-version",
     "release:patch": "standard-version --release-as patch",
