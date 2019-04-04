@@ -11,11 +11,10 @@ Simple way to add authentication to your app using [Firebase Auth](https://fireb
 
 <div align="center" markdown="1">
 
-[![Web Components Status](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/convoo/login-fire)
-[![Gitter](https://img.shields.io/badge/gitter-join%20chat-brightgreen.svg)](https://gitter.im/convoo/login-fire)
-[![Waffle Status](https://badge.waffle.io/convoo/login-fire.svg?label=In%20Progress&title=In%20Progress)](http://waffle.io/convoo/login-fire)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![Build Status](https://travis-ci.org/convoo/login-fire.svg?branch=master)](https://travis-ci.org/convoo/login-fire)
+[![Web Components Status](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://beta.webcomponents.org/element/convoo/login-fire)
+[![Gitter](https://img.shields.io/badge/gitter-join%20chat-F6015F.svg)](https://gitter.im/convoo/login-fire)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 </div>
 
 ---
