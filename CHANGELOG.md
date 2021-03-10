@@ -1,6 +1,13 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [2.2.0](https://github.com/convoo/login-fire/compare/v2.1.1...v2.2.0) (2021-03-10)
+
+
+### Features
+
+* **i18n:** add locales for Italian ([3e995cd](https://github.com/convoo/login-fire/commit/3e995cd06757a8259bf9e30bb5b365c2a029f095))
 
 <a name="2.1.1"></a>
 ## [2.1.1](https://github.com/convoo/login-fire/compare/v2.1.0...v2.1.1) (2018-12-07)
