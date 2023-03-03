@@ -6,7 +6,7 @@
     "test": "test"
   },
   "devDependencies": {
-    "commitizen": "^2.9.6",
+    "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^2.1.0",
     "polymer-cli": "^1.9.8",
     "standard-changelog": "^1.0.9",
